@@ -22,7 +22,7 @@
 
 ## What This Is
 
-A ground-up architectural redesign of BCI (Brain-Computer Interface) security, built from neuroscience constraints rather than retrofitted IT models. This is the Quantum Model — the active research framework that builds upon the [Classical Model (ONI)](../legacy-core/).
+A ground-up architectural redesign of BCI (Brain-Computer Interface) security, built from neuroscience constraints rather than retrofitted IT models. This is the Quantum Model — the active research framework that complements the [Classical Model (ONI)](../oni-framework/).
 
 The original ONI Framework put the Neural Gateway at Layer 8 (middle of a 14-layer stack). BCIs are physical hardware — they belong adjacent to OSI Layer 1. Everything needed to be rebuilt from that realization.
 
