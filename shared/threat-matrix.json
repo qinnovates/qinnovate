@@ -1,0 +1,1163 @@
+{
+  "_meta": {
+    "version": "2.0",
+    "description": "Shared threat matrix — single source of truth for both Classical (ONI 14-Layer) and Quantum (QIF 7-Band Hourglass) models",
+    "last_updated": "2026-02-05",
+    "models": {
+      "classical": "ONI 14-Layer (L1-L14)",
+      "quantum": "QIF 7-Band Hourglass (N3/N2/N1/I0/S1/S2/S3)"
+    },
+    "categories": {
+      "Κ": {
+        "code": "Κ",
+        "name": "Common",
+        "label": "Common/Invariant",
+        "description": "Elements shared across both ONI and QIF models"
+      },
+      "Δ": {
+        "code": "Δ",
+        "name": "Differences",
+        "label": "Model-Specific",
+        "description": "Unique to one model only"
+      },
+      "Σ": {
+        "code": "Σ",
+        "name": "Synthesis",
+        "label": "Unified View",
+        "description": "Combined perspective across both models"
+      }
+    },
+    "migration": {
+      "L1": "S3",
+      "L2": "S3",
+      "L3": "S3",
+      "L4": "S3",
+      "L5": "S3",
+      "L6": "S3",
+      "L7": "S3",
+      "L8": "I0",
+      "L9": "I0/N1",
+      "L10": "N1/N2",
+      "L11": "N2",
+      "L12": "N3",
+      "L13": "N3",
+      "L14": "N3"
+    },
+    "sources": [
+      "ONI_THREAT_MATRIX.md — 10 tactics, 21 core + 3 proposed techniques",
+      "threats.py — 7 predefined threat signatures, Kohno taxonomy",
+      "config.py THREAT_MODEL — 12 attack types with quantum detection",
+      "QIF-WHITEPAPER.md §11 — defense matrix",
+      "Microsoft STRIDE threat model — Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege"
+    ],
+    "references": [
+      "Kohno, T., et al. (2009). Neurosecurity: Security and Privacy for Neural Devices. Neurosurgical Focus, 27(1).",
+      "Bonaci, T., et al. (2015). App Stores for the Brain. IEEE S&P Workshop.",
+      "Schroder, T., et al. (2025). Cyber Risks to Next-Gen Brain-Computer Interfaces. Neuroethics.",
+      "MITRE Corporation. (2024). MITRE ATT&CK. https://attack.mitre.org/"
+    ]
+  },
+  "tactics": [
+    {
+      "id": "TA0001",
+      "name": "Reconnaissance",
+      "description": "Gathering information about the target BCI system",
+      "mitre_mapping": "TA0043",
+      "techniques": [
+        {
+          "id": "ONI-T001",
+          "name": "Signal Profiling",
+          "description": "Passive monitoring and analysis of neural signal patterns to understand communication protocols, timing characteristics, and signal baselines.",
+          "classical": {
+            "target_layers": ["L7", "L8"],
+            "severity": "Medium",
+            "mitigations": [
+              "Implement signal encryption at L7",
+              "Use frequency hopping protocols",
+              "Deploy RF shielding for wireless BCIs"
+            ],
+            "detection": ["RF Monitoring: Detect unauthorized receivers", "Signal Analysis: Identify unusual monitoring patterns"]
+          },
+          "quantum": {
+            "target_bands": ["S3", "I0"],
+            "detection": "Enhanced (coherence metric)",
+            "qi_terms": ["Cₛ (σ²ᵩ)"],
+            "quantum_advantage": "Phase coherence verification detects passive profiling — Heisenberg disturbance reveals observation"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "Low", "A": "Low"},
+            "kohno_type": "EAVESDROPPING",
+            "stride": ["Information Disclosure"],
+            "mitre_technique": "T1595",
+            "neurorights_impact": ["mental_privacy"]
+          }
+        },
+        {
+          "id": "ONI-T002",
+          "name": "Side-Channel Analysis",
+          "description": "Extracting sensitive information through timing variations, power consumption patterns, or electromagnetic emissions from BCI hardware.",
+          "classical": {
+            "target_layers": ["L7", "L8", "L9"],
+            "severity": "High",
+            "mitigations": [
+              "Implement constant-time algorithms",
+              "Add power consumption noise",
+              "Use EM shielding on sensitive components"
+            ],
+            "detection": ["Power Monitoring: Detect unusual power consumption probes", "EM Scanning: Identify unauthorized EM measurement devices"]
+          },
+          "quantum": {
+            "target_bands": ["S3", "I0", "I0/N1"],
+            "detection": "Enhanced (signal correlation)",
+            "qi_terms": ["Cₛ (σ²τ)"],
+            "quantum_advantage": "Cross-band signal correlation reveals side-channel leakage patterns invisible to single-layer analysis"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "Low", "A": "Low"},
+            "kohno_type": "EAVESDROPPING",
+            "stride": ["Information Disclosure"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy"],
+            "academic_reference": "Bonaci et al. (2015) demonstrated side-channel attacks on consumer EEG devices"
+          }
+        },
+        {
+          "id": "ONI-T003",
+          "name": "Network Mapping",
+          "description": "Discovering the topology of BCI node networks, identifying communication pathways between electrodes, processing units, and external interfaces.",
+          "classical": {
+            "target_layers": ["L7", "L8"],
+            "severity": "Medium",
+            "mitigations": [
+              "Implement network segmentation",
+              "Use dynamic addressing",
+              "Deploy honeypot nodes"
+            ],
+            "detection": ["Network Monitor: Detect scanning patterns", "L8 Firewall: Log enumeration attempts"]
+          },
+          "quantum": {
+            "target_bands": ["S3", "I0"],
+            "detection": "Enhanced (coherence metric)",
+            "qi_terms": [],
+            "quantum_advantage": "Quantum-aware network segmentation limits topology exposure"
+          },
+          "shared": {
+            "cia_impact": {"C": "Medium", "I": "Low", "A": "Low"},
+            "kohno_type": "EAVESDROPPING",
+            "stride": ["Information Disclosure"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TA0002",
+      "name": "Initial Access",
+      "description": "Techniques to gain initial foothold in the BCI system",
+      "mitre_mapping": "TA0001",
+      "techniques": [
+        {
+          "id": "ONI-T004",
+          "name": "Electrode Compromise",
+          "description": "Physical manipulation or replacement of neural electrodes to inject malicious signals or intercept legitimate neural data at the hardware level.",
+          "classical": {
+            "target_layers": ["L8", "L9"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement electrode authentication",
+              "Use tamper-evident seals",
+              "Deploy impedance monitoring for changes"
+            ],
+            "detection": ["Impedance Check: Detect electrode tampering via impedance changes", "Physical Security: Monitor for unauthorized access"]
+          },
+          "quantum": {
+            "target_bands": ["I0", "I0/N1"],
+            "detection": "Enhanced (coherence metric + impedance)",
+            "qi_terms": ["Cₛ", "Cclass"],
+            "quantum_advantage": "Coherence metric detects foreign electrode signatures through phase mismatch"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "High", "A": "High"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Spoofing", "Elevation of Privilege"],
+            "yale_category": "AUTHENTICATION",
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity", "mental_privacy"]
+          }
+        },
+        {
+          "id": "ONI-T005",
+          "name": "RF Protocol Exploitation",
+          "description": "Exploiting vulnerabilities in wireless BCI communication protocols to gain unauthorized access to the neural interface system.",
+          "classical": {
+            "target_layers": ["L7", "L8"],
+            "severity": "Critical",
+            "mitigations": [
+              "Use authenticated encryption",
+              "Implement protocol hardening",
+              "Deploy intrusion detection at L8"
+            ],
+            "detection": ["RF Monitor: Detect protocol anomalies", "L8 Firewall: Block unauthorized protocol messages"]
+          },
+          "quantum": {
+            "target_bands": ["S3", "I0"],
+            "detection": "Enhanced (signal correlation)",
+            "qi_terms": [],
+            "quantum_advantage": "Quantum key distribution prevents protocol-level eavesdropping"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "High", "A": "Medium"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Spoofing", "Tampering", "Elevation of Privilege"],
+            "yale_category": "WIRELESS",
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy", "mental_integrity"]
+          }
+        },
+        {
+          "id": "ONI-T006",
+          "name": "Firmware Backdoor",
+          "description": "Compromising BCI firmware through supply chain attacks or update mechanisms to establish persistent unauthorized access.",
+          "classical": {
+            "target_layers": ["L7", "L8", "L9"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement secure boot",
+              "Use signed firmware updates",
+              "Verify supply chain integrity"
+            ],
+            "detection": ["Firmware Audit: Compare against known-good hashes", "Behavioral Analysis: Detect unexpected firmware behavior"]
+          },
+          "quantum": {
+            "target_bands": ["S3", "S2", "I0"],
+            "detection": "Enhanced (firmware attestation)",
+            "qi_terms": [],
+            "quantum_advantage": "Quantum-based firmware attestation prevents supply chain compromise"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "High", "A": "High"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Elevation of Privilege"],
+            "yale_category": "SOFTWARE_UPDATE",
+            "mitre_technique": "T1195.002",
+            "neurorights_impact": ["mental_integrity", "cognitive_liberty"]
+          }
+        },
+        {
+          "id": "ONI-T022",
+          "name": "Wireless Authentication Bypass",
+          "description": "Exploiting weak or absent authentication on BCI wireless interfaces. Many older devices assume connection implies authorization.",
+          "status": "proposed",
+          "classical": {
+            "target_layers": ["L7", "L8"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement mutual authentication",
+              "Use certificate-based auth",
+              "Deploy zero-trust access model"
+            ],
+            "detection": ["Authentication Monitor: Detect unauthenticated connections"]
+          },
+          "quantum": {
+            "target_bands": ["S3", "I0"],
+            "detection": "Enhanced (quantum authentication)",
+            "qi_terms": [],
+            "quantum_advantage": "Quantum authentication protocols prevent replay and bypass attacks"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "High", "A": "Medium"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Spoofing", "Elevation of Privilege"],
+            "yale_category": "AUTHENTICATION",
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy", "mental_integrity"],
+            "academic_reference": "Schroder et al. (2025) Yale Digital Ethics Center"
+          }
+        },
+        {
+          "id": "ONI-T023",
+          "name": "Unencrypted Data Interception",
+          "description": "Intercepting unencrypted neural data in transit. Most BCIs lack encryption due to power constraints.",
+          "status": "proposed",
+          "classical": {
+            "target_layers": ["L10", "L11"],
+            "severity": "High",
+            "mitigations": [
+              "Implement lightweight encryption",
+              "Use hardware encryption accelerators",
+              "Deploy encrypted transport protocols"
+            ],
+            "detection": ["Traffic Analysis: Detect plaintext neural data transmission"]
+          },
+          "quantum": {
+            "target_bands": ["N1/N2", "N2"],
+            "detection": "Yes (QKD for data-in-transit)",
+            "qi_terms": [],
+            "quantum_advantage": "QKD provides information-theoretically secure key exchange"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "Low", "A": "Low"},
+            "kohno_type": "EAVESDROPPING",
+            "stride": ["Information Disclosure"],
+            "yale_category": "ENCRYPTION",
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy"],
+            "academic_reference": "Schroder et al. (2025) Yale Digital Ethics Center"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TA0003",
+      "name": "Execution",
+      "description": "Running malicious signals or commands in the BCI",
+      "mitre_mapping": "TA0002",
+      "techniques": [
+        {
+          "id": "ONI-T007",
+          "name": "Signal Injection",
+          "description": "Injecting crafted neural signals that mimic legitimate brain activity to trigger unauthorized actions or corrupt neural processing.",
+          "classical": {
+            "target_layers": ["L9", "L10", "L11"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement coherence validation at L8 (Cₛ threshold)",
+              "Use signal authentication",
+              "Deploy anomaly detection on signal patterns"
+            ],
+            "detection": ["Coherence Metric: Detect signals with abnormal Cₛ scores", "Pattern Analysis: Identify non-biological signal characteristics"]
+          },
+          "quantum": {
+            "target_bands": ["I0", "N1"],
+            "detection": "Enhanced (coherence metric)",
+            "qi_terms": ["Cₛ", "Cclass", "QI(t)"],
+            "quantum_advantage": "Full QI(t) score detects injected signals that pass classical coherence checks"
+          },
+          "shared": {
+            "cia_impact": {"C": "Medium", "I": "High", "A": "High"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Spoofing"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity", "cognitive_liberty"]
+          }
+        },
+        {
+          "id": "ONI-T008",
+          "name": "Protocol Manipulation",
+          "description": "Exploiting weaknesses in neural data protocols to inject commands or alter data formatting in ways that bypass security controls.",
+          "classical": {
+            "target_layers": ["L10", "L11"],
+            "severity": "High",
+            "mitigations": [
+              "Implement protocol integrity checks",
+              "Use message authentication codes (MACs)",
+              "Validate all protocol fields"
+            ],
+            "detection": ["Protocol Monitor: Detect malformed protocol messages", "L10 Validation: Flag protocol violations"]
+          },
+          "quantum": {
+            "target_bands": ["N1/N2", "N2"],
+            "detection": "Enhanced (coherence metric)",
+            "qi_terms": ["Cₛ (σ²τ)"],
+            "quantum_advantage": "Quantum-aware protocol validation detects temporal anomalies"
+          },
+          "shared": {
+            "cia_impact": {"C": "Medium", "I": "High", "A": "Medium"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity"]
+          }
+        },
+        {
+          "id": "ONI-T009",
+          "name": "Command Hijacking",
+          "description": "Intercepting and modifying motor commands or cognitive instructions as they transit through the BCI system.",
+          "classical": {
+            "target_layers": ["L11", "L12", "L13"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement end-to-end encryption",
+              "Use command authentication",
+              "Deploy integrity verification at L12"
+            ],
+            "detection": ["Command Audit: Verify command source and integrity", "Behavioral Check: Detect commands inconsistent with user intent"]
+          },
+          "quantum": {
+            "target_bands": ["N2", "N3"],
+            "detection": "Enhanced (QI score + intent verification)",
+            "qi_terms": ["QI(t)", "Cₛ"],
+            "quantum_advantage": "QI(t) score combined with intent-coherence detects hijacked commands"
+          },
+          "shared": {
+            "cia_impact": {"C": "Medium", "I": "High", "A": "High"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Spoofing"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity", "cognitive_liberty"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TA0004",
+      "name": "Persistence",
+      "description": "Maintaining access to the compromised BCI system across sessions",
+      "mitre_mapping": "TA0003",
+      "techniques": [
+        {
+          "id": "ONI-T010",
+          "name": "Pattern Lock",
+          "description": "Embedding recurring attack patterns that survive system resets by exploiting learned neural pathways or stored calibration data.",
+          "classical": {
+            "target_layers": ["L10", "L11"],
+            "severity": "High",
+            "mitigations": [
+              "Implement pattern integrity verification",
+              "Regular calibration audits",
+              "Secure storage for learned patterns"
+            ],
+            "detection": ["Pattern Analysis: Detect unauthorized pattern modifications", "Calibration Check: Verify calibration data integrity"]
+          },
+          "quantum": {
+            "target_bands": ["N1/N2", "N2"],
+            "detection": "Enhanced (temporal coherence tracking)",
+            "qi_terms": ["Cₛ (σ²τ)"],
+            "quantum_advantage": "Cross-session coherence baseline detects embedded patterns"
+          },
+          "shared": {
+            "cia_impact": {"C": "Medium", "I": "High", "A": "Medium"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Repudiation"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity"]
+          }
+        },
+        {
+          "id": "ONI-T011",
+          "name": "Memory Implant",
+          "description": "Persistent modification of neural pathway configurations or cognitive associations that survive across sessions.",
+          "classical": {
+            "target_layers": ["L11", "L12"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement memory integrity checks",
+              "Use session isolation",
+              "Deploy cognitive state verification"
+            ],
+            "detection": ["State Comparison: Detect unexpected cognitive state changes", "Session Analysis: Identify cross-session anomalies"]
+          },
+          "quantum": {
+            "target_bands": ["N2", "N3"],
+            "detection": "Enhanced (QI score baseline tracking)",
+            "qi_terms": ["QI(t)"],
+            "quantum_advantage": "QI(t) baseline drift detection reveals persistent neural modifications"
+          },
+          "shared": {
+            "cia_impact": {"C": "Medium", "I": "High", "A": "Medium"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Elevation of Privilege"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity", "cognitive_liberty"]
+          }
+        },
+        {
+          "id": "ONI-T012",
+          "name": "Calibration Poisoning",
+          "description": "Subtly corrupting BCI calibration data to maintain influence over signal interpretation across device resets.",
+          "classical": {
+            "target_layers": ["L9", "L10"],
+            "severity": "High",
+            "mitigations": [
+              "Cryptographically sign calibration data",
+              "Implement calibration verification",
+              "Regular recalibration audits"
+            ],
+            "detection": ["Calibration Audit: Compare against baseline calibration", "Performance Monitor: Detect calibration drift"]
+          },
+          "quantum": {
+            "target_bands": ["I0/N1", "N1/N2"],
+            "detection": "Enhanced (coherence baseline comparison)",
+            "qi_terms": ["Cₛ"],
+            "quantum_advantage": "Coherence metric detects calibration drift that classical methods miss"
+          },
+          "shared": {
+            "cia_impact": {"C": "Low", "I": "High", "A": "Medium"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TA0005",
+      "name": "Defense Evasion",
+      "description": "Avoiding detection by BCI security systems",
+      "mitre_mapping": "TA0005",
+      "techniques": [
+        {
+          "id": "ONI-T013",
+          "name": "Coherence Mimicry",
+          "description": "Crafting malicious signals that maintain legitimate coherence scores (Cₛ) to bypass the Neural Firewall's signal validation.",
+          "classical": {
+            "target_layers": ["L8", "L9"],
+            "severity": "High",
+            "mitigations": [
+              "Implement multi-factor signal validation",
+              "Use behavioral analysis beyond coherence",
+              "Deploy ensemble detection methods"
+            ],
+            "detection": ["Behavioral Analysis: Detect signals with unusual context", "Ensemble Detection: Use multiple validation metrics"]
+          },
+          "quantum": {
+            "target_bands": ["I0", "I0/N1"],
+            "detection": "Enhanced (full QI(t) — quantum terms resist mimicry)",
+            "qi_terms": ["QI(t)", "Qi", "Qentangle"],
+            "quantum_advantage": "Quantum indeterminacy terms (Qi, Qentangle) cannot be classically spoofed — the attacker cannot fake quantum noise"
+          },
+          "shared": {
+            "cia_impact": {"C": "Medium", "I": "High", "A": "Low"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Spoofing", "Tampering"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity"]
+          }
+        },
+        {
+          "id": "ONI-T014",
+          "name": "Gradual Drift",
+          "description": "Slowly modifying neural parameters below detection thresholds to accumulate significant changes over time.",
+          "classical": {
+            "target_layers": ["L9", "L10"],
+            "severity": "Medium",
+            "mitigations": [
+              "Implement long-term baseline tracking",
+              "Use cumulative change detection",
+              "Regular security audits"
+            ],
+            "detection": ["Trend Analysis: Detect slow parameter drift", "Baseline Comparison: Compare against historical baselines"]
+          },
+          "quantum": {
+            "target_bands": ["I0/N1", "N1/N2"],
+            "detection": "Enhanced (QI temporal analysis)",
+            "qi_terms": ["QI(t)", "ΓD(t)"],
+            "quantum_advantage": "Decoherence function ΓD(t) tracking detects subtle drift in quantum regime"
+          },
+          "shared": {
+            "cia_impact": {"C": "Low", "I": "High", "A": "Low"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Repudiation"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity"]
+          }
+        },
+        {
+          "id": "ONI-T015",
+          "name": "Noise Injection",
+          "description": "Adding carefully calibrated noise to mask malicious signal components from detection algorithms.",
+          "classical": {
+            "target_layers": ["L8", "L9"],
+            "severity": "Medium",
+            "mitigations": [
+              "Implement noise-resilient detection",
+              "Use signal denoising preprocessing",
+              "Deploy multiple detection channels"
+            ],
+            "detection": ["Noise Analysis: Detect unusual noise patterns", "Multi-Channel: Cross-validate across channels"]
+          },
+          "quantum": {
+            "target_bands": ["I0", "I0/N1"],
+            "detection": "Enhanced (quantum noise signature analysis)",
+            "qi_terms": ["Cₛ (σ²ᵧ)"],
+            "quantum_advantage": "Quantum noise has distinct statistical signature — injected classical noise is detectable"
+          },
+          "shared": {
+            "cia_impact": {"C": "Low", "I": "Medium", "A": "Low"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Denial of Service"],
+            "mitre_technique": null,
+            "neurorights_impact": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "TA0006",
+      "name": "Collection",
+      "description": "Gathering sensitive neural data from the BCI",
+      "mitre_mapping": "TA0009",
+      "techniques": [
+        {
+          "id": "ONI-T016",
+          "name": "ERP Harvesting",
+          "description": "Extracting event-related potentials (P300, N170, N400) that reveal cognitive states, recognition, and decision-making processes.",
+          "classical": {
+            "target_layers": ["L12", "L13", "L14"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement BCI Anonymizer filtering",
+              "Use ERP obfuscation",
+              "Deploy privacy-preserving signal processing"
+            ],
+            "detection": ["ERP Monitor: Detect unusual ERP extraction patterns", "Data Flow Analysis: Track ERP data destinations"]
+          },
+          "quantum": {
+            "target_bands": ["N3"],
+            "detection": "Enhanced (privacy score + quantum biometric)",
+            "qi_terms": ["Pₛ"],
+            "quantum_advantage": "Quantum biometric identity verification prevents unauthorized ERP extraction"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "Low", "A": "Low"},
+            "kohno_type": "EAVESDROPPING",
+            "stride": ["Information Disclosure"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy", "cognitive_liberty"],
+            "academic_reference": "Bonaci et al. (2015) demonstrated P300-based attacks on consumer BCIs"
+          }
+        },
+        {
+          "id": "ONI-T017",
+          "name": "Cognitive State Capture",
+          "description": "Recording patterns that reveal attention, emotion, fatigue, or other cognitive states without user awareness.",
+          "classical": {
+            "target_layers": ["L12", "L13"],
+            "severity": "High",
+            "mitigations": [
+              "Implement cognitive privacy filters",
+              "Use state obfuscation",
+              "Deploy minimal data collection policies"
+            ],
+            "detection": ["Privacy Monitor: Detect unauthorized state inference", "Data Audit: Review cognitive data collection"]
+          },
+          "quantum": {
+            "target_bands": ["N3"],
+            "detection": "Enhanced (privacy score monitoring)",
+            "qi_terms": ["Pₛ"],
+            "quantum_advantage": "Privacy-preserving quantum measurement limits state inference"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "Low", "A": "Low"},
+            "kohno_type": "EAVESDROPPING",
+            "stride": ["Information Disclosure"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy"]
+          }
+        },
+        {
+          "id": "ONI-T018",
+          "name": "Memory Extraction",
+          "description": "Attempting to extract memory-related neural patterns that could reveal personal experiences, knowledge, or intentions.",
+          "classical": {
+            "target_layers": ["L13", "L14"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement memory signal filtering",
+              "Use hippocampal activity obfuscation",
+              "Deploy strict data access controls"
+            ],
+            "detection": ["Memory Monitor: Detect hippocampal signal extraction", "Access Audit: Log all memory-related data access"]
+          },
+          "quantum": {
+            "target_bands": ["N3"],
+            "detection": "Enhanced (quantum biometric + privacy score)",
+            "qi_terms": ["Pₛ", "QI(t)"],
+            "quantum_advantage": "No-cloning theorem prevents perfect copy of quantum neural state"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "Low", "A": "Low"},
+            "kohno_type": "EAVESDROPPING",
+            "stride": ["Information Disclosure"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy", "cognitive_liberty"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TA0007",
+      "name": "Impact",
+      "description": "Causing harm through the compromised BCI",
+      "mitre_mapping": "TA0040",
+      "techniques": [
+        {
+          "id": "ONI-T019",
+          "name": "Neural Denial of Service",
+          "description": "Overwhelming neural pathways with excessive stimulation or signal flooding to cause temporary dysfunction or distress.",
+          "classical": {
+            "target_layers": ["L11", "L12", "L13"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement rate limiting at L8",
+              "Use circuit breakers for stimulation",
+              "Deploy emergency shutdown mechanisms"
+            ],
+            "detection": ["Rate Monitor: Detect signal flooding", "L8 Firewall: Block excessive traffic"]
+          },
+          "quantum": {
+            "target_bands": ["N2", "N3"],
+            "detection": "Enhanced (QI score drop detection)",
+            "qi_terms": ["QI(t)"],
+            "quantum_advantage": "Real-time QI(t) monitoring triggers emergency shutoff on anomalous drops"
+          },
+          "shared": {
+            "cia_impact": {"C": "Low", "I": "Medium", "A": "High"},
+            "kohno_type": "BLOCKING",
+            "stride": ["Denial of Service"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity", "cognitive_liberty"]
+          }
+        },
+        {
+          "id": "ONI-T020",
+          "name": "Motor Hijacking",
+          "description": "Forcing involuntary motor actions by injecting false motor commands through compromised BCI motor interfaces.",
+          "classical": {
+            "target_layers": ["L12", "L13"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement motor command authentication",
+              "Use intent verification",
+              "Deploy physical safety interlocks"
+            ],
+            "detection": ["Intent Verification: Compare commands to detected intent", "Motor Monitor: Detect unauthorized motor signals"]
+          },
+          "quantum": {
+            "target_bands": ["N3"],
+            "detection": "Enhanced (intent-coherence verification)",
+            "qi_terms": ["QI(t)", "Cₛ"],
+            "quantum_advantage": "Quantum-aware intent verification detects hijacked motor commands"
+          },
+          "shared": {
+            "cia_impact": {"C": "Low", "I": "High", "A": "High"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Elevation of Privilege"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity", "cognitive_liberty"],
+            "academic_reference": "Schroder et al. (2025) — AI-mediated malicious stimulation scenario"
+          }
+        },
+        {
+          "id": "ONI-T021",
+          "name": "Identity Erosion",
+          "description": "Long-term subtle manipulation of cognitive patterns leading to gradual personality changes or identity confusion.",
+          "classical": {
+            "target_layers": ["L13", "L14"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement identity baseline tracking",
+              "Use long-term cognitive monitoring",
+              "Deploy personality integrity checks"
+            ],
+            "detection": ["Identity Monitor: Track identity markers over time", "Behavioral Analysis: Detect personality drift"]
+          },
+          "quantum": {
+            "target_bands": ["N3"],
+            "detection": "Enhanced (quantum biometric identity baseline)",
+            "qi_terms": ["QI(t)", "Qentangle"],
+            "quantum_advantage": "Quantum biometric baseline detects identity drift that classical behavioral analysis misses"
+          },
+          "shared": {
+            "cia_impact": {"C": "Medium", "I": "High", "A": "Medium"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Elevation of Privilege"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity", "cognitive_liberty", "psychological_continuity"]
+          }
+        },
+        {
+          "id": "ONI-T024",
+          "name": "Mass Neural Manipulation",
+          "description": "Coordinated attack on standardized BCI systems affecting millions simultaneously. Yale's worst-case scenario.",
+          "status": "proposed",
+          "classical": {
+            "target_layers": ["L13", "L14"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement device diversity",
+              "Use decentralized security models",
+              "Deploy multi-vendor authentication"
+            ],
+            "detection": ["Population Monitor: Detect coordinated anomalies across devices"]
+          },
+          "quantum": {
+            "target_bands": ["N3"],
+            "detection": "Enhanced (population-level QI monitoring)",
+            "qi_terms": ["QI(t)"],
+            "quantum_advantage": "Population-level QI(t) anomaly detection reveals coordinated attacks"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "High", "A": "High"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Denial of Service", "Elevation of Privilege"],
+            "yale_category": "All",
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity", "cognitive_liberty", "mental_privacy"],
+            "academic_reference": "Schroder et al. (2025) — Yale Digital Ethics Center worst-case scenario"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TA0008",
+      "name": "Quantum-Specific Threats",
+      "description": "Attack vectors unique to or enhanced by quantum computing capabilities",
+      "mitre_mapping": null,
+      "techniques": [
+        {
+          "id": "QIF-T001",
+          "name": "Eavesdropping (Quantum)",
+          "description": "Attempting to intercept neural signals at the quantum level. Detectable via Heisenberg disturbance principle.",
+          "classical": {
+            "target_layers": ["L8", "L9"],
+            "severity": "High",
+            "mitigations": [],
+            "detection": [],
+            "classical_detection": "No"
+          },
+          "quantum": {
+            "target_bands": ["I0", "N1"],
+            "detection": "Yes (Heisenberg disturbance)",
+            "qi_terms": ["Qi"],
+            "quantum_advantage": "Any measurement disturbs quantum state — eavesdropping is inherently detectable"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "Low", "A": "Low"},
+            "kohno_type": "EAVESDROPPING",
+            "stride": ["Information Disclosure"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy"]
+          }
+        },
+        {
+          "id": "QIF-T002",
+          "name": "Man-in-the-Middle (Quantum)",
+          "description": "Intercepting and relaying neural signals between electrode and brain. Defeated by no-cloning theorem and Bell tests.",
+          "classical": {
+            "target_layers": ["L8"],
+            "severity": "Critical",
+            "mitigations": ["Classical: certificate-based auth (partial)"],
+            "detection": [],
+            "classical_detection": "Partial"
+          },
+          "quantum": {
+            "target_bands": ["I0"],
+            "detection": "Yes (no-cloning + Bell test)",
+            "qi_terms": ["Qentangle"],
+            "quantum_advantage": "No-cloning theorem prevents perfect signal duplication; Bell tests detect interception"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "High", "A": "Medium"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Spoofing", "Tampering", "Information Disclosure"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy", "mental_integrity"]
+          }
+        },
+        {
+          "id": "QIF-T003",
+          "name": "Quantum Tunneling Exploit",
+          "description": "Exploiting quantum tunneling at the ion-channel level to bypass classical security barriers.",
+          "classical": {
+            "target_layers": ["L8", "L9"],
+            "severity": "High",
+            "mitigations": [],
+            "detection": [],
+            "classical_detection": "No"
+          },
+          "quantum": {
+            "target_bands": ["I0", "N1"],
+            "detection": "Yes (tunneling profile anomaly)",
+            "qi_terms": ["Qtunnel"],
+            "quantum_advantage": "Tunneling traversal time profiles are unique per individual — anomalies detectable"
+          },
+          "shared": {
+            "cia_impact": {"C": "Medium", "I": "High", "A": "Low"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Elevation of Privilege"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity"]
+          }
+        },
+        {
+          "id": "QIF-T004",
+          "name": "Davydov Soliton Attack",
+          "description": "Exploiting Davydov soliton propagation in protein structures to trigger false synaptic events.",
+          "classical": {
+            "target_layers": ["L8", "L9"],
+            "severity": "High",
+            "mitigations": [],
+            "detection": [],
+            "classical_detection": "No"
+          },
+          "quantum": {
+            "target_bands": ["I0", "N1"],
+            "detection": "Yes (tunneling term Qtunnel)",
+            "qi_terms": ["Qtunnel"],
+            "quantum_advantage": "Qtunnel term in QI equation detects non-biological soliton signatures"
+          },
+          "shared": {
+            "cia_impact": {"C": "Low", "I": "High", "A": "Medium"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Spoofing"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_integrity"]
+          }
+        },
+        {
+          "id": "QIF-T005",
+          "name": "Harvest-Now-Decrypt-Later",
+          "description": "Capturing encrypted neural data now for decryption when quantum computers become available.",
+          "classical": {
+            "target_layers": ["L1", "L2", "L3", "L4", "L5", "L6", "L7"],
+            "severity": "Critical",
+            "mitigations": [],
+            "detection": [],
+            "classical_detection": "No"
+          },
+          "quantum": {
+            "target_bands": ["S3"],
+            "detection": "Prevented (QKD)",
+            "qi_terms": [],
+            "quantum_advantage": "Quantum key distribution provides information-theoretic security — no future quantum computer can break it"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "Low", "A": "Low"},
+            "kohno_type": "EAVESDROPPING",
+            "stride": ["Information Disclosure"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy"]
+          }
+        },
+        {
+          "id": "QIF-T006",
+          "name": "Identity Spoofing (Quantum)",
+          "description": "Attempting to spoof neural biometric identity markers to impersonate a BCI user.",
+          "classical": {
+            "target_layers": ["L13", "L14"],
+            "severity": "Critical",
+            "mitigations": ["Classical: behavioral biometrics (partial)"],
+            "detection": [],
+            "classical_detection": "Partial"
+          },
+          "quantum": {
+            "target_bands": ["N3"],
+            "detection": "Yes (quantum biometric)",
+            "qi_terms": ["QI(t)", "Qentangle"],
+            "quantum_advantage": "Quantum biometric identity is unforgeable — entanglement patterns are unique and unclonable"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "High", "A": "Medium"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Spoofing", "Elevation of Privilege"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy", "psychological_continuity"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TA0009",
+      "name": "Infrastructure Attacks",
+      "description": "Attacks targeting BCI supporting infrastructure (silicon domain)",
+      "mitre_mapping": null,
+      "techniques": [
+        {
+          "id": "INF-T001",
+          "name": "BLE/RF Side-Channel",
+          "description": "Exploiting Bluetooth Low Energy or RF side channels in BCI wireless communication.",
+          "classical": {
+            "target_layers": ["L1", "L2", "L7"],
+            "severity": "High",
+            "mitigations": [
+              "Implement BLE security mode 4",
+              "Use frequency hopping",
+              "Deploy RF shielding"
+            ],
+            "detection": ["RF Monitor: Detect side-channel emissions"]
+          },
+          "quantum": {
+            "target_bands": ["S1", "S2"],
+            "detection": "Enhanced (signal correlation)",
+            "qi_terms": [],
+            "quantum_advantage": "Cross-band signal correlation analysis detects correlated side-channel leakage"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "Low", "A": "Low"},
+            "kohno_type": "EAVESDROPPING",
+            "stride": ["Information Disclosure"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy"]
+          }
+        },
+        {
+          "id": "INF-T002",
+          "name": "Supply Chain Compromise",
+          "description": "Compromising BCI hardware or software during manufacturing or distribution.",
+          "classical": {
+            "target_layers": ["L7", "L8"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement hardware attestation",
+              "Use trusted manufacturing",
+              "Deploy supply chain verification"
+            ],
+            "detection": ["Firmware Attestation: Verify hardware/software integrity"]
+          },
+          "quantum": {
+            "target_bands": ["S2", "S3"],
+            "detection": "Enhanced (firmware attestation)",
+            "qi_terms": [],
+            "quantum_advantage": "Quantum-based firmware attestation provides tamper-evident verification"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "High", "A": "High"},
+            "kohno_type": "ALTERATION",
+            "stride": ["Tampering", "Elevation of Privilege"],
+            "mitre_technique": "T1195",
+            "neurorights_impact": ["mental_integrity", "cognitive_liberty"]
+          }
+        },
+        {
+          "id": "INF-T003",
+          "name": "Cloud Infrastructure Attack",
+          "description": "Compromising cloud services used for BCI data processing, storage, or model training.",
+          "classical": {
+            "target_layers": ["L7"],
+            "severity": "High",
+            "mitigations": [
+              "Implement end-to-end encryption",
+              "Use zero-trust cloud architecture",
+              "Deploy data residency controls"
+            ],
+            "detection": ["Cloud Monitor: Detect unauthorized access patterns"]
+          },
+          "quantum": {
+            "target_bands": ["S3"],
+            "detection": "Enhanced (QKD for data-in-transit)",
+            "qi_terms": [],
+            "quantum_advantage": "QKD secures cloud communication channels against quantum adversaries"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "Medium", "A": "Medium"},
+            "kohno_type": "EAVESDROPPING",
+            "stride": ["Information Disclosure", "Tampering", "Elevation of Privilege"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy"]
+          }
+        },
+        {
+          "id": "INF-T004",
+          "name": "Neural Data Privacy Breach",
+          "description": "Unauthorized access to stored or transmitted neural data across multiple system layers.",
+          "classical": {
+            "target_layers": ["L7", "L8", "L9", "L10", "L11"],
+            "severity": "Critical",
+            "mitigations": [
+              "Implement cross-layer encryption",
+              "Use data minimization",
+              "Deploy privacy-preserving computation"
+            ],
+            "detection": ["Privacy Monitor: Detect unauthorized data access across layers"]
+          },
+          "quantum": {
+            "target_bands": ["N1", "S1", "S2", "S3"],
+            "detection": "Enhanced (cross-band encryption)",
+            "qi_terms": ["Pₛ"],
+            "quantum_advantage": "Cross-band quantum encryption prevents data exposure at any layer"
+          },
+          "shared": {
+            "cia_impact": {"C": "High", "I": "Low", "A": "Low"},
+            "kohno_type": "EAVESDROPPING",
+            "stride": ["Information Disclosure"],
+            "mitre_technique": null,
+            "neurorights_impact": ["mental_privacy", "cognitive_liberty"]
+          }
+        }
+      ]
+    }
+  ],
+  "defenses": [
+    {
+      "id": "DEF-001",
+      "name": "Coherence Metric Validation",
+      "description": "Signal trust scoring using phase, temporal, and cross-channel coherence",
+      "classical": {"layer": "L8", "mechanism": "Neural Gateway firewall — Cₛ threshold check"},
+      "quantum": {"band": "I0", "mechanism": "Full QI(t) score incorporating quantum terms", "qi_term": "Cclass → QI(t)"},
+      "shared": {"threshold": 0.6, "decision": "ACCEPT if Cₛ > 0.6; FLAG if 0.3-0.6; REJECT if < 0.3"}
+    },
+    {
+      "id": "DEF-002",
+      "name": "BCI Anonymizer",
+      "description": "Privacy-preserving signal processing that removes identity-revealing ERP components",
+      "classical": {"layer": "L12-L14", "mechanism": "ERP component filtering at cognitive layers"},
+      "quantum": {"band": "N3", "mechanism": "Quantum privacy-preserving measurement", "qi_term": "Pₛ"},
+      "shared": {"threshold": null, "decision": "Filter identity-revealing components before signal output"}
+    },
+    {
+      "id": "DEF-003",
+      "name": "Quantum Key Distribution (QKD)",
+      "description": "Information-theoretically secure key exchange for BCI communications",
+      "classical": {"layer": "L7", "mechanism": "Classical encryption (AES-256, RSA — vulnerable to quantum)"},
+      "quantum": {"band": "S3", "mechanism": "QKD provides quantum-safe key exchange", "qi_term": null},
+      "shared": {"threshold": null, "decision": "Use QKD for all key exchange; fall back to PQC if QKD unavailable"}
+    },
+    {
+      "id": "DEF-004",
+      "name": "Emergency Shutoff",
+      "description": "Hardware-level safety mechanism for critical threat detection",
+      "classical": {"layer": "L8", "mechanism": "Rate limiting and circuit breaker at Neural Gateway"},
+      "quantum": {"band": "I0", "mechanism": "QI(t) critical threshold triggers hardware shutoff", "qi_term": "QI(t)"},
+      "shared": {"threshold": 0.3, "decision": "EMERGENCY_SHUTOFF if Cₛ < 0.3 with severity CRITICAL"}
+    },
+    {
+      "id": "DEF-005",
+      "name": "Quantum Biometric Identity",
+      "description": "Unforgeable identity verification using quantum neural signatures",
+      "classical": {"layer": "L14", "mechanism": "Behavioral biometrics (partial — spoofable)"},
+      "quantum": {"band": "N3", "mechanism": "Quantum entanglement patterns as identity marker", "qi_term": "Qentangle"},
+      "shared": {"threshold": null, "decision": "Verify identity through quantum biometric before granting access"}
+    },
+    {
+      "id": "DEF-006",
+      "name": "Tunneling Profile Authentication",
+      "description": "Using individual ion-channel tunneling profiles as a security primitive",
+      "classical": {"layer": "L9", "mechanism": "Not available (classical cannot detect tunneling)"},
+      "quantum": {"band": "I0/N1", "mechanism": "Tunneling traversal time fingerprinting", "qi_term": "Qtunnel"},
+      "shared": {"threshold": null, "decision": "Authenticate electrode-neuron interface via tunneling profile"}
+    }
+  ],
+  "neurorights": [
+    {
+      "id": "NR-001",
+      "name": "Mental Privacy",
+      "description": "Right to keep neural data private from unauthorized access",
+      "threatened_by": ["ONI-T001", "ONI-T002", "ONI-T003", "ONI-T016", "ONI-T017", "ONI-T018", "QIF-T001", "QIF-T005"],
+      "protected_by": ["DEF-002", "DEF-003"]
+    },
+    {
+      "id": "NR-002",
+      "name": "Mental Integrity",
+      "description": "Right to protection against unauthorized modification of neural activity",
+      "threatened_by": ["ONI-T004", "ONI-T007", "ONI-T009", "ONI-T010", "ONI-T011", "ONI-T013", "ONI-T020", "ONI-T021", "QIF-T003", "QIF-T004"],
+      "protected_by": ["DEF-001", "DEF-004"]
+    },
+    {
+      "id": "NR-003",
+      "name": "Cognitive Liberty",
+      "description": "Right to freedom of thought and cognitive self-determination",
+      "threatened_by": ["ONI-T009", "ONI-T011", "ONI-T019", "ONI-T020", "ONI-T021", "ONI-T024"],
+      "protected_by": ["DEF-001", "DEF-004", "DEF-005"]
+    },
+    {
+      "id": "NR-004",
+      "name": "Psychological Continuity",
+      "description": "Right to preservation of personal identity and psychological coherence",
+      "threatened_by": ["ONI-T021", "QIF-T006"],
+      "protected_by": ["DEF-005"]
+    }
+  ]
+}
