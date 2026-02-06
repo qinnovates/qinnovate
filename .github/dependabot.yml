@@ -1,0 +1,59 @@
+version: 2
+updates:
+  # Python dependencies (oni-framework, oni-tara)
+  - package-ecosystem: "pip"
+    directory: "/MAIN/legacy-core/oni-framework"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps(oni)"
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    labels:
+      - "dependencies"
+      - "oni-framework"
+      - "automated"
+
+  - package-ecosystem: "pip"
+    directory: "/MAIN/legacy-core/tara-nsec-platform"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps(tara)"
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    labels:
+      - "dependencies"
+      - "oni-tara"
+      - "automated"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "ci"
+      - "automated"
+
+  # npm (if oni-demo-video or GitHub Pages uses npm)
+  - package-ecosystem: "npm"
+    directory: "/oni-demo-video"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "deps(video)"
+    labels:
+      - "dependencies"
+      - "automated"

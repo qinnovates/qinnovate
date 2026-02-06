@@ -1,0 +1,213 @@
+name: Security Audit Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'MAIN/**/*.py'
+      - 'autodidactive/**/*.py'
+      - '.github/workflows/security-audit.yml'
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run weekly on Sundays at midnight UTC
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+    inputs:
+      severity:
+        description: 'Minimum severity to report'
+        required: false
+        default: 'low'
+        type: choice
+        options:
+          - low
+          - medium
+          - high
+          - critical
+
+permissions:
+  contents: read
+  security-events: write
+  pull-requests: write
+
+concurrency:
+  group: security-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  security-audit:
+    name: Scan for Secrets & PII
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for comprehensive scanning
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Get changed files (PR only)
+        id: changed-files
+        if: github.event_name == 'pull_request'
+        run: |
+          # Get list of changed files in the PR
+          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed_files.txt
+          echo "Changed files:"
+          cat changed_files.txt
+          echo "files=$(cat changed_files.txt | tr '\n' ' ')" >> $GITHUB_OUTPUT
+
+      - name: Run security audit (PR - changed files only)
+        if: github.event_name == 'pull_request'
+        id: audit-pr
+        run: |
+          echo "Scanning changed files in PR..."
+          python .github/security-audit/scripts/audit.py \
+            --config .github/security-audit/patterns/secrets.json \
+            --format text \
+            --severity ${{ inputs.severity || 'low' }} \
+            --fail-on high \
+            ${{ steps.changed-files.outputs.files }} \
+            2>&1 | tee audit-results.txt
+        continue-on-error: true
+
+      - name: Run security audit (Push/Schedule - all files)
+        if: github.event_name != 'pull_request'
+        id: audit-full
+        run: |
+          echo "Scanning all tracked files..."
+          python .github/security-audit/scripts/audit.py \
+            --all \
+            --config .github/security-audit/patterns/secrets.json \
+            --format text \
+            --severity ${{ inputs.severity || 'low' }} \
+            --fail-on high \
+            2>&1 | tee audit-results.txt
+        continue-on-error: true
+
+      - name: Generate SARIF report
+        if: always()
+        run: |
+          python .github/security-audit/scripts/audit.py \
+            --all \
+            --config .github/security-audit/patterns/secrets.json \
+            --format sarif \
+            --severity low \
+            > security-results.sarif 2>/dev/null || echo '{"runs":[]}' > security-results.sarif
+
+      - name: Upload SARIF to GitHub Security
+        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: security-results.sarif
+          category: .github/security-audit
+        continue-on-error: true
+
+      - name: Comment on PR with results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+
+            let results = '';
+            try {
+              results = fs.readFileSync('audit-results.txt', 'utf8');
+            } catch (e) {
+              results = 'No audit results available.';
+            }
+
+            // Check if audit failed
+            const auditFailed = '${{ steps.audit-pr.outcome }}' === 'failure';
+
+            const body = `## Security Audit Results
+
+            ${auditFailed ? '### :x: Security Issues Detected' : '### :white_check_mark: No Critical Issues Found'}
+
+            <details>
+            <summary>Click to expand full report</summary>
+
+            \`\`\`
+            ${results.substring(0, 60000)}
+            \`\`\`
+
+            </details>
+
+            ${auditFailed ? '> **Please address the security findings before merging.**' : ''}
+
+            ---
+            *Security Audit Pipeline v1.0.0*
+            `;
+
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(c =>
+              c.user.type === 'Bot' &&
+              c.body.includes('Security Audit Results')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body
+              });
+            }
+
+      - name: Upload audit results artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: security-audit-results
+          path: |
+            audit-results.txt
+            security-results.sarif
+          retention-days: 30
+
+      - name: Check audit status
+        run: |
+          if [ -f audit-results.txt ]; then
+            if grep -q "CRITICAL\|HIGH" audit-results.txt; then
+              echo "::error::Security audit found critical or high severity issues"
+              exit 1
+            fi
+          fi
+
+  # TruffleHog job removed - requires third-party action permissions
+  # The custom audit script in .github/security-audit/scripts/audit.py
+  # provides equivalent secret scanning functionality
+  #
+  # To re-enable TruffleHog:
+  # 1. Go to Settings > Actions > General > Actions permissions
+  # 2. Allow "Actions from any repository" or add trufflesecurity to allowed list
+  # 3. Uncomment the job below
+  #
+  # trufflehog-scan:
+  #   name: TruffleHog Deep Scan
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+  #     - uses: trufflesecurity/trufflehog@main
+  #       with:
+  #         path: ./
+  #         extra_args: --only-verified
+  #       continue-on-error: true

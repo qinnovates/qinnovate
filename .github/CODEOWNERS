@@ -1,0 +1,20 @@
+# CODEOWNERS - Require approval for critical files
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# This file (protects itself)
+.github/CODEOWNERS @qikevinl
+
+# CI/CD workflows (prevent malicious publish)
+.github/workflows/ @qikevinl
+
+# Security policy
+SECURITY.md @qikevinl
+
+# QIF Specification (critical standard)
+/qif-spec/ @qikevinl
+
+# Governance Standards (critical standard)
+/governance/ @qikevinl
+
+# ONI Legacy (preserve historical accuracy)
+/oni-legacy/ @qikevinl
