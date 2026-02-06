@@ -132,7 +132,7 @@ Think: **W3C** (Qinnovate) vs **Chrome** (Mindloft)
 **CI/CD for BCI Security Research & Development**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#fef3c7','primaryTextColor':'#000','primaryBorderColor':'#f59e0b','lineColor':'#0284c7','secondaryColor':'#e0f2fe','tertiaryColor':'#fff'}}}%%
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#fef3c7','primaryTextColor':'#000','primaryBorderColor':'#f59e0b','lineColor':'#14b8a6','secondaryColor':'#ccfbf1','tertiaryColor':'#fff'}}}%%
 graph TB
     subgraph MINDLOFT["🛠️ MINDLOFT (Product Company)"]
         A[📝 PLAN<br/>Research Ideation<br/>Field Notes]
@@ -157,16 +157,16 @@ graph TB
     G --> H
     H --> A
 
-    style MINDLOFT fill:#f0f9ff,stroke:#0284c7,stroke-width:3px
+    style MINDLOFT fill:#ccfbf1,stroke:#14b8a6,stroke-width:3px
     style QINNOVATE fill:#fef9e7,stroke:#f59e0b,stroke-width:3px
-    style A fill:#dbeafe,stroke:#0284c7,stroke-width:2px
-    style B fill:#dbeafe,stroke:#0284c7,stroke-width:2px
-    style C fill:#dbeafe,stroke:#0284c7,stroke-width:2px
+    style A fill:#99f6e4,stroke:#14b8a6,stroke-width:2px
+    style B fill:#99f6e4,stroke:#14b8a6,stroke-width:2px
+    style C fill:#99f6e4,stroke:#14b8a6,stroke-width:2px
     style D fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
     style E fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
-    style F fill:#dbeafe,stroke:#0284c7,stroke-width:2px
-    style G fill:#dbeafe,stroke:#0284c7,stroke-width:2px
-    style H fill:#dbeafe,stroke:#0284c7,stroke-width:2px
+    style F fill:#99f6e4,stroke:#14b8a6,stroke-width:2px
+    style G fill:#99f6e4,stroke:#14b8a6,stroke-width:2px
+    style H fill:#99f6e4,stroke:#14b8a6,stroke-width:2px
 ```
 
 **The 8-Phase Loop:**
@@ -183,7 +183,7 @@ graph TB
 | **8. MONITOR** | Mindloft | Gather feedback, metrics, new threats → feeds PLAN |
 
 **Key Separation:**
-- **Blue (Mindloft)** = Research, validation, implementation, operations (6 phases)
+- **Teal (Mindloft)** = Research, validation, implementation, operations (6 phases)
 - **Gold (Qinnovate)** = Standards testing, publication, governance (2 phases)
 
 Standards emerge from real implementations. Products implement validated standards. The cycle never stops.
