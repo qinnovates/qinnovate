@@ -127,66 +127,66 @@ Think: **W3C** (Qinnovate) vs **Chrome** (Mindloft)
 
 ---
 
-## 🔄 Continuous Innovation Cycle
+## The Qinnovate Infinity Loop
 
-**CI/CD for BCI Security Research & Development**
+**Theory-to-Tactical: Continuous Iteration & Validation (CIV)**
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#fef3c7','primaryTextColor':'#000','primaryBorderColor':'#f59e0b','lineColor':'#14b8a6','secondaryColor':'#ccfbf1','tertiaryColor':'#fff'}}}%%
-graph TB
-    subgraph MINDLOFT["🛠️ MINDLOFT (Product Company)"]
-        A[📝 PLAN<br/>Research Ideation<br/>Field Notes]
-        B[💻 CODE<br/>Draft Frameworks<br/>mindloft/drafts]
-        C[🔨 BUILD<br/>Validate Equations<br/>qif-lab]
-        F[🚀 DEPLOY<br/>Mindloft Products<br/>Core, SDK, Cloud]
-        G[⚙️ OPERATE<br/>Real-World Usage<br/>mindloft.org]
-        H[📊 MONITOR<br/>Feedback & Metrics<br/>Security Data]
+graph LR
+    subgraph LEFT["R&D & STANDARDS (Qinnovate)"]
+        A[1. IDEATE & PLAN<br/>Exploration]
+        B[2. ARCHITECT<br/>Draft Frameworks]
+        C[3. PEER REVIEW<br/>Committee Validation]
+        D[4. GOVERNANCE<br/>Standards Publication]
     end
 
-    subgraph QINNOVATE["🏛️ QINNOVATE (Standards Body)"]
-        D[✅ TEST<br/>Peer Review<br/>Committee Validation]
-        E[📦 RELEASE<br/>Publish Standards<br/>qif/oni frameworks]
+    subgraph RIGHT["IMPLEMENTATION & BCI (Mindloft)"]
+        E[5. INTEGRATE<br/>Deploy to Products]
+        F[6. BCI VETTING<br/>Lab Testing]
+        G[7. LIVE OPS<br/>Real-World Usage]
+        H[8. TELEMETRY<br/>Field Intelligence]
     end
 
     A --> B
     B --> C
     C --> D
-    D --> E
+    D -->|Publish Standards<br/>QIF-TRUTH| E
     E --> F
     F --> G
     G --> H
-    H --> A
+    H -->|Field Intelligence<br/>QIF-NOTES| A
 
-    style MINDLOFT fill:#ccfbf1,stroke:#14b8a6,stroke-width:3px
-    style QINNOVATE fill:#fef9e7,stroke:#f59e0b,stroke-width:3px
-    style A fill:#99f6e4,stroke:#14b8a6,stroke-width:2px
-    style B fill:#99f6e4,stroke:#14b8a6,stroke-width:2px
-    style C fill:#99f6e4,stroke:#14b8a6,stroke-width:2px
-    style D fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
-    style E fill:#fef3c7,stroke:#f59e0b,stroke-width:2px
-    style F fill:#99f6e4,stroke:#14b8a6,stroke-width:2px
-    style G fill:#99f6e4,stroke:#14b8a6,stroke-width:2px
-    style H fill:#99f6e4,stroke:#14b8a6,stroke-width:2px
+    style LEFT fill:#008080,stroke:#FFD700,stroke-width:3px,color:#fff
+    style RIGHT fill:#004d4d,stroke:#FFD700,stroke-width:3px,color:#fff
+    style A fill:#20b2aa,stroke:#FFD700,stroke-width:2px,color:#fff
+    style B fill:#20b2aa,stroke:#FFD700,stroke-width:2px,color:#fff
+    style C fill:#20b2aa,stroke:#FFD700,stroke-width:2px,color:#fff
+    style D fill:#20b2aa,stroke:#FFD700,stroke-width:2px,color:#fff
+    style E fill:#2f4f4f,stroke:#FFD700,stroke-width:2px,color:#fff
+    style F fill:#2f4f4f,stroke:#FFD700,stroke-width:2px,color:#fff
+    style G fill:#2f4f4f,stroke:#FFD700,stroke-width:2px,color:#fff
+    style H fill:#2f4f4f,stroke:#FFD700,stroke-width:2px,color:#fff
 ```
 
-**The 8-Phase Loop:**
+**The 8-Phase Infinity Loop:**
 
-| Phase | Where | What Happens |
-|-------|-------|--------------|
-| **1. PLAN** | Mindloft | Research ideation, QIF-FIELD-NOTES.md, exploration |
-| **2. CODE** | Mindloft | Draft frameworks, QIF-WHITEPAPER.md, equations |
-| **3. BUILD** | Mindloft | Validate in qif-lab, update QIF-TRUTH.md |
-| **4. TEST** | Qinnovate | Peer review, committee validation, ethics check |
-| **5. RELEASE** | Qinnovate | Publish to qif-framework/, oni-framework/, governance/ |
-| **6. DEPLOY** | Mindloft | Implement in Mindloft Core, SDK, Cloud products |
-| **7. OPERATE** | Mindloft | Real-world deployment at mindloft.org |
-| **8. MONITOR** | Mindloft | Gather feedback, metrics, new threats → feeds PLAN |
+| Phase | Lead | Action | Output |
+|-------|------|--------|--------|
+| **1. IDEATE & PLAN** | Mindloft | Exploration | QIF-FIELD-NOTES.md: Raw discovery and BCI ideation |
+| **2. ARCHITECT** | Mindloft | Drafting | QIF-WHITEPAPER.md: Formal equations and frameworks |
+| **3. PEER REVIEW** | Qinnovate | Validation | Committee check: Ethics vetting, NIST/IEEE alignment |
+| **4. GOVERNANCE** | Qinnovate | Dissemination | The Truth: Publishing to qif-framework/, governance/ |
+| **5. INTEGRATE** | Mindloft | Deployment | Core SDK: Implementing standards into products |
+| **6. BCI VETTING** | Mindloft | Lab Testing | Real-world BCI hands-on security stress-testing |
+| **7. LIVE OPS** | Mindloft | Operations | Live environment: Deployment at mindloft.org |
+| **8. TELEMETRY** | Mindloft | Synthesis | Feedback loop: New threats feed back to Phase 1 |
 
-**Key Separation:**
-- **Teal (Mindloft)** = Research, validation, implementation, operations (6 phases)
-- **Gold (Qinnovate)** = Standards testing, publication, governance (2 phases)
+**Key Insight:**
+- **Left (Teal)** = Knowledge (Qinnovate: R&D & Standards)
+- **Right (Charcoal)** = Action (Mindloft: Implementation & BCI)
+- **Gold Arrows** = Value & momentum flowing between theory and practice
 
-Standards emerge from real implementations. Products implement validated standards. The cycle never stops.
+**The Flow:** Mindloft explores the wild → Qinnovate tames it into standards → Mindloft builds it for the world → Field intelligence refines the theory → Cycle continues.
 
 ---
 
