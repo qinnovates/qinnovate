@@ -44,7 +44,7 @@ jobs:
           twine check dist/*
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: dist-oni-framework
           path: MAIN/legacy-core/oni-framework/dist/
@@ -76,7 +76,7 @@ jobs:
           twine check dist/*
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: dist-oni-tara
           path: MAIN/legacy-core/tara-nsec-platform/dist/
@@ -154,7 +154,7 @@ jobs:
           twine check dist/*
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: dist-oni-academy
           path: autodidactive/dist/
