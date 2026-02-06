@@ -146,6 +146,18 @@ While traditional DevOps focuses on improving "time-to-market," the **Qinnovate 
 
 During the **Validation & Feedback** stage, the ecosystem acts as the engine's stress test, identifying potential weaknesses in the underlying scientific models. This finding immediately fuels the **Ideation & Research** phase of Qinnovate. Qinnovate then acts as the governing flywheel, validating the corrections, amending the official standard, and formally disseminating this vital information to the broader community, ensuring every part of the system is running on the most current, verified protocols.
 
+### Built-In Policy Process
+
+The CIV lifecycle was designed with **continuous governance enforcement** throughout every stage — mirroring how NIST embeds policy compliance at all phases of technology development. Unlike traditional development processes where governance is a checkpoint at the end, CIV ensures:
+
+- **Governance at Ideation:** Research proposals must align with neuroethics principles from the start
+- **Governance at POC:** Lab testing follows strict ethical research constraints
+- **Governance at Validation:** Peer review includes ethics vetting alongside technical review
+- **Governance at Dissemination:** Standards publication requires full compliance documentation
+- **Governance at Implementation:** Products must demonstrate continued adherence to published standards
+
+This ensures that every output of the CIV cycle — whether it's a POC finding, a published standard, or a deployed product — has been vetted for compliance, ethics, and safety at every step. Governance isn't an afterthought; it's the foundation.
+
 ### The CIV Lifecycle Stages
 
 Every phase in the loop is anchored by central **Governance & Standards (NIST/IEEE Aligned)**:
