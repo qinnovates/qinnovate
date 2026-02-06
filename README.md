@@ -160,28 +160,11 @@ This ensures that every output of the CIV cycle — whether it's a POC finding, 
 
 ### The CIV Lifecycle Stages
 
-```mermaid
-graph TB
-    subgraph CIV["Continuous Iteration & Validation"]
-        A[1. Ideation & Research<br/>Hypotheses & Field Notes]
-        B[2. Proof-of-Concept<br/>Testable Models & POCs]
-        C[3. Validation & Feedback<br/>Lab Testing & Truth Establishment]
-        D[GOVERNANCE<br/>& STANDARDS<br/>NIST/IEEE Aligned]
-    end
+<div align="center">
 
-    A -->|BCI Compliance/<br/>Neuroethics Security Check| D
-    D -->|Approved| B
-    B -->|Validation Request| D
-    D -->|Peer Reviewed| C
-    C -->|Findings| D
-    D -->|Standardize| A
+![CIV Lifecycle](docs/images/civ-lifecycle.png)
 
-    style D fill:#FFD700,stroke:#f59e0b,stroke-width:4px,color:#000
-    style A fill:#20b2aa,stroke:#008080,stroke-width:2px,color:#fff
-    style B fill:#20b2aa,stroke:#008080,stroke-width:2px,color:#fff
-    style C fill:#20b2aa,stroke:#008080,stroke-width:2px,color:#fff
-    style CIV fill:#f0f9ff,stroke:#008080,stroke-width:3px
-```
+</div>
 
 Every phase in the loop is anchored by central **Governance & Standards (NIST/IEEE Aligned)**:
 
