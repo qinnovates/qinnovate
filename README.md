@@ -154,15 +154,23 @@ Every phase in the loop is anchored by central **Governance & Standards (NIST/IE
 2. **Proof-of-Concept & Development** — Building testable models and draft frameworks
 3. **Validation & Feedback** — Hands-on lab testing using Q Metrics and establishing the current "Truth"
 
-### The Security Parallel: From POC Exploit to Peer Review
+### The Research Validation Process: From POC to Peer Review
 
-The function of the Qinnovate Engine maps directly to how security researchers manage Proof-of-Concept (POC) exploit codes. In a scientific context, a POC exploit is an empirical demonstration (an experiment) that validates a security hypothesis (a vulnerability).
+The function of the Qinnovate Engine maps directly to how researchers develop Proof-of-Concept (POC) implementations. A POC is an empirical demonstration that validates a hypothesis — whether that's testing a security vulnerability or prototyping a new BCI capability.
 
-**Mindloft's Role (The Experimenter):** Mindloft develops a POC exploit during the **Proof-of-Concept & Development** phase to robustly test for theoretical vulnerabilities found in the research phase. **All POC exploit development and testing occurs exclusively in controlled laboratory environments under strict ethical research constraints.** The successful execution of a POC exploit in isolated test environments is definitive validation that the system's current mathematical model (or code) is flawed. **POC exploits are never deployed against production systems or real-world targets outside the lab.**
+**Mindloft's Role (The Experimenter):** Mindloft develops POCs during the **Proof-of-Concept & Development** phase. This includes:
+- **Security POCs:** Testing theoretical vulnerabilities in controlled laboratory environments
+- **Feature POCs:** Prototyping new BCI capabilities or framework enhancements
+- **Capability POCs:** Validating new detection methods or security mechanisms
 
-**Qinnovate's Role (The Governing Body/Peer Review):** When Mindloft presents the data derived from a successful lab-validated POC exploit, Qinnovate acts as the central **Governance & Standards** body. It conducts the "peer review" of the exploit's findings, officially recognizes the failure of the current standard, and initiates a formal amendment.
+**All POC development and testing occurs exclusively in controlled laboratory environments under strict ethical research constraints.** For security POCs, exploits are never deployed against production systems or real-world targets outside the lab. For feature POCs, new capabilities undergo rigorous validation before standardization.
 
-**Perpetual Change:** This cycle ensures that a working POC exploit is never just an exploit; it is a vital data point that forces the engine to perpetuate change, leading to a new, stronger standard.
+**Qinnovate's Role (The Governing Body/Peer Review):** When Mindloft presents validated POC data, Qinnovate acts as the central **Governance & Standards** body. It conducts peer review of the findings, validates the research, and either:
+- Amends existing standards (if a vulnerability was found)
+- Incorporates new capabilities (if a feature was validated)
+- Initiates formal standardization (if novel research was proven)
+
+**Perpetual Change:** This cycle ensures that every POC — whether discovering a flaw or introducing a capability — becomes a vital data point that forces the engine to perpetuate change, leading to stronger, more comprehensive standards.
 
 ---
 
