@@ -26,7 +26,7 @@ Threats are categorized using internal codes:
 |------|------|-------------|
 | **Κ** | Common | Elements shared across both ONI and QIF models |
 | **Δ** | Differences | Unique to one model only |
-| **Σ** | Synthesis | Combined perspective across both models |
+| **Σ** | Sum | Combined total across both models |
 
 **Note:** These Greek letters are internal category codes used in the JSON. When building user interfaces, translate them to human-readable labels using the `_meta.categories` definitions.
 
@@ -58,8 +58,8 @@ common = [t for t in data['tactics'] if t.get('category') == 'Κ']
 # Get model-specific threats (Δ)
 differences = [t for t in data['tactics'] if t.get('category') == 'Δ']
 
-# Get synthesis threats (Σ)
-synthesis = [t for t in data['tactics'] if t.get('category') == 'Σ']
+# Get sum/total threats (Σ)
+total = [t for t in data['tactics'] if t.get('category') == 'Σ']
 ```
 
 ## Layer→Band Migration

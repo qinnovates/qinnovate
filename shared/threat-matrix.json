@@ -22,9 +22,9 @@
       },
       "Σ": {
         "code": "Σ",
-        "name": "Synthesis",
-        "label": "Unified View",
-        "description": "Combined perspective across both models"
+        "name": "Sum",
+        "label": "Sum/Total",
+        "description": "Combined total across both models (sum of ONI + QIF)"
       }
     },
     "migration": {
