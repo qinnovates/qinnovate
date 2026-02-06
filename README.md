@@ -11,32 +11,48 @@ Qinnovate is a vendor-neutral standards body developing open frameworks, governa
 ## 🏛️ What is Qinnovate?
 
 Qinnovate houses:
-- **QIF (Quantum Indeterministic Framework)** — Quantum-aware BCI security model
-- **ONI (Open Neurosecurity Interoperability)** — Classical 14-layer BCI reference architecture (legacy)
+- **QIF (Quantum Indeterministic Framework)** — Quantum BCI security model (7-band hourglass)
+- **ONI (Open Neurosecurity Interoperability)** — Classical BCI security model (14-layer architecture)
+- **Classical↔Quantum Bridge** — Shared threat taxonomy mapping both frameworks
 - **Neuroethics Standards** — UNESCO alignment, GDPR/HIPAA compliance, informed consent frameworks
 - **Threat Intelligence** — BCI attack taxonomy, threat matrix, security patterns
 - **Governance** — Regulatory compliance frameworks, transparency protocols
 
 ---
 
-## 📋 Standards Development
+## 📋 Dual-Framework Architecture
 
 ### QIF (Quantum Indeterministic Framework)
 
-The first open security standard for brain-computer interfaces, bridging quantum physics, neuroscience, and cybersecurity.
+**Quantum BCI security** - The first framework to incorporate quantum mechanical principles into BCI security.
 
-**Architecture:** 7-band hourglass model (3-1-3 symmetric)
-**Status:** Active development
-**Version:** 3.1 Hourglass
+- **Architecture:** 7-band hourglass model (3-1-3 symmetric: S3/S2/S1/I0/N1/N2/N3)
+- **Status:** Active development
+- **Version:** 3.1 Hourglass
+- **License:** Apache 2.0
 
-[Read the specification →](qif-spec/)
+[Read the specification →](qif-framework/)
 
-### ONI (Open Neurosecurity Interoperability) - Legacy
+### ONI (Open Neurosecurity Interoperability)
 
-The classical 14-layer OSI extension model for BCI security. Preserved for historical reference.
+**Classical BCI security** - OSI extension model providing classical security architecture for BCIs.
 
-**Status:** Deprecated in favor of QIF
-**Archive:** [ONI Framework](oni-legacy/)
+- **Architecture:** 14-layer model (L1-L14: Silicon → Cognitive Sovereignty)
+- **Status:** Active (classical complement to QIF)
+- **Version:** 2.x
+- **License:** Apache 2.0
+
+[Read the specification →](oni-framework/)
+
+### Classical↔Quantum Bridge
+
+The **shared bridge** maps threats and security controls across both frameworks:
+
+- **Threat matrix** categorized with Κ (common), Δ (differences), Σ (sum)
+- **Layer→Band translation** (e.g., L8 → I0, L9 → I0/N1)
+- **Validation tools** for consistency checking
+
+[Explore the bridge →](shared/)
 
 ---
 
@@ -50,6 +66,7 @@ Qinnovate maintains comprehensive governance standards:
 - **Pediatric Guidelines** — Special protections for minors
 - **Accessibility Standards** — Inclusive BCI design
 - **Transparency Protocol** — Human-AI collaboration audit trails
+- **QIF Neuroethics** — 11 open questions on quantum biometric governance
 
 [View governance standards →](governance/)
 
@@ -59,11 +76,19 @@ Qinnovate maintains comprehensive governance standards:
 
 Academic papers, technical specifications, and research findings:
 
-- 11+ publications on quantum security, neuroscience, and BCI threats
-- Peer-reviewed research methodology
-- Open access under CC-BY 4.0
+### ONI Research
+- **31 publications** across 8 topics (coherence metric, neural firewall, quantum encryption, etc.)
+- Classical BCI security foundations
+- Scale-frequency invariant principles
 
-[Browse research →](research/)
+### QIF Research
+- **Quantum indeterminacy** in neural security
+- **Decoherence** and quantum threats
+- **7-band hourglass** architecture
+- Comprehensive whitepaper with equations-as-code
+
+[Browse ONI research →](oni-framework/publications/)
+[Browse QIF research →](qif-framework/)
 
 ---
 
@@ -71,9 +96,16 @@ Academic papers, technical specifications, and research findings:
 
 ### Implementations
 
-**Mindloft** is the first QIF-compliant implementation, building commercial BCI security tools:
-- [mindloft.org](https://mindloft.org) — Products, tools, SDK
+**Mindloft** builds commercial products implementing Qinnovate standards:
+- [mindloft.org](https://mindloft.org) — BCI security platform
+- Products: Mindloft Core, SDK, Subvocalization BCI
 - [github.com/qinnovates/mindloft](https://github.com/qinnovates/mindloft) — Product repository
+
+**Relationship:**
+- Qinnovate = Standards body (this repo)
+- Mindloft = Product company (implements the standards)
+
+Think: **W3C** (Qinnovate) vs **Chrome** (Mindloft)
 
 ### Community
 
@@ -81,7 +113,35 @@ Academic papers, technical specifications, and research findings:
 - **Governance:** Community-driven standards development
 - **License:** Apache 2.0 (standards), CC-BY 4.0 (research)
 
-[How to contribute →](CONTRIBUTING.md)
+---
+
+## 📂 Repository Structure
+
+```
+qinnovates/qinnovate/
+├── qif-framework/          # Quantum BCI security (7-band)
+│   ├── framework/          # 9 architectural documents
+│   ├── qif-lab/            # Equation testing & validation
+│   ├── QIF-WHITEPAPER.md   # Comprehensive research
+│   └── QIF-TRUTH.md        # Canonical source of truth
+│
+├── oni-framework/          # Classical BCI security (14-layer)
+│   ├── framework/          # Python package + specs
+│   ├── publications/       # 31 research papers
+│   └── INDEX.md            # Main wiki
+│
+├── shared/                 # Classical↔Quantum bridge
+│   ├── threat-matrix.json  # Κ/Δ/Σ threat taxonomy
+│   └── validation/         # Bridge validation tools
+│
+├── governance/             # Neuroethics & regulatory
+│   ├── NEUROETHICS_ALIGNMENT.md
+│   ├── TRANSPARENCY.md
+│   ├── UNESCO_ALIGNMENT.md
+│   └── ... (9 governance documents)
+│
+└── docs/                   # qinnovate.com website
+```
 
 ---
 
@@ -90,9 +150,10 @@ Academic papers, technical specifications, and research findings:
 | Resource | Description |
 |----------|-------------|
 | [QIF Whitepaper](https://mindloft.org/qif-whitepaper/) | Interactive whitepaper with AI voiceover |
-| [Framework Overview](qif-spec/) | Complete QIF specification |
+| [QIF Framework](qif-framework/) | Complete QIF specification |
+| [ONI Framework](oni-framework/) | Complete ONI specification |
+| [Classical↔Quantum Bridge](shared/) | Threat taxonomy mapping |
 | [Governance Docs](governance/) | Neuroethics and compliance standards |
-| [Research Papers](research/) | Academic publications |
 | [Website](https://qinnovate.com) | Official standards body site |
 
 ---
@@ -123,8 +184,8 @@ This ensures open access while allowing commercial implementations.
 
 - **Website:** [qinnovate.com](https://qinnovate.com)
 - **Product Implementation:** [mindloft.org](https://mindloft.org)
-- **GitHub:** [github.com/qinnovates](https://github.com/qinnovates)
-- **Research:** [github.com/qinnovates/qinnovate](https://github.com/qinnovates/qinnovate)
+- **GitHub Org:** [github.com/qinnovates](https://github.com/qinnovates)
+- **This Repo:** [github.com/qinnovates/qinnovate](https://github.com/qinnovates/qinnovate)
 
 ---
 
@@ -139,4 +200,4 @@ This ensures open access while allowing commercial implementations.
 ---
 
 *Established: 2026*
-*Version: 1.0*
+*Updated: 2026-02-05*
