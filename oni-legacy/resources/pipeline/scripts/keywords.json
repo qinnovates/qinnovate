@@ -1,0 +1,534 @@
+{
+  "_comment": "PURPOSE: This file is the keyword database for research_monitor.py. It enables automated tracking of new academic publications related to ONI Framework topics. The script's KeywordManager class loads this file via _load_keywords() and uses get_search_terms() to query arXiv, PubMed, bioRxiv, IEEE, and Semantic Scholar. Keywords are organized by publication (oni-framework, coherence-metric, etc.) and by category (primary_keywords, technical_terms, security_terms). The combined_search_terms section provides cross-publication search queries. To add new keywords: edit the relevant publication section or add new entries to combined_search_terms.",
+  "metadata": {
+    "version": "2.0",
+    "last_updated": "2026-01-24",
+    "description": "Research keywords for ONI Framework - used by research_monitor.py to find relevant academic publications. Now includes researcher_tracking for integration pipeline."
+  },
+  "publications": {
+    "oni-framework": {
+      "title": "ONI Framework",
+      "primary_keywords": [
+        "organic network interface",
+        "ONI framework",
+        "brain-computer interface security",
+        "neural security architecture",
+        "bio-digital integration",
+        "14-layer model",
+        "neural interface domain",
+        "cognitive domain"
+      ],
+      "technical_terms": [
+        "OSI model extension",
+        "neural gateway",
+        "ion channel encoding",
+        "oscillatory synchronization",
+        "cognitive session",
+        "semantic assembly",
+        "intent and agency",
+        "identity layer",
+        "category theory neural",
+        "structure preservation",
+        "coherence metric",
+        "scale-frequency invariant"
+      ],
+      "biological_terms": [
+        "action potential",
+        "local field potential",
+        "spike train",
+        "neural oscillation",
+        "gamma rhythm",
+        "theta rhythm",
+        "working memory",
+        "prefrontal cortex",
+        "synaptic transmission"
+      ],
+      "security_terms": [
+        "neural firewall",
+        "zero trust neural",
+        "attack surface BCI",
+        "signal validation",
+        "neural authentication"
+      ]
+    },
+    "coherence-metric": {
+      "title": "Coherence Metric",
+      "primary_keywords": [
+        "coherence metric",
+        "neural signal integrity",
+        "signal trustworthiness",
+        "BCI signal validation",
+        "phase variance",
+        "transport variance",
+        "gain variance"
+      ],
+      "technical_terms": [
+        "exponential decay neural",
+        "timing jitter neural",
+        "pathway integrity",
+        "amplitude stability",
+        "spike timing dependent plasticity",
+        "STDP",
+        "communication through coherence",
+        "phase locking",
+        "Shannon information theory neural",
+        "channel capacity brain"
+      ],
+      "biological_terms": [
+        "synaptic reliability",
+        "axon conduction",
+        "dendritic integration",
+        "neurotransmitter release probability",
+        "NMDA receptor",
+        "AMPA receptor",
+        "homeostatic plasticity",
+        "synaptic scaling"
+      ],
+      "security_terms": [
+        "neural signal validation",
+        "BCI authentication",
+        "signal anomaly detection",
+        "phase synchronized attack",
+        "replay attack BCI"
+      ]
+    },
+    "neural-firewall": {
+      "title": "Neural Firewall",
+      "primary_keywords": [
+        "neural firewall",
+        "BCI security architecture",
+        "zero trust brain",
+        "edge node BCI",
+        "implant security"
+      ],
+      "technical_terms": [
+        "ingress filtering neural",
+        "egress filtering neural",
+        "on-implant security",
+        "hardware safety bounds",
+        "stimulation validation",
+        "neural access control",
+        "audit logging BCI",
+        "policy chain neural",
+        "rate limiting stimulation"
+      ],
+      "biological_terms": [
+        "electrode array",
+        "Utah array",
+        "electrocorticography",
+        "ECoG",
+        "neural tissue protection",
+        "stimulation safety"
+      ],
+      "security_terms": [
+        "Bluetooth BCI vulnerability",
+        "BlueBorne implant",
+        "neural data encryption",
+        "command injection BCI",
+        "thought eavesdropping",
+        "emotional manipulation attack"
+      ],
+      "regulatory_terms": [
+        "FDA Class III BCI",
+        "IEC 62443 neural",
+        "HIPAA neural data",
+        "neurodata privacy",
+        "Chile neurodata ruling"
+      ]
+    },
+    "neural-ransomware": {
+      "title": "Neural Ransomware",
+      "primary_keywords": [
+        "neural ransomware",
+        "BCI ransomware",
+        "brain implant attack",
+        "neural extortion",
+        "implant lockout"
+      ],
+      "technical_terms": [
+        "kill chain neural",
+        "wireless protocol BCI vulnerability",
+        "firmware attack implant",
+        "device lockout BCI",
+        "gradual degradation attack",
+        "behavioral manipulation neural"
+      ],
+      "biological_terms": [
+        "neural adaptation",
+        "brain plasticity BCI",
+        "therapeutic function restoration"
+      ],
+      "security_terms": [
+        "cryptographic device identity",
+        "hardware root of trust",
+        "secure element implant",
+        "anti-replay BCI",
+        "key revocation neural",
+        "local-first architecture BCI",
+        "incident response neural"
+      ],
+      "threat_terms": [
+        "data exfiltration neural",
+        "physical harm stimulation",
+        "supply chain attack BCI",
+        "man-in-the-middle neural"
+      ]
+    },
+    "scale-frequency": {
+      "title": "Scale-Frequency Invariant",
+      "primary_keywords": [
+        "scale-frequency invariant",
+        "neural scaling law",
+        "hierarchical neural processing",
+        "frequency spatial scale"
+      ],
+      "technical_terms": [
+        "bandwidth limit BCI",
+        "conduction delay",
+        "information throughput neural",
+        "Kolmogorov complexity neural",
+        "renormalization group brain",
+        "channel capacity neural",
+        "compression ratio neural"
+      ],
+      "biological_terms": [
+        "axonal conduction velocity",
+        "metabolic cost firing",
+        "myelination speed",
+        "cross-frequency coupling",
+        "theta-gamma coupling",
+        "cortical column",
+        "thalamo-cortical"
+      ],
+      "physics_terms": [
+        "Kolmogorov turbulence",
+        "critical phenomena brain",
+        "universality class neural",
+        "self-similarity neural"
+      ]
+    },
+    "quantum-encryption": {
+      "title": "Quantum Encryption",
+      "primary_keywords": [
+        "quantum encryption",
+        "quantum security",
+        "post-quantum cryptography",
+        "quantum computing threats",
+        "HNDL attack",
+        "harvest now decrypt later",
+        "quantum cryptanalysis",
+        "quantum key distribution",
+        "QKD",
+        "macroscopic quantum tunneling",
+        "observer effect security",
+        "tunneling traversal time",
+        "liminal phase security",
+        "QPUF",
+        "quantum physical unclonable function"
+      ],
+      "technical_terms": [
+        "Shor's algorithm",
+        "Grover's algorithm",
+        "RSA quantum vulnerability",
+        "ECC quantum vulnerability",
+        "CRYSTALS-Kyber",
+        "CRYSTALS-Dilithium",
+        "lattice-based cryptography",
+        "qubit error correction",
+        "quantum decoherence",
+        "fault-tolerant quantum",
+        "no-communication theorem",
+        "no-cloning theorem",
+        "Josephson junction",
+        "Cooper pairs",
+        "BB84 protocol",
+        "E91 protocol",
+        "QSDC",
+        "quantum secure direct communication",
+        "QRNG",
+        "quantum barrier",
+        "transmission probability",
+        "UBR",
+        "under-the-barrier recollision",
+        "attoclock",
+        "quantum authentication"
+      ],
+      "scientific_terms": [
+        "quantum entanglement",
+        "Bell inequality",
+        "quantum superposition",
+        "quantum coherence",
+        "quantum measurement",
+        "quantum state collapse",
+        "observer effect",
+        "decoherence",
+        "liminal phase",
+        "wave-particle duality",
+        "Schrödinger equation",
+        "potential barrier",
+        "macroscopic quantum effects"
+      ],
+      "security_terms": [
+        "side-channel attack quantum",
+        "fault injection quantum",
+        "multi-tenant quantum",
+        "crosstalk quantum",
+        "decoherence attack",
+        "quantum random number generator",
+        "cryptographic migration",
+        "quantum-safe encryption",
+        "quantum-resistant cryptography",
+        "coherence breach defense",
+        "quantum repeater",
+        "space-based QKD",
+        "liminal authentication",
+        "tunneling-based security",
+        "quantum temporal signature",
+        "observer-based detection",
+        "quantum anomaly detection",
+        "neural quantum interface"
+      ],
+      "threat_terms": [
+        "nation-state quantum",
+        "cryptographic apocalypse",
+        "data harvesting quantum",
+        "retroactive decryption",
+        "quantum attack timeline"
+      ]
+    }
+  },
+  "combined_search_terms": {
+    "core_BCI_security": [
+      "brain computer interface security",
+      "neural interface cybersecurity",
+      "BCI attack vector",
+      "neural implant security",
+      "neurosecurity",
+      "brainjacking",
+      "neural hacking"
+    ],
+    "signal_processing": [
+      "neural signal integrity",
+      "BCI signal validation",
+      "coherence neural",
+      "phase locking value",
+      "neural oscillation security"
+    ],
+    "threat_modeling": [
+      "neural ransomware",
+      "brain implant threat",
+      "BCI vulnerability",
+      "neuromodulation attack",
+      "deep brain stimulation security"
+    ],
+    "privacy_ethics": [
+      "neural data privacy",
+      "cognitive privacy",
+      "mental privacy",
+      "neuroethics security",
+      "brain data protection"
+    ],
+    "hardware_implementation": [
+      "implantable device security",
+      "medical device cybersecurity",
+      "Neuralink security",
+      "neural interface hardware"
+    ],
+    "regulatory": [
+      "FDA BCI cybersecurity",
+      "medical device regulation neural",
+      "neurodata governance"
+    ],
+    "neuroethics_policy": [
+      "neurorights legislation",
+      "cognitive liberty law",
+      "mental privacy regulation",
+      "Chile neurodata",
+      "California neurorights",
+      "MIND Act neural",
+      "UNESCO neurotechnology ethics"
+    ],
+    "clinical_trials": [
+      "BrainGate clinical",
+      "intracortical BCI trial",
+      "speech BCI clinical",
+      "DBS clinical trial security",
+      "neural prosthetic trial"
+    ],
+    "quantum_security": [
+      "post-quantum cryptography",
+      "quantum computing cybersecurity",
+      "HNDL attack",
+      "harvest now decrypt later",
+      "Shor's algorithm security",
+      "quantum-safe encryption",
+      "NIST post-quantum standards",
+      "quantum threat timeline"
+    ]
+  },
+  "researcher_tracking": {
+    "_comment": "Researcher monitoring for integration pipeline. See RESEARCH_INTEGRATION_WORKFLOW.md",
+    "tier_1_core": {
+      "description": "Foundational researchers - monitor all publications for direct integration",
+      "researchers": [
+        {
+          "name": "Tadayoshi Kohno",
+          "institution": "University of Washington",
+          "role": "Professor, Allen School",
+          "focus": ["neurosecurity", "BCI privacy", "implant security"],
+          "oni_integration": "NeurosecurityFirewall, CIA threat model",
+          "search_terms": ["Kohno neural", "Kohno BCI", "Kohno implant security"]
+        },
+        {
+          "name": "Tamara Bonaci",
+          "institution": "University of Washington",
+          "role": "Security Researcher",
+          "focus": ["BCI anonymization", "brain spyware", "neural PII"],
+          "oni_integration": "BCIAnonymizer, privacy-preserving filtering",
+          "search_terms": ["Bonaci BCI", "Bonaci brain", "BCI anonymizer"]
+        },
+        {
+          "name": "Howard Chizeck",
+          "institution": "University of Washington",
+          "role": "Professor Emeritus, BioRobotics",
+          "focus": ["DBS security", "closed-loop neural devices"],
+          "oni_integration": "Attack surface analysis, L8 firewall design",
+          "search_terms": ["Chizeck BCI", "Chizeck implant", "Chizeck neural"]
+        }
+      ]
+    },
+    "tier_2_neuroethics": {
+      "description": "Ethics/policy researchers - monitor for framework alignment and neurorights",
+      "researchers": [
+        {
+          "name": "Sara Goering",
+          "institution": "University of Washington",
+          "role": "Professor & Chair, Philosophy",
+          "focus": ["agency in BCI users", "disability theory", "BRAIN Initiative ethics"],
+          "oni_alignment": "L14 Identity layer design principles",
+          "search_terms": ["Goering BCI", "Goering agency", "Goering neuroethics"]
+        },
+        {
+          "name": "Rafael Yuste",
+          "institution": "Columbia University",
+          "role": "Professor, Biological Sciences",
+          "focus": ["neurorights", "BRAIN Initiative", "mental privacy"],
+          "oni_alignment": "5 neurorights framework, BCIAnonymizer",
+          "search_terms": ["Yuste neurorights", "Yuste BCI", "NeuroRights Foundation"]
+        },
+        {
+          "name": "Marcello Ienca",
+          "institution": "TU Munich",
+          "role": "Professor, Ethics of AI & Neuroscience",
+          "focus": ["neurorights theory", "cognitive liberty", "mental integrity"],
+          "oni_alignment": "Theoretical foundation for privacy layers",
+          "search_terms": ["Ienca neurorights", "Ienca cognitive liberty", "Ienca neural"]
+        },
+        {
+          "name": "Gabriel Lázaro-Muñoz",
+          "institution": "Harvard Medical School",
+          "role": "Assistant Professor, Center for Bioethics",
+          "focus": ["DBS ethics", "pediatric neuroethics", "post-trial access"],
+          "oni_alignment": "Privacy scoring, vulnerable population handling",
+          "search_terms": ["Lázaro-Muñoz DBS", "Lázaro-Muñoz neuroethics"]
+        },
+        {
+          "name": "Eran Klein",
+          "institution": "University of Washington",
+          "role": "Neurologist & Affiliate Professor",
+          "focus": ["clinical neuroethics", "user experience", "cognitive autonomy"],
+          "oni_alignment": "User consent models, L14 design",
+          "search_terms": ["Klein neuroethics", "Klein BCI autonomy"]
+        },
+        {
+          "name": "Hannah Maslen",
+          "institution": "Oxford University",
+          "role": "Senior Research Fellow, Uehiro Centre",
+          "focus": ["closed-loop autonomy", "EU BCI regulation", "BrainCom ethics"],
+          "oni_alignment": "User override mechanisms, regulatory preparation",
+          "search_terms": ["Maslen BCI", "Maslen neuroethics", "Maslen autonomy"]
+        },
+        {
+          "name": "Judy Illes",
+          "institution": "University of British Columbia",
+          "role": "Professor, Neurology",
+          "focus": ["WHO neurotechnology", "UNESCO ethics", "international standards"],
+          "oni_alignment": "International regulatory compliance",
+          "search_terms": ["Illes neuroethics", "Illes neurotechnology"]
+        }
+      ]
+    },
+    "tier_3_engineering": {
+      "description": "BCI developers - monitor for security integration opportunities",
+      "researchers": [
+        {
+          "name": "Leigh Hochberg",
+          "institution": "Brown University / BrainGate",
+          "role": "Associate Professor, Clinical Trial Director",
+          "focus": ["BrainGate trials", "speech decoding", "wireless BCI"],
+          "oni_opportunity": "Wireless BCI security protocols, clinical validation data",
+          "search_terms": ["Hochberg BrainGate", "Hochberg BCI", "Hochberg speech"]
+        },
+        {
+          "name": "Bin He",
+          "institution": "Carnegie Mellon University",
+          "role": "Trustee Professor",
+          "focus": ["bidirectional BCI", "ultrasound neuromodulation", "non-invasive BCI"],
+          "oni_opportunity": "Bidirectional security, ML model integrity",
+          "search_terms": ["Bin He BCI", "Bin He bidirectional", "CMU neural"]
+        },
+        {
+          "name": "Richard Andersen",
+          "institution": "Caltech",
+          "role": "Professor, Chen BMI Center",
+          "focus": ["intent decoding", "internal speech", "sensory feedback"],
+          "oni_opportunity": "Intent privacy protection, stimulation safety",
+          "search_terms": ["Andersen BCI", "Andersen intent", "Andersen parietal"]
+        },
+        {
+          "name": "Pablo Celnik",
+          "institution": "Johns Hopkins University",
+          "role": "Professor & Director",
+          "focus": ["bilateral BCI", "multi-array control", "mixed reality BCI"],
+          "oni_opportunity": "Multi-array security, MR attack surface",
+          "search_terms": ["Celnik BCI", "Celnik bilateral", "Johns Hopkins neural"]
+        },
+        {
+          "name": "Miguel Nicolelis",
+          "institution": "Duke University",
+          "role": "Professor",
+          "focus": ["brain-to-brain interfaces", "exoskeleton control", "tactile feedback"],
+          "oni_opportunity": "BTBI security (future), exoskeleton verification",
+          "search_terms": ["Nicolelis BCI", "Nicolelis brain", "Nicolelis exoskeleton"]
+        }
+      ]
+    }
+  },
+  "academic_sources": {
+    "journals": [
+      "Journal of Neural Engineering",
+      "IEEE Transactions on Neural Systems",
+      "Neuron",
+      "Nature Neuroscience",
+      "Journal of Neuroscience",
+      "Brain-Computer Interfaces",
+      "Frontiers in Neuroscience",
+      "NeuroImage",
+      "Journal of Medical Internet Research",
+      "Computers in Biology and Medicine"
+    ],
+    "conferences": [
+      "IEEE EMBS",
+      "NeurIPS",
+      "BCI Meeting",
+      "Society for Neuroscience",
+      "USENIX Security",
+      "IEEE S&P"
+    ],
+    "preprint_servers": [
+      "arXiv",
+      "bioRxiv",
+      "medRxiv"
+    ]
+  }
+}

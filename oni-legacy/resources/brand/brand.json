@@ -1,0 +1,100 @@
+{
+  "framework": {
+    "full_name": "The Quantum Indeterministic Framework for Neural Security",
+    "short_name": "QIF",
+    "pronunciation": "CHIEF",
+    "subtitle": "A Model for Quantum Neural Interfaces",
+    "name": "QIF — Quantum Indeterministic Framework for Neural Security",
+    "tagline": "Life's most important connections deserve the most thought.",
+    "mission": "Brain-computer interfaces are here — and they have no universal security standard. This framework provides the shared language that makes an entire industry of neural security possible.",
+    "description": "A ground-up architectural redesign of BCI security, built from neuroscience constraints. The funnel model, quantum integer, and defense-in-depth rings for quantum neural interfaces.",
+    "version": "2.0.0",
+    "vision": "A world where brain-computer interfaces are as secure as they are powerful. Where neural data is protected by law and by design. Where the boundary between mind and machine is guarded by open standards, with security and privacy built in from inception."
+  },
+  "oni": {
+    "_comment": "Legacy branding — kept for Python package compatibility",
+    "acronym": "ONI",
+    "full_name": "Open Neurosecurity Interoperability",
+    "name": "ONI Framework",
+    "tagline": "The OSI of Mind",
+    "version": "0.2.2"
+  },
+  "tara": {
+    "acronym": "TARA",
+    "full_name": "Telemetry Analysis & Response Automation",
+    "name": "TARA Stack",
+    "tagline": "Protection for the neural frontier",
+    "slogan": "Named after the Buddhist goddess of protection.",
+    "mission": "Provide real-time neural security monitoring, attack simulation, and response automation.",
+    "description": "A neural security stack for BCI security monitoring, simulation, and attack testing. Real-time security analysis for brain-computer interfaces.",
+    "version": "0.8.1"
+  },
+  "layers": {
+    "_comment": "Single source of truth for 14-layer model. L1-L7 Silicon, L8 Gateway, L9-L14 Biology (hourglass/funnel model)",
+    "silicon": [
+      { "id": "L1", "name": "Physical Carrier", "zone": "Physical", "color": "#1e3a5f" },
+      { "id": "L2", "name": "Signal Processing", "zone": "Data Link", "color": "#1e4d6f" },
+      { "id": "L3", "name": "Protocol", "zone": "Network", "color": "#1e5f7f" },
+      { "id": "L4", "name": "Transport", "zone": "Transport", "color": "#1e6f8f" },
+      { "id": "L5", "name": "Session", "zone": "Session", "color": "#1e7f9f" },
+      { "id": "L6", "name": "Presentation", "zone": "Presentation", "color": "#1e8faf" },
+      { "id": "L7", "name": "Application Interface", "zone": "Application", "color": "#2d9fbf" }
+    ],
+    "gateway": [
+      { "id": "L8", "name": "Neural Gateway", "zone": "Firewall", "color": "#d97706", "highlight": true }
+    ],
+    "biology": [
+      { "id": "L9", "name": "Signal Processing", "zone": "Filtering", "color": "#14532d" },
+      { "id": "L10", "name": "Neural Protocol", "zone": "Encoding", "color": "#166534" },
+      { "id": "L11", "name": "Cognitive Transport", "zone": "Delivery", "color": "#15803d" },
+      { "id": "L12", "name": "Cognitive Session", "zone": "Context", "color": "#16a34a" },
+      { "id": "L13", "name": "Semantic Layer", "zone": "Intent", "color": "#22c55e" },
+      { "id": "L14", "name": "Identity Layer", "zone": "Self", "color": "#9E61EB" }
+    ]
+  },
+  "brand_color": {
+    "_comment": "The teal where L9 and L10 overlap — two biological layers in harmony.",
+    "hex": "#22C68D",
+    "rgb": [34, 198, 141],
+    "name": "Neurosec Teal"
+  },
+  "stats": {
+    "_comment": "Manual stats only. Auto-updating stats (commits, tools) are fetched via GitHub API in docs/index.html",
+    "security_layers": 14,
+    "threat_signatures": 46,
+    "learning_portals": 1
+  },
+  "qinnovate": {
+    "name": "Qinnovate",
+    "role": "The engine",
+    "description": "Where forward thinking begins."
+  },
+  "mindloft": {
+    "name": "Mindloft",
+    "role": "The workshop",
+    "slogan": "Let's mind our way.",
+    "description": "Where research is built, developed, and shared."
+  },
+  "_meta": {
+    "last_updated": "2026-02-01",
+    "location": "neurosec-research/resources/brand/brand.json",
+    "consumers": [
+      "neurosec-research/oni-framework/oni/brand.py",
+      "neurosec-research/tara-nsec-platform/tara_mvp/_brand.py",
+      "autodidactive/oni-academy/oni_academy/_brand.py",
+      "neurosec-research/resources/brand/sync_brand.py",
+      "docs/index.html",
+      "video/demo/src/data/oni-theme.ts",
+      "video/demo/src/components/LayerStack.tsx",
+      "video/motion/src/theme.ts",
+      "neurosec-research/tara-nsec-platform/tara_mvp/visualization/themes/oni_theme.py",
+      "neurosec-research/resources/editor/checks/layer_validation.md"
+    ],
+    "layer_documentation": {
+      "authoritative_reference": "neurosec-research/oni-framework/ONI_LAYERS.md",
+      "biological_foundation": "neurosec-research/oni-framework/ONI_LAYERS.md#biological-foundation-what-l8-encapsulates",
+      "time_scale_hierarchy": "neurosec-research/oni-framework/ONI_LAYERS.md#time-scale-hierarchy-across-all-layers"
+    },
+    "note": "Single source of truth for project branding, stats, and 14-layer model definitions"
+  }
+}

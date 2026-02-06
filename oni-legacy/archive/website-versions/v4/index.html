@@ -1,0 +1,3578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XNPBK7CRGG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XNPBK7CRGG');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONI | Neurosecurity Standards for Brain-Computer Interfaces</title>
+    <meta name="description" content="BCIs are being implanted in humans today — with no security standard. ONI is building one. 14 layers extending OSI into the biological domain.">
+    <meta name="keywords" content="neurosecurity, neural interface, brain-computer interface, ONI model, neural security standard, neuroethics">
+
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https: data:; connect-src 'self' https://raw.githubusercontent.com https://api.github.com https://www.google-analytics.com https://analytics.google.com; font-src 'self' https://fonts.gstatic.com;">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="ONI | Neurosecurity Standards for BCIs">
+    <meta property="og:description" content="The neural security standard. 14 layers extending OSI to protect brain-computer interfaces.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://qinnovates.github.io/ONI/">
+    <meta property="og:image" content="https://qinnovates.github.io/ONI/images/ONI_Banner_Logo.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Three.js -->
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* ============================================
+           CSS RESET & VARIABLES
+           ============================================ */
+        :root {
+            --bg-deep: #050a14;
+            --bg-primary: #0a0f1a;
+            --bg-card: rgba(15, 23, 42, 0.7);
+            --bg-card-hover: rgba(20, 30, 50, 0.85);
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-cyan: #06b6d4;
+            --accent-amber: #f59e0b;
+            --accent-green: #10b981;
+            --accent-pink: #ec4899;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --text-dim: #475569;
+            --border: rgba(30, 41, 59, 0.8);
+            --gradient-blue-purple: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            --gradient-blue-cyan: linear-gradient(135deg, #3b82f6, #06b6d4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            background: var(--bg-deep);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            background: rgba(5, 10, 20, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(30, 41, 59, 0.4);
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        nav.scrolled {
+            background: rgba(5, 10, 20, 0.95);
+            border-bottom-color: rgba(30, 41, 59, 0.7);
+        }
+
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-blue);
+            border-radius: 1px;
+        }
+
+        .nav-github {
+            display: flex;
+            align-items: center;
+            color: var(--text-muted) !important;
+            transition: color 0.2s;
+        }
+
+        .nav-github:hover { color: var(--text-primary) !important; }
+
+        .nav-github svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Mobile hamburger */
+        .nav-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .nav-hamburger svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        .nav-mobile-menu {
+            display: none;
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            background: rgba(5, 10, 20, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem 2rem;
+            border-bottom: 1px solid var(--border);
+            z-index: 999;
+        }
+
+        .nav-mobile-menu.open { display: flex; flex-direction: column; gap: 1rem; }
+
+        .nav-mobile-menu a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-hamburger { display: block; }
+        }
+
+        /* ============================================
+           SCENE SHARED STYLES
+           ============================================ */
+        .scene {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scene-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* ============================================
+           SCENE 1: HERO
+           ============================================ */
+        #scene-hero {
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 12vh 2rem 0;
+        }
+
+        .hero-mission {
+            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+            color: var(--text-secondary);
+            font-weight: 400;
+            line-height: 1.7;
+            max-width: 620px;
+            margin: 0 auto 1.75rem;
+            opacity: 0;
+        }
+
+        .hero-mission em {
+            color: var(--text-primary);
+            font-style: normal;
+            font-weight: 500;
+        }
+
+        .hero-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: #d4a543;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .hero-title .word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.35rem);
+            color: var(--text-primary);
+            font-weight: 400;
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+            opacity: 0;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: #000000;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 100px;
+            transition: all 0.3s;
+            opacity: 0;
+        }
+
+        .hero-cta:hover {
+            background: #111111;
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            opacity: 0;
+            animation: float-bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes float-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        .hero-scroll-text {
+            display: block;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .hero-scroll-indicator svg {
+            display: block;
+            margin: 0.5rem auto 0;
+            width: 24px;
+            height: 24px;
+            stroke: #ffffff;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* ============================================
+           SCENE 2: THE PROBLEM
+           ============================================ */
+        #scene-problem {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 0;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(180deg,
+                rgba(5, 10, 20, 0) 0%,
+                rgba(5, 10, 20, 0.7) 15%,
+                rgba(5, 10, 20, 0.7) 85%,
+                rgba(5, 10, 20, 0) 100%);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .problem-text h2 {
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-text p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            max-width: 520px;
+        }
+
+        .problem-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        .stat-item {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        .stat-number {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-number.blue {
+            background: var(--gradient-blue-purple);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-number.amber {
+            color: var(--accent-amber);
+        }
+
+        .stat-number.red {
+            color: #ef4444;
+        }
+
+        .stat-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           SCENE 3: THE FRAMEWORK (Scroll-driven 3D)
+           ============================================ */
+        #scene-framework {
+            position: relative;
+            z-index: 1;
+            background: transparent;
+        }
+
+        .framework-scroll-track {
+            position: relative;
+        }
+
+        .framework-intro-trigger,
+        .framework-closing-trigger {
+            height: 50vh;
+            position: relative;
+        }
+
+        .framework-interactive-zone {
+            height: 120vh;
+            position: relative;
+        }
+
+        #three-canvas.interactive {
+            pointer-events: auto;
+            cursor: default;
+        }
+
+        /* Click-to-explore hint */
+        .click-hint {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            pointer-events: none;
+            opacity: 0;
+        }
+        .click-hint.visible {
+            animation: hintPulse 2.5s ease-in-out infinite;
+        }
+        .click-hint-icon {
+            opacity: 0.6;
+        }
+        @keyframes hintPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* Easter egg overlay */
+        .easter-egg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(5, 10, 20, 0);
+            backdrop-filter: blur(0px);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.8s ease, background 0.8s ease, backdrop-filter 0.8s ease;
+        }
+        .easter-egg-overlay.visible {
+            opacity: 1;
+            background: rgba(5, 10, 20, 0.85);
+            backdrop-filter: blur(12px);
+            pointer-events: auto;
+        }
+        .easter-egg-content {
+            text-align: center;
+            max-width: 480px;
+            padding: 2rem;
+            transform: scale(0.8) translateY(20px);
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .easter-egg-overlay.visible .easter-egg-content {
+            transform: scale(1) translateY(0);
+        }
+        .easter-egg-heart {
+            width: 80px;
+            height: 72px;
+            margin: 0 auto 1.5rem;
+            animation: heartbeat 1.4s ease-in-out infinite;
+            cursor: pointer;
+            filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.5));
+        }
+        .easter-egg-heart svg { width: 100%; height: 100%; }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.1); }
+            60% { transform: scale(1); }
+        }
+        .easter-egg-text {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+            line-height: 1.7;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.01em;
+        }
+        .easter-egg-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+        .easter-egg-close:hover { color: rgba(255, 255, 255, 0.8); }
+
+        /* Hover tooltip (cursor-following) */
+        .hover-tooltip {
+            position: fixed;
+            z-index: 20;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(10, 15, 30, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 6px;
+            padding: 0.35rem 0.7rem;
+            white-space: nowrap;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+        }
+        .hover-tooltip.visible {
+            opacity: 1;
+        }
+        .hover-tooltip-zone {
+            font-weight: 700;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            line-height: 1.2;
+        }
+        .hover-tooltip-zone.zone-osi {
+            background: rgba(30, 90, 180, 0.35);
+            border: 1px solid rgba(55, 130, 235, 0.5);
+            color: rgba(120, 180, 255, 0.95);
+        }
+        .hover-tooltip-zone.zone-gateway {
+            background: rgba(217, 119, 6, 0.3);
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            color: rgba(253, 200, 100, 0.95);
+        }
+        .hover-tooltip-zone.zone-oni {
+            background: rgba(22, 120, 60, 0.35);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            color: rgba(100, 230, 150, 0.95);
+        }
+        .hover-tooltip-id {
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .hover-tooltip-action {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.65rem;
+            font-style: italic;
+            padding-left: 0.4rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .hover-tooltip-name {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+        }
+
+        /* ONI closing text overlay (vector NI) */
+        #oni-ni-overlay {
+            position: fixed;
+            pointer-events: none;
+            z-index: 15;
+            opacity: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.88);
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.45), 0 0 60px rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            transform: translate(0, -50%);
+            transform-origin: left center;
+            line-height: 1;
+        }
+
+        /* Floating layer label HUD */
+        .layer-hud {
+            position: fixed;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1.4rem;
+            background: rgba(10, 15, 30, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 100px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .layer-hud.visible {
+            opacity: 1;
+        }
+
+        .layer-hud-badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            flex-shrink: 0;
+        }
+        .layer-hud-badge.silicon { background: rgba(59,130,246,0.2); color: var(--accent-blue); }
+        .layer-hud-badge.gateway { background: rgba(245,158,11,0.2); color: var(--accent-amber); }
+        .layer-hud-badge.biology { background: rgba(16,185,129,0.2); color: var(--accent-green); }
+
+        .layer-hud-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        .layer-hud-zone {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* Layer detail overlay (centered) */
+        .layer-detail {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            text-align: center;
+            max-width: 480px;
+            padding: 2rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .layer-detail.visible {
+            opacity: 1;
+        }
+
+        .layer-detail-tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.7rem;
+            border-radius: 100px;
+            margin-bottom: 1rem;
+        }
+        .layer-detail-tag.osi {
+            background: rgba(59,130,246,0.12);
+            color: var(--accent-blue);
+            border: 1px solid rgba(59,130,246,0.25);
+        }
+        .layer-detail-tag.novel {
+            background: rgba(139,92,246,0.12);
+            color: var(--accent-purple);
+            border: 1px solid rgba(139,92,246,0.25);
+        }
+        .layer-detail-tag.gateway-tag {
+            background: rgba(245,158,11,0.12);
+            color: var(--accent-amber);
+            border: 1px solid rgba(245,158,11,0.25);
+        }
+
+        .layer-detail-desc {
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .layer-detail-context {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .layer-detail-formula {
+            font-family: 'Inter', monospace;
+            font-size: 1rem;
+            color: var(--accent-amber);
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 0.75rem;
+        }
+
+        /* ============================================
+           SCENE 4: THE PROOF
+           ============================================ */
+        #scene-proof {
+            min-height: 100vh;
+            padding: 8rem 0;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(180deg,
+                rgba(8, 12, 24, 0.8) 0%,
+                rgba(8, 12, 24, 0.8) 50%,
+                rgba(8, 12, 24, 0.8) 100%);
+        }
+
+        .proof-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .proof-header h2 {
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .proof-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .proof-column h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .researcher-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            transition: background 0.2s;
+        }
+
+        .researcher-card:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .researcher-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+            border: 1px solid var(--border);
+        }
+
+        .researcher-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .researcher-inst {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .researcher-contrib {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .proof-note {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .regulatory-list {
+            list-style: none;
+        }
+
+        .regulatory-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(30, 41, 59, 0.4);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .regulatory-list li:last-child { border-bottom: none; }
+
+        .check-icon {
+            color: var(--accent-green);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .regulatory-detail {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        /* ============================================
+           SCENE 5: QUOTE
+           ============================================ */
+        #scene-quote {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            padding: 4rem 2rem;
+        }
+
+        .quote-text {
+            font-size: clamp(1.25rem, 3vw, 2.5rem);
+            font-weight: 300;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 800px;
+            line-height: 1.5;
+            letter-spacing: -0.01em;
+            transform: scale(0.85);
+            opacity: 0.3;
+        }
+
+        .quote-author {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            opacity: 0;
+        }
+
+        .quote-author a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .quote-author a:hover { color: var(--text-secondary); }
+
+        /* ============================================
+           SCENE 6: WHAT'S BUILT
+           ============================================ */
+        #scene-built {
+            padding: 8rem 0;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(180deg,
+                rgba(5, 10, 20, 0) 0%,
+                rgba(8, 12, 24, 1) 30%,
+                rgba(8, 12, 24, 1) 70%,
+                rgba(5, 10, 20, 0) 100%);
+        }
+
+        .built-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .built-header h2 {
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+        }
+
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bento-card:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+        }
+
+        .bento-card .card-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 0.75rem;
+        }
+
+        .bento-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .bento-card .card-code {
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.08);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+        }
+
+        .bento-card p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .bento-card .card-link {
+            color: var(--accent-blue);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        /* ============================================
+           SCENE 7: VISION + CTA
+           ============================================ */
+        #scene-vision {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .vision-content {
+            max-width: 860px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .vision-content h2 {
+            font-size: clamp(1.75rem, 3vw, 2.75rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+            margin-bottom: 2rem;
+        }
+
+        .vision-terminology {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            text-align: left;
+            margin-bottom: 2.5rem;
+        }
+
+        .vision-terminology h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .vision-terminology p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .vision-questions {
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .vision-questions h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .vision-questions ul {
+            list-style: none;
+        }
+
+        .vision-questions li {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            padding: 0.4rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+        }
+
+        .vision-questions li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            transform: translateY(-50%);
+        }
+
+        .vision-parallel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            text-align: left;
+        }
+
+        .parallel-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .parallel-card .parallel-era {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .parallel-card.then .parallel-era { color: var(--text-muted); }
+        .parallel-card.now .parallel-era { color: var(--accent-amber); }
+
+        .parallel-card h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .parallel-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .parallel-card .parallel-result {
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .parallel-card.now .parallel-result {
+            color: var(--accent-blue);
+        }
+
+        .vision-roadmap {
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .vision-roadmap h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            text-align: center;
+        }
+
+        .roadmap-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .roadmap-timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-blue), var(--accent-purple), var(--accent-amber));
+            border-radius: 1px;
+        }
+
+        .roadmap-step {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .roadmap-step:last-child {
+            padding-bottom: 0;
+        }
+
+        .roadmap-step::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-blue);
+            background: var(--bg-deep);
+        }
+
+        .roadmap-step.active::before {
+            background: var(--accent-blue);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+        }
+
+        .roadmap-step .step-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 0.2rem;
+        }
+
+        .roadmap-step .step-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .roadmap-step .step-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .roadmap-step .step-body {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            margin-top: 0.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .vision-parallel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            color: var(--text-primary);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .footer-links a:hover { color: var(--text-secondary); }
+
+        .footer-copy {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .layer-hud {
+                bottom: 2rem;
+                padding: 0.5rem 1.2rem;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .problem-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .proof-grid {
+                grid-template-columns: 1fr;
+            }
+            .bento-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+            nav { padding: 0 1rem; }
+            .scene-inner { padding: 0 1.25rem; }
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .fade-in {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =============================================
+         NAVIGATION
+         ============================================= -->
+    <nav id="main-nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">ONI</a>
+            <ul class="nav-links">
+                <li><a href="#scene-hero" data-section="scene-hero">Home</a></li>
+                <li><a href="#scene-framework" data-section="scene-framework">Framework</a></li>
+                <li><a href="#scene-proof" data-section="scene-proof">Research</a></li>
+                <li><a href="visualizations/index.html">Tools</a></li>
+                <li><a href="https://medium.com/@qikevinl" target="_blank" rel="noopener">Blog</a></li>
+                <li>
+                    <a href="https://github.com/qinnovates/mindloft" target="_blank" rel="noopener" class="nav-github" aria-label="GitHub">
+                        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                    </a>
+                </li>
+            </ul>
+            <button class="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+        </div>
+    </nav>
+    <div class="nav-mobile-menu" id="mobile-menu">
+        <a href="#scene-hero" onclick="closeMobileMenu()">Home</a>
+        <a href="#scene-framework" onclick="closeMobileMenu()">Framework</a>
+        <a href="#scene-proof" onclick="closeMobileMenu()">Research</a>
+        <a href="visualizations/index.html">Tools</a>
+        <a href="https://medium.com/@qikevinl" target="_blank" rel="noopener">Blog</a>
+        <a href="https://github.com/qinnovates/mindloft" target="_blank" rel="noopener">GitHub</a>
+    </div>
+
+    <!-- =============================================
+         THREE.JS CANVAS (Fixed behind content)
+         ============================================= -->
+    <div id="three-canvas"></div>
+
+    <!-- =============================================
+         SCENE 1: HERO
+         ============================================= -->
+    <section id="scene-hero" class="scene">
+        <div class="hero-content">
+            <div class="hero-label" id="hero-label">NEUROSECURITY STANDARDS FOR BRAIN-COMPUTER INTERFACES</div>
+            <h1 class="hero-title" id="hero-title"></h1>
+            <p class="hero-subtitle" id="hero-subtitle">No standards. No ethics. No security. <strong>Until now.</strong></p>
+            <a href="whitepaper/index.html" class="hero-cta" id="hero-cta">
+                Read Whitepaper
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+        <div class="hero-scroll-indicator" id="scroll-indicator">
+            <span class="hero-scroll-text">Scroll to explore the framework</span>
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SCENE 2: THE PROBLEM
+         ============================================= -->
+    <section id="scene-problem" class="scene">
+        <div class="scene-inner">
+            <div class="problem-grid">
+                <div class="problem-text">
+                    <div class="section-label fade-up">The Problem</div>
+                    <h2 class="fade-up">BCIs are here.<br>Security standards aren't.</h2>
+                    <p class="fade-up">The gap between BCI capability and security infrastructure is widening. Foundational researchers &mdash; Kohno, Bonaci, Yuste, Ienca &mdash; identified threats over a decade ago. But no unified, implementable framework exists. ONI fills that gap.</p>
+                </div>
+                <div class="problem-stats">
+                    <div class="stat-item">
+                        <div class="stat-number blue" data-target="6.2" data-prefix="$" data-suffix="B">$0</div>
+                        <div class="stat-desc">BCI market by 2030</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number amber" data-target="400" data-suffix="K+">0</div>
+                        <div class="stat-desc">Patients with neural implants</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number red" data-target="0" data-static="true">0</div>
+                        <div class="stat-desc">Universal security standards</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SCENE 3: THE FRAMEWORK (Scroll-driven 3D)
+         ============================================= -->
+    <section id="scene-framework" class="scene">
+        <div class="framework-scroll-track">
+            <!-- Intro trigger -->
+            <div class="framework-intro-trigger" data-zone="all"></div>
+
+            <!-- Interactive zone: click layers to explore -->
+            <div class="framework-interactive-zone"></div>
+
+            <!-- Closing trigger -->
+            <div class="framework-closing-trigger" data-zone="all"></div>
+        </div>
+    </section>
+
+    <!-- Layer detail overlay (centered) -->
+    <div class="layer-detail" id="layer-detail">
+        <div class="layer-detail-tag" id="layer-detail-tag"></div>
+        <p class="layer-detail-desc" id="layer-detail-desc"></p>
+        <p class="layer-detail-context" id="layer-detail-context"></p>
+        <div class="layer-detail-formula" id="layer-detail-formula" style="display:none;"></div>
+    </div>
+
+    <!-- Click-to-explore hint -->
+    <div class="click-hint" id="click-hint">
+        <div class="click-hint-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 15l-2 5L9 9l11 4-5 2z"/>
+                <path d="M21 21l-4.35-4.35"/>
+            </svg>
+        </div>
+        <span>Click any layer to explore</span>
+    </div>
+
+    <!-- Hover tooltip (follows cursor) -->
+    <div class="hover-tooltip" id="hover-tooltip">
+        <span class="hover-tooltip-zone"></span>
+        <span class="hover-tooltip-id"></span>
+        <span class="hover-tooltip-name"></span>
+        <span class="hover-tooltip-action">Click to expand</span>
+    </div>
+
+    <!-- ONI closing text: vector NI overlay -->
+    <div id="oni-ni-overlay">NI</div>
+
+    <!-- Easter egg: heart + thank you message -->
+    <div id="easter-egg-overlay" class="easter-egg-overlay">
+        <div class="easter-egg-content">
+            <div class="easter-egg-heart" id="easter-egg-heart">
+                <svg viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 85 C25 65 0 45 0 25 C0 10 12 0 25 0 C35 0 45 8 50 15 C55 8 65 0 75 0 C88 0 100 10 100 25 C100 45 75 65 50 85Z" fill="url(#heartGrad)" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+                    <defs>
+                        <radialGradient id="heartGrad" cx="50%" cy="40%" r="60%">
+                            <stop offset="0%" stop-color="#ff6b9d"/>
+                            <stop offset="60%" stop-color="#ec4899"/>
+                            <stop offset="100%" stop-color="#be185d"/>
+                        </radialGradient>
+                    </defs>
+                </svg>
+            </div>
+            <p class="easter-egg-text" id="easter-egg-text">placeholder</p>
+            <button class="easter-egg-close" id="easter-egg-close">&times;</button>
+        </div>
+    </div>
+
+    <!-- Layer HUD (floating label) -->
+    <div class="layer-hud" id="layer-hud">
+        <span class="layer-hud-badge" id="layer-hud-badge"></span>
+        <span class="layer-hud-name" id="layer-hud-name"></span>
+        <span class="layer-hud-zone" id="layer-hud-zone"></span>
+    </div>
+
+    <!-- =============================================
+         SCENE 4: THE PROOF
+         ============================================= -->
+    <section id="scene-proof" class="scene">
+        <div class="scene-inner">
+            <div class="proof-header">
+                <div class="section-label fade-up">Foundations</div>
+                <h2 class="fade-up">Built on a decade of research.</h2>
+            </div>
+            <div class="proof-grid">
+                <!-- Research Column -->
+                <div class="proof-column fade-up">
+                    <h3>Research Foundations</h3>
+
+                    <div class="researcher-card">
+                        <div class="researcher-avatar">TK</div>
+                        <div>
+                            <div class="researcher-name">Tadayoshi Kohno</div>
+                            <div class="researcher-inst">University of Washington</div>
+                            <div class="researcher-contrib">BCI threat modeling &amp; security analysis</div>
+                        </div>
+                    </div>
+
+                    <div class="researcher-card">
+                        <div class="researcher-avatar">TB</div>
+                        <div>
+                            <div class="researcher-name">Tamara Bonaci</div>
+                            <div class="researcher-inst">University of Washington</div>
+                            <div class="researcher-contrib">Neural signal attack demonstration</div>
+                        </div>
+                    </div>
+
+                    <div class="researcher-card">
+                        <div class="researcher-avatar">RY</div>
+                        <div>
+                            <div class="researcher-name">Rafael Yuste</div>
+                            <div class="researcher-inst">Columbia University</div>
+                            <div class="researcher-contrib">Neurorights framework</div>
+                        </div>
+                    </div>
+
+                    <div class="researcher-card">
+                        <div class="researcher-avatar">MI</div>
+                        <div>
+                            <div class="researcher-name">Marcello Ienca</div>
+                            <div class="researcher-inst">ETH Zurich / TU Munich</div>
+                            <div class="researcher-contrib">Four neurorights framework</div>
+                        </div>
+                    </div>
+
+                    <div class="researcher-card">
+                        <div class="researcher-avatar">GL</div>
+                        <div>
+                            <div class="researcher-name">Gabriel L&aacute;zaro-Mu&ntilde;oz</div>
+                            <div class="researcher-inst">Harvard Law School</div>
+                            <div class="researcher-contrib">Informed consent for neural devices</div>
+                        </div>
+                    </div>
+
+                    <p class="proof-note">ONI extends foundational BCI security research into a unified, implementable architecture.</p>
+                </div>
+
+                <!-- Regulatory Column -->
+                <div class="proof-column fade-up">
+                    <h3>Regulatory Alignment</h3>
+                    <ul class="regulatory-list">
+                        <li>
+                            <span class="check-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <div>
+                                UNESCO Recommendation on Neurotechnology (2025)
+                                <div class="regulatory-detail">15 of 17 elements implemented</div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="check-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <div>
+                                US MIND Act (S. 2925)
+                                <div class="regulatory-detail">Federal neurotechnology legislation</div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="check-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <div>
+                                4 State Neurorights Laws
+                                <div class="regulatory-detail">Colorado, California, Montana, Connecticut</div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="check-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <div>
+                                FDA Cybersecurity Guidance (2023)
+                                <div class="regulatory-detail">Medical device security requirements</div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="check-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <div>
+                                9 Governance Documents Published
+                                <div class="regulatory-detail">Ethics, consent, accessibility, data policy</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SCENE 5: QUOTE
+         ============================================= -->
+    <section id="scene-quote" class="scene">
+        <div>
+            <p class="quote-text" id="quote-text">"Only life's most important connections deserve the most thought."</p>
+            <p class="quote-author" id="quote-author">&mdash; Kevin Qi</p>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SCENE 6: WHAT'S BUILT
+         ============================================= -->
+    <section id="scene-built" class="scene">
+        <div class="scene-inner">
+            <div class="built-header">
+                <div class="section-label fade-up">Ecosystem</div>
+                <h2 class="fade-up">What's been built.</h2>
+            </div>
+            <div class="bento-grid">
+                <a href="https://pypi.org/project/oni-framework/" target="_blank" rel="noopener" class="bento-card fade-up">
+                    <div class="card-label">Python Package</div>
+                    <h3>ONI Framework</h3>
+                    <div class="card-code">pip install oni-framework</div>
+                    <p>14-layer model, coherence metric, scale-frequency invariant. The core library.</p>
+                    <span class="card-link">PyPI &rarr;</span>
+                </a>
+
+                <a href="https://pypi.org/project/oni-tara/" target="_blank" rel="noopener" class="bento-card fade-up">
+                    <div class="card-label">Security Stack</div>
+                    <h3>TARA Stack</h3>
+                    <div class="card-code">pip install oni-tara</div>
+                    <p>Attack simulation, signal analysis, neural firewall prototype. Named after the Buddhist goddess of protection.</p>
+                    <span class="card-link">PyPI &rarr;</span>
+                </a>
+
+                <a href="visualizations/index.html" class="bento-card fade-up">
+                    <div class="card-label">Web Applications</div>
+                    <h3>Interactive Tools</h3>
+                    <p>10 web apps: coherence playground, threat matrix, layer explorer, framework visualization, and more.</p>
+                    <span class="card-link">Explore &rarr;</span>
+                </a>
+
+                <a href="whitepaper/index.html" class="bento-card fade-up">
+                    <div class="card-label">Research</div>
+                    <h3>Whitepaper</h3>
+                    <p>Complete framework overview, market analysis, regulatory mapping, and technical architecture.</p>
+                    <span class="card-link">Read &rarr;</span>
+                </a>
+
+                <a href="documentation/index.html" class="bento-card fade-up">
+                    <div class="card-label">Documentation</div>
+                    <h3>20+ Publications</h3>
+                    <p>Technical documents and blog posts across 8 research areas. Detection theory, quantum encryption, neural ransomware, and more.</p>
+                    <span class="card-link">Browse &rarr;</span>
+                </a>
+
+                <a href="https://github.com/qinnovates/mindloft" target="_blank" rel="noopener" class="bento-card fade-up">
+                    <div class="card-label">Open Source</div>
+                    <h3>Apache 2.0</h3>
+                    <p>Full transparency audit. Reproducible research. Human-AI collaboration documented in governance.</p>
+                    <span class="card-link">GitHub &rarr;</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SCENE 7: VISION + CTA
+         ============================================= -->
+    <section id="scene-vision" class="scene">
+        <div class="scene-inner">
+            <div class="vision-content">
+                <div class="section-label fade-up">Vision</div>
+                <h2 class="fade-up">Standardization unlocked the internet.<br>The brain is still waiting.</h2>
+
+                <!-- Historical Parallel -->
+                <div class="vision-parallel fade-up">
+                    <div class="parallel-card then">
+                        <div class="parallel-era">1970s &ndash; 1980s</div>
+                        <h4>Before OSI</h4>
+                        <p>Every manufacturer had proprietary networking protocols. Nothing could talk to anything else. No interoperability, no security baselines, no shared language.</p>
+                        <div class="parallel-result">Then came OSI, TCP/IP, IEEE 802 &rarr; the internet.</div>
+                    </div>
+                    <div class="parallel-card now">
+                        <div class="parallel-era">Today</div>
+                        <h4>Before neurosecurity standards</h4>
+                        <p>Every BCI manufacturer builds proprietary signal processing. No shared security model. No interoperability standards. No ethical baselines for neural data.</p>
+                        <div class="parallel-result">ONI is the draft that formal standards bodies can adopt.</div>
+                    </div>
+                </div>
+
+                <div class="vision-terminology fade-up">
+                    <h4>The Advantage We Have Now</h4>
+                    <p>When OSI was created, cybersecurity was a narrow government concern &mdash; not a design consideration. Encryption was classified as munitions. Firewalls hadn't been invented. The internet was built first &mdash; then spent decades retrofitting security after the damage was done. We don't have that excuse. We have 40+ years of hard-won security lessons, battle-tested frameworks, proven cryptography, and entire disciplines built on protecting data in transit. ONI takes everything the security industry has learned and bakes it into the neural standard <em>from the start</em> &mdash; so we don't repeat the same mistake with the most important network of all.</p>
+                </div>
+
+                <div class="vision-terminology fade-up">
+                    <h4>Why &ldquo;Neurosecurity&rdquo;</h4>
+                    <p>Foundational researchers established &ldquo;BCI security&rdquo; as the discipline. ONI adopts <em>neurosecurity</em> &mdash; protecting the neural system itself, regardless of what interfaces with it. The scope is broader: not just the interface, but everything it connects to.</p>
+                </div>
+
+                <!-- Roadmap -->
+                <div class="vision-roadmap fade-up">
+                    <h4>Roadmap to Formal Standardization</h4>
+                    <div class="roadmap-timeline">
+                        <div class="roadmap-step active">
+                            <div class="step-label">Current</div>
+                            <div class="step-title">Open Framework &amp; Research</div>
+                            <div class="step-desc">14-layer model, coherence metric, 46 threat signatures, 9 governance documents. Open source, peer-reviewable, Apache 2.0.</div>
+                        </div>
+                        <div class="roadmap-step">
+                            <div class="step-label">Next</div>
+                            <div class="step-title">Academic Validation &amp; Collaboration</div>
+                            <div class="step-desc">Partner with BCI security researchers and neuroscience labs to validate layers, refine threat models, and test the coherence metric against real neural data.</div>
+                        </div>
+                        <div class="roadmap-step">
+                            <div class="step-label">IEEE</div>
+                            <div class="step-title">Technical Standard Proposal</div>
+                            <div class="step-desc">Submit ONI's technical layers (signal security, transport integrity, gateway coherence) as a proposal to IEEE &mdash; like IEEE 802 standardized wireless networking.</div>
+                            <div class="step-body">Target: IEEE Standards Association &mdash; Neurotechnology Working Group</div>
+                        </div>
+                        <div class="roadmap-step">
+                            <div class="step-label">ISO / IEC</div>
+                            <div class="step-title">Governance &amp; Compliance Framework</div>
+                            <div class="step-desc">Propose ONI's governance layers (neuroethics alignment, informed consent, data policy) as an ISO/IEC standard &mdash; like ISO 27001 for information security.</div>
+                            <div class="step-body">Target: ISO/IEC JTC 1 &mdash; Information Security &amp; Emerging Technologies</div>
+                        </div>
+                        <div class="roadmap-step">
+                            <div class="step-label">Long-Term</div>
+                            <div class="step-title">Dedicated Neurotechnology Standards Body</div>
+                            <div class="step-desc">UNESCO's 2025 Recommendation on Neurotechnology calls for a dedicated standards body. ONI is designed to be the technical foundation it can build on.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vision-questions fade-up">
+                    <h4>Open Research Questions</h4>
+                    <ul>
+                        <li>Can coherence-based detection achieve clinical-grade sensitivity?</li>
+                        <li>How do quantum key distribution protocols adapt to neural bandwidth constraints?</li>
+                        <li>What governance models protect cognitive liberty while enabling therapeutic benefit?</li>
+                    </ul>
+                </div>
+
+                <div class="cta-buttons fade-up">
+                    <a href="whitepaper/index.html" class="btn btn-primary">Read the Whitepaper</a>
+                    <a href="https://github.com/qinnovates/mindloft" target="_blank" rel="noopener" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                        Star on GitHub
+                    </a>
+                    <a href="documentation/index.html" class="btn btn-secondary">View Documentation</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         FOOTER
+         ============================================= -->
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/qinnovates/mindloft/blob/main/ABOUT.md" target="_blank" rel="noopener">About</a>
+            <a href="https://github.com/qinnovates/mindloft" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://pypi.org/project/oni-framework/" target="_blank" rel="noopener">PyPI</a>
+            <a href="https://medium.com/@qikevinl" target="_blank" rel="noopener">Medium</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Kevin Qi. Apache 2.0.</p>
+    </footer>
+
+    <!-- =============================================
+         JAVASCRIPT
+         ============================================= -->
+    <script>
+    (function() {
+        'use strict';
+
+        // =============================================
+        // NAVIGATION
+        // =============================================
+        var mainNav = document.getElementById('main-nav');
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                mainNav.classList.add('scrolled');
+            } else {
+                mainNav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll spy
+        var navLinks = document.querySelectorAll('.nav-links a[data-section]');
+        var sections = document.querySelectorAll('.scene[id]');
+
+        function updateScrollSpy() {
+            var scrollPos = window.scrollY + 200;
+            sections.forEach(function(section) {
+                var top = section.offsetTop;
+                var bottom = top + section.offsetHeight;
+                var id = section.id;
+                navLinks.forEach(function(link) {
+                    if (link.dataset.section === id) {
+                        if (scrollPos >= top && scrollPos < bottom) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    }
+                });
+            });
+        }
+        window.addEventListener('scroll', updateScrollSpy);
+
+        // Mobile menu
+        window.toggleMobileMenu = function() {
+            document.getElementById('mobile-menu').classList.toggle('open');
+        };
+        window.closeMobileMenu = function() {
+            document.getElementById('mobile-menu').classList.remove('open');
+        };
+
+        // =============================================
+        // HERO TEXT ANIMATION
+        // =============================================
+        var heroTitle = document.getElementById('hero-title');
+        var titleText = 'The mind is the greatest frontier of our time.';
+        var words = titleText.split(' ');
+        heroTitle.innerHTML = words.map(function(w) {
+            return '<span class="word">' + w + '</span>';
+        }).join(' ');
+
+        // Animate hero elements on load
+        gsap.to('#hero-label', { opacity: 1, duration: 0.8, delay: 0.3 });
+
+        gsap.to('.hero-title .word', {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.08,
+            delay: 0.6,
+            ease: 'power2.out'
+        });
+
+        gsap.to('#hero-subtitle', { opacity: 1, duration: 0.8, delay: 1.8 });
+        gsap.to('#hero-cta', { opacity: 1, duration: 0.8, delay: 2.2 });
+        gsap.to('#scroll-indicator', { opacity: 1, duration: 0.8, delay: 2.8 });
+
+        // Fade out hero on scroll
+        gsap.to('.hero-content', {
+            scrollTrigger: {
+                trigger: '#scene-hero',
+                start: 'top top',
+                end: '80% top',
+                scrub: 1
+            },
+            opacity: 0,
+            y: -60
+        });
+
+        gsap.to('#scroll-indicator', {
+            scrollTrigger: {
+                trigger: '#scene-hero',
+                start: '20% top',
+                end: '40% top',
+                scrub: 1
+            },
+            opacity: 0
+        });
+
+        // =============================================
+        // FADE-UP ANIMATIONS (GSAP ScrollTrigger)
+        // =============================================
+        gsap.utils.toArray('.fade-up').forEach(function(el) {
+            gsap.to(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power2.out'
+            });
+        });
+
+        // =============================================
+        // SCENE 2: STAT COUNTERS
+        // =============================================
+        document.querySelectorAll('.stat-item').forEach(function(item, i) {
+            gsap.to(item, {
+                scrollTrigger: {
+                    trigger: item,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 1,
+                x: 0,
+                duration: 0.7,
+                delay: i * 0.2,
+                ease: 'power2.out',
+                onStart: function() {
+                    var numEl = item.querySelector('.stat-number');
+                    if (!numEl || numEl.dataset.animated) return;
+                    numEl.dataset.animated = '1';
+
+                    var target = parseFloat(numEl.dataset.target);
+                    var prefix = numEl.dataset.prefix || '';
+                    var suffix = numEl.dataset.suffix || '';
+                    var isStatic = numEl.dataset.static === 'true';
+
+                    if (isStatic) {
+                        numEl.textContent = prefix + target + suffix;
+                        return;
+                    }
+
+                    var obj = { val: 0 };
+                    gsap.to(obj, {
+                        val: target,
+                        duration: 1.5,
+                        ease: 'power2.out',
+                        onUpdate: function() {
+                            if (target % 1 !== 0) {
+                                numEl.textContent = prefix + obj.val.toFixed(1) + suffix;
+                            } else {
+                                numEl.textContent = prefix + Math.round(obj.val) + suffix;
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        // =============================================
+        // SCENE 5: QUOTE SCROLL-SCALE
+        // =============================================
+        gsap.to('#quote-text', {
+            scrollTrigger: {
+                trigger: '#scene-quote',
+                start: 'top 80%',
+                end: 'center center',
+                scrub: 1
+            },
+            scale: 1,
+            opacity: 1,
+            ease: 'power2.out'
+        });
+
+        gsap.to('#quote-author', {
+            scrollTrigger: {
+                trigger: '#scene-quote',
+                start: 'center 60%',
+                end: 'center 40%',
+                scrub: 1
+            },
+            opacity: 1
+        });
+
+        // =============================================
+        // THREE.JS: HERO CONCENTRIC SPHERES
+        // =============================================
+        var threeContainer = document.getElementById('three-canvas');
+        if (threeContainer && typeof THREE !== 'undefined') {
+            initHero3D();
+        }
+
+        function initHero3D() {
+            var isMobile = window.innerWidth <= 768;
+            var isTablet = window.innerWidth <= 1024;
+
+            // Renderer
+            var renderer = new THREE.WebGLRenderer({
+                alpha: true,
+                antialias: !isMobile,
+                powerPreference: 'high-performance'
+            });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x050a14, 1);
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+            threeContainer.appendChild(renderer.domElement);
+
+            // Scene & Camera
+            var scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x050a14, 0.035);
+            var camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.set(0, 0.3, 7);
+
+            // Groups
+            var autoRotateGroup = new THREE.Group();
+            var parallaxGroup = new THREE.Group();
+            scene.add(autoRotateGroup);
+            autoRotateGroup.add(parallaxGroup);
+
+            // Lighting
+            scene.add(new THREE.AmbientLight(0x1a2744, 0.3));
+            var keyLight = new THREE.PointLight(0x3b82f6, 2.0, 25);
+            keyLight.position.set(4, 3, 5);
+            scene.add(keyLight);
+            var fillLight = new THREE.PointLight(0x8b5cf6, 1.2, 20);
+            fillLight.position.set(-3, -2, 3);
+            scene.add(fillLight);
+            var rimLight = new THREE.PointLight(0x06b6d4, 1.5, 20);
+            rimLight.position.set(0, 1, -5);
+            scene.add(rimLight);
+            var gatewayLight = new THREE.PointLight(0xf59e0b, 1.0, 12);
+            gatewayLight.position.set(0, 0, 3);
+            scene.add(gatewayLight);
+
+            // Fresnel Shader (with outer glow + electric pool effect)
+            var fresnelVert = [
+                'varying vec3 vNormal;',
+                'varying vec3 vViewPos;',
+                'varying vec3 vWorldPos;',
+                'void main() {',
+                '  vNormal = normalize(normalMatrix * normal);',
+                '  vec4 mv = modelViewMatrix * vec4(position, 1.0);',
+                '  vViewPos = -mv.xyz;',
+                '  vWorldPos = (modelMatrix * vec4(position, 1.0)).xyz;',
+                '  gl_Position = projectionMatrix * mv;',
+                '}'
+            ].join('\n');
+
+            var fresnelFrag = [
+                'uniform vec3 uColor;',
+                'uniform float uOpacity;',
+                'uniform float uFresnelPower;',
+                'uniform float uGlowIntensity;',
+                'uniform float uTime;',
+                'uniform float uActiveGlow;',
+                'varying vec3 vNormal;',
+                'varying vec3 vViewPos;',
+                'varying vec3 vWorldPos;',
+                'void main() {',
+                '  vec3 vd = normalize(vViewPos);',
+                '  float fresnel = pow(1.0 - abs(dot(vd, vNormal)), uFresnelPower);',
+                '  float shimmer = 1.0 + 0.08 * sin(uTime * 2.0 + vNormal.x * 12.0);',
+                '',
+                '  // Calm electric pool ripple (when active)',
+                '  float ripple1 = sin(vWorldPos.x * 4.0 + uTime * 0.8) * cos(vWorldPos.z * 3.5 + uTime * 0.6);',
+                '  float ripple2 = sin(vWorldPos.x * 6.0 - uTime * 0.5 + 1.7) * cos(vWorldPos.z * 5.0 + uTime * 0.4);',
+                '  float poolEffect = 0.5 + 0.3 * ripple1 + 0.2 * ripple2;',
+                '  float electricPool = mix(1.0, poolEffect * 1.4 + 0.3, uActiveGlow);',
+                '',
+                '  // White outer glow (edge bloom)',
+                '  float outerGlow = pow(fresnel, 1.2) * uActiveGlow;',
+                '  vec3 glowColor = mix(uColor, vec3(1.0), outerGlow * 0.6);',
+                '',
+                '  float alpha = fresnel * uOpacity * shimmer * electricPool;',
+                '  alpha += outerGlow * 0.35;',
+                '  vec3 col = glowColor * (1.0 + fresnel * uGlowIntensity + outerGlow * 1.5);',
+                '  gl_FragColor = vec4(col, alpha);',
+                '}'
+            ].join('\n');
+
+            // Gateway Shader (with outer glow + electric pool effect)
+            var gatewayFrag = [
+                'uniform vec3 uColor;',
+                'uniform float uOpacity;',
+                'uniform float uTime;',
+                'uniform float uActiveGlow;',
+                'varying vec3 vNormal;',
+                'varying vec3 vViewPos;',
+                'varying vec3 vWorldPos;',
+                'void main() {',
+                '  vec3 vd = normalize(vViewPos);',
+                '  float fresnel = pow(1.0 - abs(dot(vd, vNormal)), 2.5);',
+                '  float pulse = 0.6 + 0.4 * sin(uTime * 3.0);',
+                '  float energy = fresnel * pulse;',
+                '  float scan = 0.5 + 0.5 * sin(vNormal.y * 20.0 + uTime * 4.0);',
+                '  energy += scan * 0.15 * fresnel;',
+                '',
+                '  // Calm electric pool (gateway version — warmer, slower)',
+                '  float ripple1 = sin(vWorldPos.x * 3.0 + uTime * 0.6) * cos(vWorldPos.z * 2.5 + uTime * 0.4);',
+                '  float ripple2 = sin(vWorldPos.x * 5.0 - uTime * 0.35 + 2.1) * cos(vWorldPos.z * 4.0 + uTime * 0.3);',
+                '  float poolEffect = 0.5 + 0.3 * ripple1 + 0.2 * ripple2;',
+                '  float electricPool = mix(1.0, poolEffect * 1.6 + 0.2, uActiveGlow);',
+                '',
+                '  // White outer glow',
+                '  float outerGlow = pow(fresnel, 1.0) * uActiveGlow;',
+                '  vec3 glowColor = mix(uColor, vec3(1.0, 0.95, 0.85), outerGlow * 0.5);',
+                '',
+                '  energy *= electricPool;',
+                '  energy += outerGlow * 0.4;',
+                '  vec3 col = glowColor * (1.0 + energy * 2.0 + outerGlow * 2.0);',
+                '  gl_FragColor = vec4(col, energy * uOpacity + outerGlow * 0.3);',
+                '}'
+            ].join('\n');
+
+            // Layer Config
+            var allLayers = [
+                { id:'L1',  r:2.90, c:[0.145,0.388,0.922], zone:'silicon',  fp:3.5 },
+                { id:'L2',  r:2.72, c:[0.173,0.424,0.941], zone:'silicon',  fp:3.2 },
+                { id:'L3',  r:2.55, c:[0.200,0.463,0.953], zone:'silicon',  fp:3.0 },
+                { id:'L4',  r:2.38, c:[0.231,0.510,0.965], zone:'silicon',  fp:2.8 },
+                { id:'L5',  r:2.22, c:[0.271,0.561,0.969], zone:'silicon',  fp:2.6 },
+                { id:'L6',  r:2.06, c:[0.310,0.612,0.976], zone:'silicon',  fp:2.5 },
+                { id:'L7',  r:1.90, c:[0.376,0.647,0.980], zone:'silicon',  fp:2.4 },
+                { id:'L8',  r:1.72, c:[0.961,0.620,0.043], zone:'gateway',  fp:2.0 },
+                { id:'L9',  r:1.52, c:[0.063,0.725,0.506], zone:'biology',  fp:2.8 },
+                { id:'L10', r:1.38, c:[0.204,0.827,0.600], zone:'biology',  fp:2.6 },
+                { id:'L11', r:1.24, c:[0.431,0.906,0.718], zone:'biology',  fp:2.4 },
+                { id:'L12', r:1.10, c:[0.655,0.545,0.984], zone:'biology',  fp:2.3 },
+                { id:'L13', r:0.96, c:[0.753,0.518,0.988], zone:'biology',  fp:2.2 },
+                { id:'L14', r:0.82, c:[0.620,0.380,0.920], zone:'biology',  fp:2.0 },
+            ];
+
+            var mobileIdx = [0,2,4,6,7,9,11,13];
+            var activeLayers = (isMobile || isTablet) ? mobileIdx.map(function(i){return allLayers[i];}) : allLayers;
+
+            // Shells
+            var shellGeo = new THREE.SphereGeometry(1, isMobile ? 32 : 64, isMobile ? 24 : 48);
+            var shellMeshes = [], shellUniforms = [];
+
+            activeLayers.forEach(function(layer) {
+                var isGW = layer.zone === 'gateway';
+                var u = {
+                    uColor: { value: new THREE.Vector3(layer.c[0], layer.c[1], layer.c[2]) },
+                    uOpacity: { value: isGW ? 0.7 : 0.45 },
+                    uFresnelPower: { value: layer.fp },
+                    uGlowIntensity: { value: isGW ? 2.5 : 1.2 },
+                    uTime: { value: 0 },
+                    uActiveGlow: { value: 0.0 }
+                };
+                var mat = new THREE.ShaderMaterial({
+                    uniforms: u,
+                    vertexShader: fresnelVert,
+                    fragmentShader: isGW ? gatewayFrag : fresnelFrag,
+                    transparent: true,
+                    side: THREE.FrontSide,
+                    depthWrite: false,
+                    blending: THREE.AdditiveBlending,
+                });
+                var mesh = new THREE.Mesh(shellGeo, mat);
+                mesh.scale.setScalar(layer.r);
+                mesh.userData = layer;
+                parallaxGroup.add(mesh);
+                shellMeshes.push(mesh);
+                shellUniforms.push(u);
+            });
+
+            // Laser-etched frosted glass labels for each layer disc
+            var labelMeshes = [];
+            var labelNames = {
+                L1:'Physical Carrier', L2:'Signal Processing', L3:'Protocol',
+                L4:'Transport', L5:'Session', L6:'Presentation', L7:'Application Interface',
+                L8:'Neural Gateway',
+                L9:'Signal Processing', L10:'Neural Protocol', L11:'Cognitive Transport',
+                L12:'Cognitive Session', L13:'Semantic Layer', L14:'Identity Layer'
+            };
+            var labelDomains = {
+                silicon:'OSI', gateway:'Bridge', biology:'Neural'
+            };
+            activeLayers.forEach(function(layer, i) {
+                var canvas = document.createElement('canvas');
+                canvas.width = 1024; canvas.height = 1024;
+                var ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 1024, 1024);
+
+                var name = labelNames[layer.id] || layer.id;
+                var domain = labelDomains[layer.zone] || '';
+                var line1 = layer.id + '  ·  ' + name;
+                var line2 = domain;
+
+                // Frosted etch: multiple blur passes for soft glow
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // Pass 1: wide glow (frosted halo)
+                ctx.shadowColor = 'rgba(255,255,255,0.3)';
+                ctx.shadowBlur = 30;
+                ctx.fillStyle = 'rgba(255,255,255,0.12)';
+                ctx.font = '600 64px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.fillText(line1, 512, 460);
+                ctx.font = '400 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.fillText(line2, 512, 540);
+
+                // Pass 2: medium glow
+                ctx.shadowBlur = 12;
+                ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                ctx.font = '600 64px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.fillText(line1, 512, 460);
+                ctx.font = '400 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.fillText(line2, 512, 540);
+
+                // Pass 3: sharp etched text
+                ctx.shadowColor = 'rgba(255,255,255,0.5)';
+                ctx.shadowBlur = 3;
+                ctx.fillStyle = 'rgba(255,255,255,0.45)';
+                ctx.font = '600 64px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.fillText(line1, 512, 460);
+                ctx.font = '400 40px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.fillText(line2, 512, 540);
+
+                // Thin horizontal etch line
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = 'rgba(255,255,255,0.2)';
+                ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(340, 500);
+                ctx.lineTo(684, 500);
+                ctx.stroke();
+
+                var texture = new THREE.CanvasTexture(canvas);
+                texture.needsUpdate = true;
+
+                var labelGeo = new THREE.PlaneGeometry(2, 2);
+                var labelMat = new THREE.MeshBasicMaterial({
+                    map: texture,
+                    transparent: true,
+                    opacity: 0,
+                    depthWrite: false,
+                    side: THREE.DoubleSide,
+                });
+                var lm = new THREE.Mesh(labelGeo, labelMat);
+                lm.renderOrder = 10;
+                parallaxGroup.add(lm);
+                labelMeshes.push(lm);
+            });
+
+            // ONI closing text — HTML vector overlay for "NI"; the merged disc IS the "O"
+            var niOverlay = document.getElementById('oni-ni-overlay');
+            var niOpacity = 0; // lerped 0→1
+            var niProjection = new THREE.Vector3(); // reusable for projection
+
+            // Wireframe overlays
+            var wireIndices = isMobile ? [0,3,5,7] : [0,3,6,7,10,13];
+            var wireGeo = new THREE.IcosahedronGeometry(1, 2);
+            wireIndices.forEach(function(idx) {
+                if (idx >= activeLayers.length) return;
+                var L = activeLayers[idx];
+                var wm = new THREE.MeshBasicMaterial({
+                    color: new THREE.Color(L.c[0], L.c[1], L.c[2]),
+                    wireframe: true, transparent: true,
+                    opacity: L.zone === 'gateway' ? 0.12 : 0.05,
+                    depthWrite: false,
+                });
+                var wMesh = new THREE.Mesh(wireGeo, wm);
+                wMesh.scale.setScalar(L.r * 1.002);
+                parallaxGroup.add(wMesh);
+            });
+
+            // Brain Core
+            var coreGeo = new THREE.SphereGeometry(0.55, isMobile ? 24 : 48, isMobile ? 18 : 36);
+            var cp = coreGeo.attributes.position;
+            for (var i = 0; i < cp.count; i++) {
+                var x = cp.getX(i), y = cp.getY(i), z = cp.getZ(i);
+                var n1 = Math.sin(x*6)*Math.cos(y*7)*Math.sin(z*5)*0.04;
+                var n2 = Math.sin(x*12+1)*Math.cos(y*11+2)*0.02;
+                var n3 = Math.cos(z*15+x*8)*0.012;
+                var len = Math.sqrt(x*x+y*y+z*z);
+                var s = (0.55+n1+n2+n3)/len;
+                cp.setXYZ(i, x*s, y*s*0.85, z*s);
+            }
+            coreGeo.computeVertexNormals();
+
+            var coreVert = [
+                'varying vec3 vNormal; varying vec3 vViewPos; varying vec3 vWP;',
+                'void main() {',
+                '  vNormal = normalize(normalMatrix * normal);',
+                '  vec4 mv = modelViewMatrix * vec4(position,1.0);',
+                '  vViewPos = -mv.xyz; vWP = position;',
+                '  gl_Position = projectionMatrix * mv;',
+                '}'
+            ].join('\n');
+
+            var coreFrag = [
+                'uniform float uTime;',
+                'varying vec3 vNormal; varying vec3 vViewPos; varying vec3 vWP;',
+                'void main() {',
+                '  vec3 vd = normalize(vViewPos);',
+                '  float fresnel = pow(1.0-abs(dot(vd,vNormal)),2.0);',
+                '  float sss = pow(max(0.0,dot(vd,-vNormal)),1.5)*0.4;',
+                '  float wave = sin(vWP.x*8.0+uTime*2.5)*sin(vWP.z*8.0+uTime*1.8);',
+                '  wave = wave*0.5+0.5;',
+                '  vec3 base = vec3(0.85,0.2,0.45);',
+                '  vec3 glow = vec3(0.5,0.15,0.65);',
+                '  vec3 col = mix(base,glow,fresnel);',
+                '  col += vec3(0.3,0.1,0.4)*sss;',
+                '  col += vec3(0.2,0.05,0.3)*wave*0.3;',
+                '  gl_FragColor = vec4(col, 0.7+fresnel*0.3);',
+                '}'
+            ].join('\n');
+
+            var coreU = { uTime:{value:0} };
+            var coreMat = new THREE.ShaderMaterial({
+                uniforms: coreU,
+                vertexShader: coreVert,
+                fragmentShader: coreFrag,
+                transparent: true, depthWrite: true,
+            });
+            var coreMesh = new THREE.Mesh(coreGeo, coreMat);
+            coreMesh.renderOrder = 5; // render above shells so dissipation is visible
+            parallaxGroup.add(coreMesh);
+
+            // Inner glow
+            var glowMat = new THREE.MeshBasicMaterial({
+                color: 0xec4899, transparent: true, opacity: 0.15,
+                depthWrite: false, blending: THREE.AdditiveBlending,
+            });
+            var glowMesh = new THREE.Mesh(new THREE.SphereGeometry(0.45,24,16), glowMat);
+            glowMesh.renderOrder = 5;
+            parallaxGroup.add(glowMesh);
+
+            // Neural Nodes
+            var nodeCount = isMobile ? 40 : 100;
+            var nPos = new Float32Array(nodeCount*3);
+            var nSizes = new Float32Array(nodeCount);
+            for (var i=0; i<nodeCount; i++) {
+                var theta = Math.random()*Math.PI*2;
+                var phi = Math.acos(2*Math.random()-1);
+                var r = 0.50+Math.random()*0.06;
+                nPos[i*3]   = r*Math.sin(phi)*Math.cos(theta);
+                nPos[i*3+1] = r*Math.sin(phi)*Math.sin(theta)*0.85;
+                nPos[i*3+2] = r*Math.cos(phi);
+                nSizes[i] = 0.02+Math.random()*0.03;
+            }
+            var nodeGeo = new THREE.BufferGeometry();
+            nodeGeo.setAttribute('position', new THREE.BufferAttribute(nPos,3));
+            nodeGeo.setAttribute('size', new THREE.BufferAttribute(nSizes,1));
+
+            var nodeVert = [
+                'attribute float size; uniform float uTime; varying float vAlpha;',
+                'void main() {',
+                '  vec4 mv = modelViewMatrix * vec4(position,1.0);',
+                '  float flicker = 0.5+0.5*sin(uTime*3.0+position.x*20.0+position.z*15.0);',
+                '  vAlpha = flicker;',
+                '  gl_PointSize = size * 300.0 / -mv.z * flicker;',
+                '  gl_Position = projectionMatrix * mv;',
+                '}'
+            ].join('\n');
+
+            var nodeFrag = [
+                'varying float vAlpha;',
+                'void main() {',
+                '  float d = length(gl_PointCoord-vec2(0.5));',
+                '  if(d>0.5) discard;',
+                '  float glow = exp(-d*6.0);',
+                '  vec3 col = mix(vec3(1.0,0.6,0.8),vec3(0.8,0.9,1.0),d);',
+                '  gl_FragColor = vec4(col, glow*vAlpha*0.9);',
+                '}'
+            ].join('\n');
+
+            var nodeU = { uTime:{value:0} };
+            var nodeMat = new THREE.ShaderMaterial({
+                uniforms: nodeU, vertexShader: nodeVert, fragmentShader: nodeFrag,
+                transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+            });
+            var nodeCloud = new THREE.Points(nodeGeo, nodeMat);
+            parallaxGroup.add(nodeCloud);
+
+            // Synapse Lines
+            var linePos = [];
+            var lc = 0, maxD = 0.35;
+            for (var i=0; i<nodeCount && lc<60; i++) {
+                for (var j=i+1; j<nodeCount && lc<60; j++) {
+                    var dx=nPos[i*3]-nPos[j*3], dy=nPos[i*3+1]-nPos[j*3+1], dz=nPos[i*3+2]-nPos[j*3+2];
+                    if (Math.sqrt(dx*dx+dy*dy+dz*dz) < maxD) {
+                        linePos.push(nPos[i*3],nPos[i*3+1],nPos[i*3+2]);
+                        linePos.push(nPos[j*3],nPos[j*3+1],nPos[j*3+2]);
+                        lc++;
+                    }
+                }
+            }
+            var synapseLines = null;
+            if (linePos.length > 0) {
+                var lineGeo = new THREE.BufferGeometry();
+                lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePos,3));
+                synapseLines = new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({
+                    color: 0xec4899, transparent: true, opacity: 0.15,
+                    depthWrite: false, blending: THREE.AdditiveBlending,
+                }));
+                parallaxGroup.add(synapseLines);
+            }
+
+            // Ambient Dust
+            var dustCount = isMobile ? 80 : 200;
+            var dPos = new Float32Array(dustCount*3);
+            for (var i=0; i<dustCount; i++) {
+                dPos[i*3]   = (Math.random()-0.5)*10;
+                dPos[i*3+1] = (Math.random()-0.5)*8;
+                dPos[i*3+2] = (Math.random()-0.5)*6;
+            }
+            var dustGeo = new THREE.BufferGeometry();
+            dustGeo.setAttribute('position', new THREE.BufferAttribute(dPos,3));
+            var dustCloud = new THREE.Points(dustGeo, new THREE.PointsMaterial({
+                color: 0x60a5fa, size: 0.015, transparent: true, opacity: 0.3,
+                depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true,
+            }));
+            scene.add(dustCloud);
+
+            // Mouse parallax
+            var mouseX = 0, mouseY = 0;
+            if (!isMobile) {
+                document.addEventListener('mousemove', function(e) {
+                    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+                });
+            }
+
+            // Visibility observer
+            var clock = new THREE.Clock();
+            var isVisible = true;
+
+            var visObs = new IntersectionObserver(function(entries) {
+                isVisible = entries[0].isIntersecting;
+            }, { threshold: 0 });
+            visObs.observe(threeContainer);
+
+            // Resize
+            function onResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+            window.addEventListener('resize', onResize);
+
+            // =============================================
+            // CLICK-TO-EXPLORE: Raycaster + interaction
+            // =============================================
+            var raycaster = new THREE.Raycaster();
+            var rayMouse = new THREE.Vector2();
+            var hoveredShellIndex = -1;
+            var canvasInteractive = false;
+            var clickHint = document.getElementById('click-hint');
+            var hasInteracted = false; // hide hint permanently after first hover/click
+            var hoverTooltip = document.getElementById('hover-tooltip');
+            var hoverTooltipZone = hoverTooltip.querySelector('.hover-tooltip-zone');
+            var hoverTooltipId = hoverTooltip.querySelector('.hover-tooltip-id');
+            var hoverTooltipName = hoverTooltip.querySelector('.hover-tooltip-name');
+            var hoverTooltipAction = hoverTooltip.querySelector('.hover-tooltip-action');
+            var lastMouseClientX = 0, lastMouseClientY = 0;
+
+            // Track mouse for raycasting and tooltip positioning
+            document.addEventListener('mousemove', function(e) {
+                rayMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                rayMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+                lastMouseClientX = e.clientX;
+                lastMouseClientY = e.clientY;
+            });
+
+            // Click handler: toggle active layer (full pull-out)
+            function handleLayerClick(clientX, clientY) {
+                // Easter egg: tap L14 while spring is compressed (L14 is red) → trigger cone bloom
+                if (springCompress > 0.6 && !easterEggActive) {
+                    var eeRay = new THREE.Vector2(
+                        (clientX / window.innerWidth) * 2 - 1,
+                        -(clientY / window.innerHeight) * 2 + 1
+                    );
+                    var eeRC = new THREE.Raycaster();
+                    eeRC.setFromCamera(eeRay, camera);
+                    var l14Idx = activeLayers.length - 1;
+                    var eeHits = eeRC.intersectObject(shellMeshes[l14Idx]);
+                    if (eeHits.length > 0) {
+                        easterEggActive = true;
+                        return; // consume the click
+                    }
+                }
+                if (morphProgress.value < 0.15 || introProgress.value < 0.95 || activeGroupMode === 'closing') return;
+                rayMouse.x = (clientX / window.innerWidth) * 2 - 1;
+                rayMouse.y = -(clientY / window.innerHeight) * 2 + 1;
+                raycaster.setFromCamera(rayMouse, camera);
+                var intersects = raycaster.intersectObjects(shellMeshes);
+                if (intersects.length > 0) {
+                    var clickedIndex = shellMeshes.indexOf(intersects[0].object);
+                    if (clickedIndex === activeLayerIndex) {
+                        // Deactivate
+                        activeLayerIndex = -1;
+                        activeZone = 'all';
+                        updateHud(null);
+                    } else {
+                        // Activate this layer (full pull-out)
+                        activeLayerIndex = clickedIndex;
+                        var eLayer = activeLayers[clickedIndex];
+                        activeZone = eLayer.zone;
+                        updateHud(eLayer.id, eLayer.zone);
+                        hasInteracted = true;
+                    }
+                } else {
+                    // Clicked empty space — deactivate
+                    activeLayerIndex = -1;
+                    activeZone = 'all';
+                    updateHud(null);
+                }
+            }
+
+            // Listen on document — canvas is behind content z-index so direct canvas clicks won't reach
+            document.addEventListener('click', function(e) {
+                if (!canvasInteractive) return;
+                handleLayerClick(e.clientX, e.clientY);
+            });
+
+            // Mobile touch support (tap detection)
+            var touchStartPos = null;
+            document.addEventListener('touchstart', function(e) {
+                touchStartPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }, { passive: true });
+            document.addEventListener('touchend', function(e) {
+                if (!touchStartPos || !canvasInteractive) return;
+                var tx = e.changedTouches[0].clientX;
+                var ty = e.changedTouches[0].clientY;
+                var dist = Math.hypot(tx - touchStartPos.x, ty - touchStartPos.y);
+                if (dist < 15) {
+                    handleLayerClick(tx, ty);
+                }
+                touchStartPos = null;
+            }, { passive: true });
+
+            // Gateway index (top-level for easter egg + other references)
+            var gwIdxGlobal = -1;
+            for (var gi = 0; gi < activeLayers.length; gi++) {
+                if (activeLayers[gi].zone === 'gateway') { gwIdxGlobal = gi; break; }
+            }
+
+            // =============================================
+            // EASTER EGG: Spring compress L14→L8, then cone bloom
+            // =============================================
+            var easterEggActive = false;  // triggered by tapping red L14
+            var easterEggPhase = 0;       // 0→1: exponential expansion progress (lerped)
+
+            // Toggle interactive class based on scroll position
+            ScrollTrigger.create({
+                trigger: '#scene-framework',
+                start: 'top 80%',
+                end: 'bottom 20%',
+                onEnter: function() { threeContainer.classList.add('interactive'); canvasInteractive = true; },
+                onLeave: function() { threeContainer.classList.remove('interactive'); canvasInteractive = false; activeLayerIndex = -1; activeZone = 'all'; updateHud(null); clickHint.classList.remove('visible'); },
+                onEnterBack: function() { threeContainer.classList.add('interactive'); canvasInteractive = true; },
+                onLeaveBack: function() { threeContainer.classList.remove('interactive'); canvasInteractive = false; activeLayerIndex = -1; activeZone = 'all'; updateHud(null); clickHint.classList.remove('visible'); }
+            });
+
+            // =============================================
+            // INTRO: Stack → Sphere (on page load)
+            // =============================================
+            // Scroll-driven brightness: each wheel tick progressively restores layers
+            // scrollBrightness 0→14: how many layers have been fully restored (L14 first)
+            // Start at 14 so layers are fully bright during intro expand
+            var scrollBrightness = 14;
+            window.addEventListener('wheel', function() {
+                if (scrollBrightness < 14) {
+                    scrollBrightness = Math.min(14, scrollBrightness + 1.5); // ~1.5 layers per tick
+                }
+            }, { passive: true });
+            window.addEventListener('touchmove', function() {
+                if (scrollBrightness < 14) {
+                    scrollBrightness = Math.min(14, scrollBrightness + 1.5);
+                }
+            }, { passive: true });
+
+            // Spring coil: scroll-up at top of page compresses L14→L8 downward
+            // Like a tension spring — L14 moves most, L9 barely, L8 anchored
+            var springCompress = 0; // 0 = normal, 1 = fully compressed
+            var springTarget = 0;
+            window.addEventListener('wheel', function(e) {
+                if (window.scrollY < 5 && e.deltaY < 0 && introProgress.value > 0.9) {
+                    // Scrolling up at top of page — compress spring
+                    springTarget = Math.min(1, springTarget + Math.abs(e.deltaY) * 0.003);
+                } else if (e.deltaY > 0) {
+                    // Scrolling down — release spring
+                    springTarget = Math.max(0, springTarget - Math.abs(e.deltaY) * 0.005);
+                }
+            }, { passive: true });
+            window.addEventListener('touchmove', function(e) {
+                // Touch: handled by tracking deltaY from touchstart
+            }, { passive: true });
+            // Touch support for spring
+            var touchStartY = 0;
+            window.addEventListener('touchstart', function(e) {
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            window.addEventListener('touchmove', function(e) {
+                var dy = e.touches[0].clientY - touchStartY;
+                touchStartY = e.touches[0].clientY;
+                if (window.scrollY < 5 && dy > 0 && introProgress.value > 0.9) {
+                    springTarget = Math.min(1, springTarget + dy * 0.005);
+                } else if (dy < 0) {
+                    springTarget = Math.max(0, springTarget + dy * 0.005);
+                }
+            }, { passive: true });
+
+            // Intro expand: reverse-collapse animation
+            // 0.02 = flat circle (all layers merged at top, facing camera)
+            // 1 = fully expanded stack
+            // Start at 0.02 (not 0) so effectiveMorph = morphCap from first frame
+            var introProgress = { value: 0.02 };
+
+            gsap.to(introProgress, {
+                value: 1,
+                duration: 2.8,
+                delay: 0.6,
+                ease: 'power2.out'
+            });
+
+            // =============================================
+            // SPHERE → STACK MORPH (GSAP ScrollTrigger)
+            // =============================================
+            var morphProgress = { value: 0 };
+            var originalRadii = activeLayers.map(function(l) { return l.r; });
+
+            // Morph triggered when entering framework section
+            gsap.to(morphProgress, {
+                value: 1,
+                scrollTrigger: {
+                    trigger: '#scene-framework',
+                    start: 'top 80%',
+                    end: 'top 20%',
+                    scrub: 1,
+                },
+                ease: 'none'
+            });
+
+            // v3-style: fade + shrink the 3D canvas as Research section scrolls up
+            var closingShrink = { value: 0 }; // 0 = full size, 1 = shrunk away
+            gsap.to(closingShrink, {
+                value: 1,
+                scrollTrigger: {
+                    trigger: '#scene-proof',
+                    start: 'top 90%',
+                    end: 'top 30%',
+                    scrub: 1
+                },
+                ease: 'none'
+            });
+            gsap.to(threeContainer, {
+                scrollTrigger: {
+                    trigger: '#scene-proof',
+                    start: 'top 80%',
+                    end: 'top 40%',
+                    scrub: 1
+                },
+                opacity: 0
+            });
+
+            // Restore opacity on scroll back
+            ScrollTrigger.create({
+                trigger: '#scene-hero',
+                start: 'top top',
+                end: 'bottom top',
+                onEnter: function() { threeContainer.style.opacity = '1'; },
+                onEnterBack: function() { threeContainer.style.opacity = '1'; }
+            });
+
+            // =============================================
+            // PER-LAYER SCROLL TRACKING + HUD
+            // =============================================
+            var activeLayerIndex = -1;
+            var activeZone = 'all';
+            var activeGroupMode = null; // 'closing' when layers merge into ONI
+            // HUD elements
+            var layerHud = document.getElementById('layer-hud');
+            var layerHudBadge = document.getElementById('layer-hud-badge');
+            var layerHudName = document.getElementById('layer-hud-name');
+            var layerHudZone = document.getElementById('layer-hud-zone');
+
+            // Layer data lookup
+            var layerData = {
+                OSI: { name:'Classical OSI Layers', tag:'Layers 1\u20137 \u00B7 The Foundation', tagClass:'osi',
+                    desc:'These 7 layers mirror the OSI model that powers every network on Earth \u2014 from physical hardware to application software. ONI maps them directly to the silicon side of brain-computer interfaces.',
+                    context:'Physical \u00B7 Data Link \u00B7 Network \u00B7 Transport \u00B7 Session \u00B7 Presentation \u00B7 Application' },
+                L1: { name:'Physical Carrier', tag:'OSI: Physical Layer', tagClass:'osi',
+                    desc:'The hardware that touches your body \u2014 electrodes, wires, wireless signals carrying neural data from brain to device.',
+                    context:'Think: the cables and radio waves that carry internet traffic' },
+                L2: { name:'Signal Processing', tag:'OSI: Data Link', tagClass:'osi',
+                    desc:'Cleaning raw brain signals \u2014 filtering noise, amplifying patterns, organizing data into usable frames.',
+                    context:'Think: Ethernet frames that package raw data for delivery' },
+                L3: { name:'Protocol', tag:'OSI: Network', tagClass:'osi',
+                    desc:'Routing rules for neural data \u2014 which signals go where, how packets are addressed across the interface.',
+                    context:'Think: IP addresses that route traffic across the internet' },
+                L4: { name:'Transport', tag:'OSI: Transport', tagClass:'osi',
+                    desc:'Ensuring neural data arrives complete and in order \u2014 reliable delivery between device and processing systems.',
+                    context:'Think: TCP ensuring your web page loads without missing pieces' },
+                L5: { name:'Session', tag:'OSI: Session', tagClass:'osi',
+                    desc:'Managing the conversation between device and brain \u2014 connection lifecycle, state management, synchronization.',
+                    context:'Think: staying logged in while you browse a website' },
+                L6: { name:'Presentation', tag:'OSI: Presentation', tagClass:'osi',
+                    desc:'Translating neural data into formats software understands \u2014 encoding, compression, encryption.',
+                    context:'Think: SSL encryption and data formatting for secure communication' },
+                L7: { name:'Application Interface', tag:'OSI: Application', tagClass:'osi',
+                    desc:'The software layer \u2014 BCI apps, prosthetic control panels, neurofeedback dashboards.',
+                    context:'Think: the apps and browsers you use every day' },
+                L8: { name:'Neural Gateway', tag:'The Neural Firewall', tagClass:'gateway-tag',
+                    desc:'The boundary between machine and mind. Every signal crossing this layer is measured against the Coherence Metric \u2014 a mathematical signature of signal integrity. No equivalent exists in traditional networking.',
+                    context:'If coherence drops below threshold, the signal is rejected before it reaches biology.',
+                    formula:'C\u209B = e\u207B\u207D\u03C3\u00B2\u03C6 + \u03C3\u00B2\u03C4 + \u03C3\u00B2\u03B3\u207E' },
+                L9: { name:'Signal Processing', tag:'Beyond OSI \u2014 Biological Domain', tagClass:'novel',
+                    desc:'Your brain\u2019s own noise filter \u2014 how neurons clean, amplify, and gate the signals they receive from the interface.',
+                    context:'Biological filtering at the ion channel level' },
+                L10: { name:'Neural Protocol', tag:'Beyond OSI \u2014 Biological Domain', tagClass:'novel',
+                    desc:'How your brain encodes information \u2014 the electrochemical language neurons use to communicate with each other.',
+                    context:'Neurotransmitter signaling and spike-timing patterns' },
+                L11: { name:'Cognitive Transport', tag:'Beyond OSI \u2014 Biological Domain', tagClass:'novel',
+                    desc:'How thoughts travel across brain regions \u2014 the neural highways connecting perception, memory, and action.',
+                    context:'White matter tracts and cross-regional neural routing' },
+                L12: { name:'Cognitive Session', tag:'Beyond OSI \u2014 Biological Domain', tagClass:'novel',
+                    desc:'Your brain\u2019s working memory and attention \u2014 the context window that makes thoughts coherent and meaningful.',
+                    context:'Prefrontal cortex state management and attentional gating' },
+                L13: { name:'Semantic Layer', tag:'Beyond OSI \u2014 Biological Domain', tagClass:'novel',
+                    desc:'Where signals become meaning \u2014 how your brain turns neural patterns into understanding, intention, and decisions.',
+                    context:'Higher-order cognition, intent formation, and decision-making' },
+                L14: { name:'Identity Layer', tag:'Beyond OSI \u2014 Biological Domain', tagClass:'novel',
+                    desc:'Your sense of self \u2014 consciousness, personality, the subjective \u201Cyou\u201D that experiences everything. The deepest layer to protect.',
+                    context:'Neural correlates of consciousness and personal identity' }
+            };
+            var zoneLabels = { silicon:'Silicon', gateway:'Gateway', biology:'Biology' };
+
+            // Detail overlay elements
+            var layerDetail = document.getElementById('layer-detail');
+            var layerDetailTag = document.getElementById('layer-detail-tag');
+            var layerDetailDesc = document.getElementById('layer-detail-desc');
+            var layerDetailContext = document.getElementById('layer-detail-context');
+            var layerDetailFormula = document.getElementById('layer-detail-formula');
+
+            // Build a mapping from layer ID (L1-L14) to shell index
+            var layerIdToShellIndex = {};
+            activeLayers.forEach(function(layer, idx) {
+                layerIdToShellIndex[layer.id] = idx;
+            });
+
+            function updateHud(lid, zone) {
+                if (!layerHud) return;
+                var data = lid ? layerData[lid] : null;
+                if (data) {
+                    // Bottom HUD
+                    layerHudBadge.textContent = (lid === 'OSI') ? 'L1\u20137' : lid;
+                    layerHudBadge.className = 'layer-hud-badge ' + zone;
+                    layerHudName.textContent = data.name;
+                    layerHudZone.textContent = zoneLabels[zone] || '';
+                    layerHud.classList.add('visible');
+
+                    // Center detail overlay
+                    layerDetailTag.textContent = data.tag;
+                    layerDetailTag.className = 'layer-detail-tag ' + data.tagClass;
+                    layerDetailDesc.textContent = data.desc;
+                    layerDetailContext.textContent = data.context;
+                    if (data.formula) {
+                        layerDetailFormula.textContent = data.formula;
+                        layerDetailFormula.style.display = 'inline-block';
+                    } else {
+                        layerDetailFormula.style.display = 'none';
+                    }
+                    layerDetail.classList.add('visible');
+                } else {
+                    layerHud.classList.remove('visible');
+                    layerDetail.classList.remove('visible');
+                }
+            }
+
+            // Intro trigger resets state
+            ScrollTrigger.create({
+                trigger: '.framework-intro-trigger',
+                start: 'top 70%',
+                end: 'bottom 30%',
+                onToggle: function(self) {
+                    if (self.isActive) {
+                        activeLayerIndex = -1; activeZone = 'all'; activeGroupMode = null; updateHud(null);
+                    }
+                }
+            });
+
+            // Closing trigger: disabled for now (ONI animation saved for later)
+            // ScrollTrigger.create({
+            //     trigger: '.framework-closing-trigger',
+            //     start: 'top 70%',
+            //     end: 'bottom 30%',
+            //     onToggle: function(self) {
+            //         if (self.isActive) {
+            //             activeLayerIndex = -1; activeZone = 'all';
+            //             activeGroupMode = 'closing';
+            //             updateHud(null);
+            //         } else {
+            //             activeGroupMode = null;
+            //             updateHud(null);
+            //         }
+            //     }
+            // });
+
+            // Per-shell animation state (lerped in animation loop)
+            var shellScaleMultipliers = activeLayers.map(function() { return 1.0; });
+            var shellZOffsets = activeLayers.map(function() { return 0; });
+            var shellYOffsets = activeLayers.map(function() { return 0; });
+            var shellXOffsets = activeLayers.map(function() { return 0; });
+            var shellFaceCamera = activeLayers.map(function() { return 0; });
+
+            // Closing animation phase: 0→1 (convergence), then NI slides
+            var closingPhase = 0;
+            var niSlidePhase = 0; // 0→1: "O" and "NI" slide to center
+
+            // =============================================
+            // ANIMATION LOOP
+            // =============================================
+            function animate() {
+                requestAnimationFrame(animate);
+                if (!isVisible) return;
+
+                var dt = clock.getDelta();
+                var t = clock.getElapsedTime();
+
+                // Shader uniforms
+                shellUniforms.forEach(function(u) { u.uTime.value = t; });
+                coreU.uTime.value = t;
+                nodeU.uTime.value = t;
+
+                // Clamp scroll morph at L13–L14 contact point (mitosis threshold)
+                // Derived from: gap = 0.4·mp − (r₁₃ + r₁₄)(1 − 0.92·mp) = 0
+                // → mp* = (r₁₃ + r₁₄) / (0.4 + 0.92·(r₁₃ + r₁₄)) = 1.78/2.0376 ≈ 0.874
+                // Beyond this, L14–L13 edges separate and the solid-frustum illusion breaks.
+                var rawMorph = morphProgress.value;
+                var morphCap = 0.874;
+                var clampedMorph = Math.min(rawMorph, morphCap);
+
+                // Effective morph: force full stack (morphCap) whenever intro is active or done
+                // introVal goes 0→1 and stays at 1. Scroll morph also goes 0→morphCap.
+                // Use max so whichever is higher wins — intro keeps stack visible even before scroll.
+                var introVal = introProgress.value;
+                var introActive = introVal < 0.99;
+                // introVal > 0.01 means intro has started — keep layers as discs (morphCap)
+                var introMorph = (introVal > 0.01) ? morphCap : 0;
+                var effectiveMorph = Math.max(introMorph, clampedMorph);
+
+                // Auto-rotation (slows during morph, near-zero when layer pulled out)
+                var maxFace = 0;
+                for (var fi = 0; fi < shellFaceCamera.length; fi++) {
+                    if (shellFaceCamera[fi] > maxFace) maxFace = shellFaceCamera[fi];
+                }
+                var pullDampen = 1 - maxFace; // full stop rotation when layer is pulled out
+                var rotSpeed = 0.002 * (1 - effectiveMorph * 0.6) * pullDampen;
+                autoRotateGroup.rotation.y += rotSpeed;
+                autoRotateGroup.rotation.x = Math.sin(t*0.15)*0.08 * (1 - effectiveMorph * 0.8) * pullDampen;
+
+                // When layer is pulled out, lerp group rotations toward zero to kill drift
+                if (maxFace > 0.3) {
+                    var resetLerp = maxFace * 0.08;
+                    autoRotateGroup.rotation.y *= (1 - resetLerp);
+                    autoRotateGroup.rotation.x *= (1 - resetLerp);
+                }
+
+                // Mouse parallax (near-zero when layer pulled out)
+                if (!isMobile) {
+                    var parallaxStr = (1 - effectiveMorph * 0.7) * pullDampen;
+                    parallaxGroup.rotation.x += (mouseY*0.2*parallaxStr - parallaxGroup.rotation.x)*0.04;
+                    parallaxGroup.rotation.y += (mouseX*0.3*parallaxStr - parallaxGroup.rotation.y)*0.04;
+                    // Also reset parallax rotation when pulled out
+                    if (maxFace > 0.3) {
+                        parallaxGroup.rotation.x *= (1 - maxFace * 0.1);
+                        parallaxGroup.rotation.y *= (1 - maxFace * 0.1);
+                    }
+                }
+
+                // Global darken for brain/glow (uses scrollBrightness)
+                var globalBright = Math.min(1, scrollBrightness / 3); // full after ~2 ticks
+                var darkenMult = 0.3 + globalBright * 0.7; // 0.3→1.0
+
+                // Brain/core — visible once intro expand is mostly done
+                var pulse = 1 + Math.sin(t*1.2)*0.025;
+                var mp = effectiveMorph;
+
+                // Position brain at L8 in the stack
+                var gwIdx = -1;
+                for (var gi = 0; gi < activeLayers.length; gi++) {
+                    if (activeLayers[gi].zone === 'gateway') { gwIdx = gi; break; }
+                }
+                var l8StackY = 0;
+                if (gwIdx >= 0) {
+                    var stackSpacingCore = 0.4;
+                    l8StackY = (gwIdx - (activeLayers.length - 1) / 2) * stackSpacingCore;
+                }
+                coreMesh.position.y = l8StackY * mp;
+                glowMesh.position.y = l8StackY * mp;
+                nodeCloud.position.y = l8StackY * mp;
+                if (synapseLines) synapseLines.position.y = l8StackY * mp;
+
+                // Brain fades IN as intro expand completes (reverse of old behavior)
+                // introVal: 0 = collapsed circle, 1 = fully expanded stack
+                // bangProgress: used for ripple cascade timing (0→1 as layers expand)
+                var bangProgress = introVal;
+                var coreFade = Math.max(0, Math.min(1, (introVal - 0.7) / 0.3)); // fades in last 30% of intro
+
+                if (easterEggPhase > 0.01) {
+                    // Cone bloom: brain glows ONI Teal, pulses with the bloom
+                    var bloomPulse = 1 + Math.sin(t * 3.0) * 0.05 * easterEggPhase;
+                    coreMesh.scale.setScalar(pulse * Math.max(coreFade, 0.3) * bloomPulse);
+                    coreMesh.visible = true;
+                    coreMesh.material.opacity = Math.max(coreFade, 0.6) * darkenMult;
+                    glowMesh.visible = true;
+                    glowMesh.scale.setScalar(pulse * 0.9 * bloomPulse);
+                    var tealBlend = easterEggPhase;
+                    glowMat.color.setRGB(
+                        0.925 + (0.133 - 0.925) * tealBlend,
+                        0.282 + (0.776 - 0.282) * tealBlend,
+                        0.600 + (0.553 - 0.600) * tealBlend
+                    );
+                    glowMat.opacity = (0.2 + easterEggPhase * 0.25) * darkenMult;
+                    // Nodes stay visible but shift teal
+                    var nodeFade = Math.max(0, Math.min(1, (introVal - 0.6) / 0.4));
+                    var nodeScale = pulse * Math.max(nodeFade, 0.5);
+                    nodeCloud.scale.set(nodeScale, nodeScale*0.85, nodeScale);
+                    if (synapseLines) {
+                        synapseLines.scale.set(nodeScale, nodeScale*0.85, nodeScale);
+                        synapseLines.material.opacity = (0.15 + easterEggPhase * 0.1) * darkenMult;
+                    }
+                } else {
+                    coreMesh.scale.setScalar(pulse * Math.max(coreFade, 0.01));
+                    coreMesh.visible = coreFade > 0.01;
+                    coreMesh.material.opacity = coreFade * 0.9 * darkenMult;
+
+                    // Nodes and synapses fade in with brain
+                    var nodeFade = Math.max(0, Math.min(1, (introVal - 0.6) / 0.4));
+                    var nodeScale = pulse * nodeFade;
+                    nodeCloud.scale.set(nodeScale, nodeScale*0.85, nodeScale);
+                    if (synapseLines) {
+                        synapseLines.scale.set(nodeScale, nodeScale*0.85, nodeScale);
+                        synapseLines.material.opacity = 0.15 * nodeFade * darkenMult;
+                    }
+                    glowMesh.visible = coreFade > 0.02;
+                    glowMesh.scale.setScalar(pulse * 0.8 * Math.max(coreFade, 0.01));
+                    glowMat.color.setRGB(0.925, 0.282, 0.600);
+                    glowMat.opacity = (0.12 + Math.sin(t*1.8)*0.05) * coreFade * darkenMult;
+                }
+
+                // Stack offset: shift left when in stack mode (interactive), back to center otherwise
+                // During closing, the disc slides left to form "O" in "ONI"
+                var stackXTarget;
+                if (activeGroupMode === 'closing') {
+                    stackXTarget = niSlidePhase * -0.8; // slide left as "NI" approaches (tighter spacing)
+                } else {
+                    // Shift left when morphed to stack (framework section) so info overlay has room on right
+                    var wantStackLeft = (rawMorph > 0.15 && canvasInteractive);
+                    stackXTarget = wantStackLeft ? -2.0 : 0;
+                }
+                autoRotateGroup.position.x += (stackXTarget - autoRotateGroup.position.x) * 0.06;
+
+                // Spring coil: lerp toward target with damped spring feel
+                // Auto-release: spring slowly returns to 0 when not actively scrolling up
+                if (springTarget > 0 && window.scrollY >= 5) springTarget = 0;
+                // Slower decay when easter egg is active so user can hold the cone
+                var springDecay = easterEggActive ? 0.995 : 0.98;
+                springTarget *= springDecay;
+                springCompress += (springTarget - springCompress) * 0.08; // damped lerp
+
+                // Easter egg: activated by tapping red L14 when spring compressed
+                // Once triggered, track how much MORE the user keeps pulling
+                // The cone bloom grows as user continues scrolling up past the trigger point
+                if (easterEggActive) {
+                    // easterEggPhase driven by spring BEYOND the trigger threshold
+                    // User must keep pulling to expand the cone
+                    var coneTarget = Math.max(0, Math.min(1, (springCompress - 0.5) / 0.5));
+                    easterEggPhase += (coneTarget - easterEggPhase) * 0.06;
+                    // If spring fully releases, deactivate
+                    if (springCompress < 0.1 && easterEggPhase < 0.02) {
+                        easterEggActive = false;
+                        easterEggPhase = 0;
+                    }
+                }
+
+                // MORPH: Spheres → Flat Discs → Vertical Stack + Jenga Pull-Out
+                var mp = effectiveMorph;
+
+                // Closing phase lerp: ramp up when closing, reset when not
+                var closingTarget = (activeGroupMode === 'closing' && mp > 0.5) ? 1.0 : 0.0;
+                closingPhase += (closingTarget - closingPhase) * 0.04;
+                // NI slide: starts after convergence is mostly done
+                var niSlideTarget = (closingPhase > 0.7) ? 1.0 : 0.0;
+                niSlidePhase += (niSlideTarget - niSlidePhase) * 0.04;
+
+                // Precompute gateway index for collapse and stack spacing
+                var gwIdx = -1;
+                for (var gi = 0; gi < activeLayers.length; gi++) {
+                    if (activeLayers[gi].zone === 'gateway') { gwIdx = gi; break; }
+                }
+
+                // Deactivate active layer when scrolling past framework section
+                if (closingShrink.value > 0.05 && activeLayerIndex >= 0) {
+                    activeLayerIndex = -1;
+                    activeZone = 'all';
+                    updateHud(null);
+                }
+
+                // Determine per-shell targets based on active layer
+                shellMeshes.forEach(function(mesh, i) {
+                    var origR = originalRadii[i];
+                    var layer = activeLayers[i];
+                    var isGW = layer.zone === 'gateway';
+                    var breathing = 1 + Math.sin(t*0.6+i*0.5)*0.006;
+
+                    // Compute targets for this shell
+                    var scaleTarget = 1.0;
+                    var targetOpacity;
+                    var targetZ = 0;
+                    var targetFace = 0;
+
+                    var isSilicon = layer.zone === 'silicon';
+
+                    if (activeGroupMode === 'closing' && mp > 0.5) {
+                        // Closing: ALL layers simultaneously converge into one white "O"
+                        // closingPhase ramps 0→1 via lerp (driven by animation loop)
+                        var cp = closingPhase;
+
+                        // All layers converge simultaneously — face camera, pull forward, uniform scale
+                        scaleTarget = 1.0 + cp * 0.5; // grow to 1.5
+                        targetZ = cp * 4.0;
+                        targetFace = cp;
+
+                        // Transition color toward white: increase activeGlow for all layers
+                        var whiteTarget = cp * 0.8; // strong white blend
+                        shellUniforms[i].uActiveGlow.value += (whiteTarget - shellUniforms[i].uActiveGlow.value) * 0.08;
+                        shellUniforms[i].uGlowIntensity.value += (3.0 - shellUniforms[i].uGlowIntensity.value) * 0.06;
+
+                        // L1 (outermost) fully visible, inner layers fade to form solid white disc
+                        // As closingPhase increases, inner layers become more transparent
+                        var innerFade = Math.max(0, 1.0 - cp * 0.85);
+                        targetOpacity = (i === 0) ? 1.0 : innerFade * 0.4 + 0.1;
+                    } else if (i === activeLayerIndex) {
+                        // Active layer: expand first, then pull out
+                        // Scale pull-out intensity by morph progress so it works during early morph
+                        var pullStrength = Math.min(1, Math.max(0, (rawMorph - 0.15) / 0.35)); // 0→1 as rawMorph goes 0.15→0.5
+                        var expandReady = shellScaleMultipliers[i] > (1.0 + 0.3 * pullStrength);
+                        if (isGW) {
+                            // L8 FLAMBOYANT: bigger scale, farther pull, pulsing scale
+                            var gwPulse = Math.sin(t * 4.0) * 0.1 * pullStrength;
+                            scaleTarget = 1.0 + (1.6 * pullStrength) + gwPulse;
+                            targetOpacity = 1.0;
+                            targetZ = expandReady ? (7.0 * pullStrength) : 0;
+                        } else {
+                            // Enlarged disc positioned to the right
+                            scaleTarget = 1.0 + (0.9 * pullStrength);
+                            targetOpacity = 1.0;
+                            targetZ = expandReady ? (4.5 * pullStrength) : 0;
+                        }
+                        targetFace = pullStrength; // gated by zProgress anyway
+                    } else if (i === hoveredShellIndex && hoveredShellIndex !== activeLayerIndex && activeGroupMode === null) {
+                        // Hovered (not clicked): subtle expand + brighter, stays in stack
+                        scaleTarget = isGW ? 1.2 : 1.12;
+                        targetOpacity = isGW ? 1.0 : 0.8;
+                        // targetZ and targetFace stay at 0 — no pull-out
+                    } else if (activeLayerIndex === -1 && activeGroupMode === null) {
+                        // No specific layer active — all visible
+                        var zoneMatch = (activeZone === 'all') || (activeZone === layer.zone);
+                        scaleTarget = 1.0;
+                        targetOpacity = zoneMatch ? (isGW ? 0.85 : 0.55) : (isGW ? 0.3 : 0.15);
+                    } else {
+                        // Different layer is active — dim, but L8 neighbors get sympathetic push
+                        var isGWActive = activeLayers[activeLayerIndex] && activeLayers[activeLayerIndex].zone === 'gateway';
+                        if (isGWActive && gwIdx >= 0 && Math.abs(i - gwIdx) <= 2) {
+                            // L8 flamboyant: neighbors push away slightly
+                            var neighDist = Math.abs(i - gwIdx);
+                            var neighPush = (neighDist === 1 ? 0.6 : 0.25) * Math.min(1, Math.max(0, (rawMorph - 0.15) / 0.35));
+                            var neighDir = (i < gwIdx) ? -1 : 1;
+                            targetZ = neighPush * neighDir;
+                            scaleTarget = 1.0 - neighDist * 0.03;
+                            targetOpacity = 0.35 - neighDist * 0.08;
+                        } else {
+                            scaleTarget = 0.9;
+                            targetOpacity = isGW ? 0.15 : 0.07;
+                        }
+                    }
+
+                    // Shared constants for collapse + morph
+                    var totalLayers = activeLayers.length;
+                    var stackSpacing = 0.4;
+
+                    // Intro expand: reverse of collapse — flat circle → stack
+                    // introVal: 0 = all layers merged at top (flat circle), 1 = fully expanded
+                    var introYTarget = -999; // sentinel: no override
+                    var introTilt = 0; // 1 = face camera (flat), 0 = stack orientation
+                    if (introActive) {
+                        // Reverse the collapse: expand top-down
+                        // At introVal=0, all layers at topY, fully tilted
+                        // As introVal increases, layers peel away from top down to their stack positions
+                        var topY = ((totalLayers - 1) - (totalLayers - 1) / 2) * stackSpacing;
+                        if (gwIdx >= 0 && (totalLayers - 1) > gwIdx) topY += 0.15;
+
+                        var ownY = (i - (totalLayers - 1) / 2) * stackSpacing;
+                        if (gwIdx >= 0) {
+                            if (i < gwIdx) ownY -= 0.15;
+                            if (i > gwIdx) ownY += 0.15;
+                        }
+
+                        // Stagger: L14 (top) separates first, L1 (bottom) last
+                        // Each layer gets a window within introVal to animate
+                        var layerIdx = totalLayers - 1 - i; // 0=L14, 13=L1
+                        var staggerStart = layerIdx * 0.06; // L14 starts at 0, L1 at 0.78
+                        var staggerEnd = staggerStart + 0.4; // each layer takes 0.4 of introVal to settle
+                        var layerExpand = Math.max(0, Math.min(1, (introVal - staggerStart) / (staggerEnd - staggerStart)));
+                        // Ease: cubic out for smooth deceleration
+                        layerExpand = 1 - Math.pow(1 - layerExpand, 3);
+
+                        // Y: lerp from topY to own stack position
+                        introYTarget = topY + (ownY - topY) * layerExpand;
+
+                        // Tilt: face camera when collapsed, un-tilt as layers expand
+                        // Global tilt recedes as intro progresses
+                        introTilt = Math.max(0, 1 - introVal * 1.5); // 1→0 over first 67% of intro
+                        introTilt = introTilt * introTilt; // quadratic ease
+
+                        // Opacity: scale by expansion progress — layers brighten as they separate
+                        targetOpacity *= Math.max(0.15, layerExpand);
+                    }
+
+                    // Lerp scale
+                    var scaleLerp = (scaleTarget > shellScaleMultipliers[i]) ? 0.1 : 0.12;
+                    shellScaleMultipliers[i] += (scaleTarget - shellScaleMultipliers[i]) * scaleLerp;
+
+                    // Phase 1: Z pull-out
+                    var zLerpIn = 0.12;
+                    var zLerp = (targetZ > shellZOffsets[i]) ? zLerpIn : 0.14;
+                    shellZOffsets[i] += (targetZ - shellZOffsets[i]) * zLerp;
+
+                    // How far along is the Z pull-out? (0→1)
+                    var zProgress = (targetZ > 0.1) ? Math.min(1, shellZOffsets[i] / targetZ) : (1 - Math.min(1, shellZOffsets[i] / 0.5));
+
+                    // Phase 2: Y centering — gates on Z being >40% done
+                    var yGate = Math.max(0, (zProgress - 0.4) / 0.6);
+
+                    // Intro expand tilt: face camera when collapsed, un-tilt as layers expand
+                    if (introTilt > 0) {
+                        targetFace = Math.max(targetFace, introTilt);
+                    }
+
+                    // Phase 3: Face-camera tilt — gates on Z being >50% done (or intro tilt)
+                    var faceGate = (introTilt > 0) ? 1.0 : Math.max(0, (zProgress - 0.5) / 0.5);
+                    var gatedFace = targetFace * faceGate;
+                    var faceLerpIn = 0.12;
+                    var faceLerp = (gatedFace > shellFaceCamera[i]) ? faceLerpIn : 0.15;
+                    shellFaceCamera[i] += (gatedFace - shellFaceCamera[i]) * faceLerp;
+
+                    if (mp < 0.01) {
+                        // Pure sphere mode
+                        mesh.scale.setScalar(origR * breathing);
+                        mesh.position.set(0, 0, 0);
+                        mesh.rotation.set(0, 0, 0);
+                    } else {
+                        // Morphing: flatten Y, separate positions
+                        var sm = shellScaleMultipliers[i];
+                        var stackScaleXZ = origR * breathing * sm;
+
+                        // Uniform pull-out size: 50% of screen height
+                        var camDist = camera.position.z - shellZOffsets[i];
+                        var visibleH = 2 * camDist * Math.tan(Math.PI * 20 / 180);
+                        var pullOutSize = visibleH * 0.25; // radius = half of 50% screen
+                        var faceAmt = shellFaceCamera[i];
+                        var scaleXZ = stackScaleXZ + (pullOutSize - stackScaleXZ) * faceAmt;
+
+                        // ScaleY: thin disc in stack → full circle when pulled out
+                        var discScaleY = origR * breathing * (1 - mp * 0.92);
+                        var circleScaleY = scaleXZ; // match XZ for perfect circle
+                        var scaleY = discScaleY + (circleScaleY - discScaleY) * faceAmt;
+
+                        // Stack position: evenly distribute layers vertically
+                        var stackY = (i - (totalLayers - 1) / 2) * stackSpacing;
+
+                        // L8 gets extra gap
+                        if (gwIdx >= 0) {
+                            if (i < gwIdx) stackY -= 0.15;
+                            if (i > gwIdx) stackY += 0.15;
+                        }
+
+                        // Spring coil: compress L9-L14 downward toward L8 on scroll-up at top
+                        // L8 (gateway) is the anchor — doesn't move
+                        // Spring ratio: layers further from L8 compress more (quadratic)
+                        if (springCompress > 0.001 && gwIdx >= 0 && i > gwIdx) {
+                            var stepsAboveGW = i - gwIdx; // 1=L9, 2=L10, ... 6=L14
+                            var maxSteps = totalLayers - 1 - gwIdx; // 6
+                            // Quadratic spring: top layers compress proportionally more
+                            var springRatio = (stepsAboveGW / maxSteps);
+                            springRatio = springRatio * springRatio; // quadratic — L14 moves most
+                            // Pull layer Y toward L8's Y position
+                            var gwY = (gwIdx - (totalLayers - 1) / 2) * stackSpacing + 0.15;
+                            var pullAmount = (stackY - gwY) * springRatio * springCompress;
+                            stackY -= pullAmount;
+                        }
+
+                        // Intro expand: override Y during intro animation
+                        if (introYTarget > -999) {
+                            stackY = introYTarget;
+                        }
+
+
+                        var baseY = stackY * mp;
+
+                        // Y centering: snap disc to vertical center of screen
+                        var shouldCenter = (i === activeLayerIndex && rawMorph > 0.15) || (activeGroupMode === 'closing' && mp > 0.5);
+                        var targetYCenter = shouldCenter ? (camera.position.y - baseY) : 0;
+                        var yLerpSpeed = 0.2;
+                        shellYOffsets[i] += (targetYCenter - shellYOffsets[i]) * yLerpSpeed;
+
+                        // X positioning: active disc moves to right side (~10% off-screen), closing stays with group
+                        var targetXCenter;
+                        if (i === activeLayerIndex && rawMorph > 0.15 && activeGroupMode !== 'closing') {
+                            // Work in world space, then convert to group-local
+                            var grpScale = autoRotateGroup.scale.x || 1;
+                            var grpX = autoRotateGroup.position.x; // usually ~ -2.0
+
+                            // Visible half-width at camera Z (disc is pulled toward camera on Z)
+                            var halfWidth = Math.tan(Math.PI * camera.fov / 360) * camera.position.z * camera.aspect;
+
+                            // Disc apparent radius in world space
+                            var discR = shellScaleMultipliers[i] * activeLayers[i].r * grpScale;
+
+                            // Target: disc center in world X so 10% of diameter overhangs right edge
+                            // rightEdge = halfWidth, disc center = rightEdge - radius + 0.1 * diameter
+                            var worldTargetX = halfWidth - discR + discR * 0.2;
+
+                            // Convert world X to group-local X: localX = (worldX - grpX) / grpScale
+                            targetXCenter = (worldTargetX - grpX) / grpScale;
+                        } else if (shouldCenter && activeGroupMode !== 'closing') {
+                            targetXCenter = -autoRotateGroup.position.x;
+                        } else {
+                            targetXCenter = 0;
+                        }
+                        shellXOffsets[i] += (targetXCenter - shellXOffsets[i]) * 0.15;
+
+                        mesh.scale.set(scaleXZ, scaleY, scaleXZ);
+                        mesh.position.x = shellXOffsets[i];
+                        mesh.position.y = baseY + shellYOffsets[i];
+                        mesh.position.z = shellZOffsets[i];
+
+                        // L14 color shift: purple → red as spring compresses
+                        if (i === totalLayers - 1 && springCompress > 0.01) {
+                            var l14Purple = [0.620, 0.380, 0.920]; // initial
+                            var l14Red = [0.920, 0.200, 0.250];    // compressed
+                            var blend14 = Math.min(1, springCompress * 1.2); // reaches red before full compress
+                            shellUniforms[i].uColor.value.set(
+                                l14Purple[0] + (l14Red[0] - l14Purple[0]) * blend14,
+                                l14Purple[1] + (l14Red[1] - l14Purple[1]) * blend14,
+                                l14Purple[2] + (l14Red[2] - l14Purple[2]) * blend14
+                            );
+                        }
+
+                        // Easter egg: all layers except L14 scale up exponentially
+                        // Distance from L14 determines how much bigger each layer grows
+                        if (easterEggPhase > 0.01 && i < totalLayers - 1) {
+                            var distFromL14 = (totalLayers - 1) - i; // 1=L13, 13=L1
+                            // Exponential: each step away from L14 grows more
+                            var expScale = Math.pow(distFromL14 / (totalLayers - 1), 0.6);
+                            var growFactor = 1 + expScale * 2.5 * easterEggPhase;
+                            mesh.scale.x *= growFactor;
+                            mesh.scale.z *= growFactor;
+                        }
+
+                        // Face camera: tilt 90° on X to show circle face + counter-rotate
+                        if (faceAmt > 0.01) {
+                            var tiltX = Math.PI * 0.5 * faceAmt; // 0→90° tilt to face camera
+                            mesh.rotation.x = tiltX + (-autoRotateGroup.rotation.x - parallaxGroup.rotation.x) * faceAmt;
+                            mesh.rotation.y = (-autoRotateGroup.rotation.y - parallaxGroup.rotation.y) * faceAmt;
+                        } else {
+                            mesh.rotation.set(0, 0, 0);
+                        }
+
+                        // Per-layer brightness: scrollBrightness cascades L14→L1
+                        // stepsFromTop: 0=L14 (restores first), 13=L1 (restores last)
+                        var lastIdx = activeLayers.length - 1;
+                        var stepsFromTop = lastIdx - i;
+                        // How bright is this layer? scrollBrightness counts layers restored
+                        var layerBright = Math.min(1, Math.max(0, scrollBrightness - stepsFromTop));
+                        // Start at 50% opacity, ramp to full. Boost targetOpacity for restored layers.
+                        var dimmedOpacity = targetOpacity * (0.5 + layerBright * 0.5) + layerBright * 0.3;
+                        // Also boost glow intensity as layer restores
+                        var scrollGlowBoost = layerBright * 0.4;
+                        shellUniforms[i].uOpacity.value +=
+                            (dimmedOpacity - shellUniforms[i].uOpacity.value) * 0.2;
+
+                        // Active/hover glow lerp
+                        var glowTarget;
+                        if (i === activeLayerIndex && isGW) {
+                            // L8 flamboyant: intense pulsing glow
+                            glowTarget = 1.5 + Math.sin(t * 5.0) * 0.5;
+                        } else if (i === activeLayerIndex) {
+                            glowTarget = 1.0;
+                        } else if (i === hoveredShellIndex && activeGroupMode === null) {
+                            glowTarget = 0.45;
+                        } else {
+                            glowTarget = 0.0;
+                        }
+
+                        // Intro ripple cascade: L14 lights up first, then L13→L8, then L7→L1
+                        var isBioOrGW = (layer.zone === 'biology' || layer.zone === 'gateway');
+                        var introRippling = (bangProgress > 0.05 && bangProgress < 0.99 && activeLayerIndex < 0 && activeGroupMode !== 'closing');
+                        if (introRippling) {
+                            var lastIdx = activeLayers.length - 1; // L14 = topmost
+                            var totalLayers = activeLayers.length;
+
+                            // Stagger order: L14 first (index 13), down to L8 (index 7), then L7→L1
+                            var stepsFromTop;
+                            if (isBioOrGW) {
+                                stepsFromTop = lastIdx - i; // 0 for L14, 6 for L8
+                            } else {
+                                // Silicon: continue after all bio layers, L7 first then L1 last
+                                var bioCount = lastIdx - gwIdx + 1; // 7 bio/gw layers
+                                stepsFromTop = bioCount + (gwIdx - 1 - i); // L7=7, L6=8... L1=13
+                            }
+
+                            var layerStart = 0.08 + (stepsFromTop / totalLayers) * 0.7;
+                            var layerRamp = (bangProgress - layerStart) / 0.12;
+                            var chargeAmt = Math.max(0, Math.min(1, layerRamp));
+
+                            // Ripple scale: incremental per layer — L1 largest, L14 smallest
+                            // layerRank: 0 for L14 (top), 13 for L1 (bottom/outermost)
+                            var layerRank = (lastIdx - i);
+                            var maxBoost = 0.05 + (1 - layerRank / lastIdx) * 0.25; // L1=0.30, L14=0.05
+                            var ripplePeak = Math.max(0, Math.min(1, (bangProgress - layerStart) / 0.08));
+                            var rippleDecay = Math.max(0, Math.min(1, (bangProgress - layerStart - 0.08) / 0.20));
+                            var rippleScale = ripplePeak * (1 - rippleDecay); // peaks then returns to 1.0
+                            shellScaleMultipliers[i] = Math.max(shellScaleMultipliers[i], 1.0 + rippleScale * maxBoost);
+
+                            // Vibrancy boost: subtle — enough to brighten without washing white
+                            var glowBoost = isBioOrGW ? chargeAmt * 0.6 : chargeAmt * 0.3;
+                            shellUniforms[i].uGlowIntensity.value = 1.2 + glowBoost;
+
+                            glowTarget = Math.max(glowTarget, chargeAmt * 0.35);
+                        } else {
+                            // Once fully flattened (scroll morph done), L14→L8 pulse breathing
+                            var morphDone = rawMorph > 0.25;
+                            var defaultGlow = isGW ? 2.5 : 1.2;
+                            if (isBioOrGW && morphDone && activeLayerIndex < 0 && activeGroupMode !== 'closing') {
+                                var lastIdx = activeLayers.length - 1;
+                                var stepsFromTop = lastIdx - i; // 0=L14, 6=L8
+                                // Each layer pulses with a phase offset so L14 peaks first, then L13...
+                                var phaseOffset = stepsFromTop * 0.9; // ~0.9 rad apart
+                                var pulseSin = Math.sin(t * 2.0 - phaseOffset);
+                                // pulseSin -1→1, map to 0→1 for opacity/vibrancy boost
+                                var pulseAmt = pulseSin * 0.5 + 0.5; // 0→1
+
+                                // Opacity pulse: base + subtle swing
+                                targetOpacity = Math.max(targetOpacity, 0.4 + pulseAmt * 0.2);
+                                // Vibrancy pulse: gentle swing, stays colorful not white
+                                shellUniforms[i].uGlowIntensity.value = defaultGlow + pulseAmt * 0.5;
+                                // ActiveGlow pulse: kept low to avoid white wash
+                                glowTarget = Math.max(glowTarget, pulseAmt * 0.2);
+                            } else if (i === activeLayerIndex && isGW) {
+                                // L8 flamboyant: intense pulsing glow intensity
+                                var gwGlowPulse = 4.0 + Math.sin(t * 6.0) * 1.5;
+                                shellUniforms[i].uGlowIntensity.value += (gwGlowPulse - shellUniforms[i].uGlowIntensity.value) * 0.1;
+                            } else {
+                                var targetGI = defaultGlow + scrollGlowBoost;
+                                shellUniforms[i].uGlowIntensity.value += (targetGI - shellUniforms[i].uGlowIntensity.value) * 0.08;
+                            }
+                        }
+
+                        // Glow lerp (skip during closing — it manages glow directly)
+                        if (activeGroupMode !== 'closing') {
+                            var introRippleActive = (isBioOrGW && bangProgress > 0.05 && bangProgress < 0.99 && activeLayerIndex < 0 && activeGroupMode !== 'closing');
+                            var glowLerpIn = introRippleActive ? 0.12 : 0.03;
+                            var glowLerp = (glowTarget > shellUniforms[i].uActiveGlow.value) ? glowLerpIn : 0.06;
+                            shellUniforms[i].uActiveGlow.value +=
+                                (glowTarget - shellUniforms[i].uActiveGlow.value) * glowLerp;
+                        }
+
+                        // Position laser-etched label to match disc
+                        var lm = labelMeshes[i];
+                        lm.position.x = mesh.position.x;
+                        lm.position.y = mesh.position.y + 0.03;
+                        lm.position.z = mesh.position.z;
+                        // Offset -PI/2 on X so plane lies in XZ (flat on disc surface)
+                        lm.rotation.x = mesh.rotation.x - Math.PI * 0.5;
+                        lm.rotation.y = mesh.rotation.y;
+                        lm.rotation.z = mesh.rotation.z;
+                        // Scale label to fit inside disc
+                        var labelScale = scaleXZ * 0.82;
+                        lm.scale.set(labelScale, labelScale, 1);
+                        // Fade in with cubic ease — text appears after disc mostly faces camera
+                        // Hide labels during OSI group and closing mode
+                        var hideLabel = activeGroupMode === 'closing';
+                        var labelOpacity = hideLabel ? 0 : Math.pow(Math.max(0, faceAmt - 0.3) / 0.7, 2.5) * 0.85;
+                        lm.material.opacity = labelOpacity;
+                    }
+
+                    // Hide labels in sphere mode
+                    if (mp < 0.01) {
+                        var lm = labelMeshes[i];
+                        lm.material.opacity = 0;
+                    }
+                });
+
+                // Hover: subtle glow/expand + tooltip (click triggers full pull-out)
+                if (canvasInteractive && rawMorph > 0.15 && introProgress.value > 0.95 && activeGroupMode !== 'closing' && closingShrink.value < 0.05) {
+                    raycaster.setFromCamera(rayMouse, camera);
+                    var hoverHits = raycaster.intersectObjects(shellMeshes);
+                    hoveredShellIndex = (hoverHits.length > 0) ? shellMeshes.indexOf(hoverHits[0].object) : -1;
+
+                    // Tooltip: show zone tag + layer name + click action when hovering any layer
+                    if (hoveredShellIndex >= 0) {
+                        var hLayer = activeLayers[hoveredShellIndex];
+                        hoverTooltipId.textContent = hLayer.id;
+                        var hData = layerData[hLayer.id];
+                        hoverTooltipName.textContent = hData ? hData.name : '';
+                        hoverTooltipAction.textContent = (hoveredShellIndex === activeLayerIndex) ? 'Click to collapse' : 'Click to expand';
+                        // Zone color tag: OSI (silicon L1-L7), Gateway (L8), ONI (biology L9-L14)
+                        var zoneLabel = hLayer.zone === 'silicon' ? 'OSI' : 'ONI';
+                        var zoneClass = hLayer.zone === 'silicon' ? 'zone-osi' : (hLayer.zone === 'gateway' ? 'zone-gateway' : 'zone-oni');
+                        hoverTooltipZone.textContent = zoneLabel;
+                        hoverTooltipZone.className = 'hover-tooltip-zone ' + zoneClass;
+                        hoverTooltip.style.left = (lastMouseClientX + 16) + 'px';
+                        hoverTooltip.style.top = (lastMouseClientY - 12) + 'px';
+                        hoverTooltip.classList.add('visible');
+                        hasInteracted = true;
+                    } else {
+                        hoverTooltip.classList.remove('visible');
+                    }
+
+                    document.body.style.cursor = (hoveredShellIndex >= 0) ? 'pointer' : '';
+                } else {
+                    hoveredShellIndex = -1;
+                    hoverTooltip.classList.remove('visible');
+                    if (canvasInteractive) document.body.style.cursor = '';
+                }
+
+                // Click hint: only visible when full stack is showing and not collapsing
+                var showHint = canvasInteractive && !hasInteracted && rawMorph > 0.25 && closingShrink.value < 0.05 && activeLayerIndex === -1 && activeGroupMode !== 'closing';
+                if (showHint) {
+                    clickHint.classList.add('visible');
+                } else {
+                    clickHint.classList.remove('visible');
+                }
+
+                // Stack-fit scale: shrink the stack so all 14 layers fit in viewport
+                // Use effectiveMorph so it applies during both intro and scroll
+                var stackFitScale = 1 - effectiveMorph * 0.22;
+                // ONI shrink: further scale down as Foundations section scrolls up
+                var shrinkVal = closingShrink.value;
+                var closingShrinkScale = 1 - shrinkVal * 0.6; // 1.0 → 0.4
+                var finalGroupScale = stackFitScale * closingShrinkScale;
+                autoRotateGroup.scale.setScalar(finalGroupScale);
+
+                // ONI closing: merged disc = "O", HTML "NI" overlay fades in, then both center
+                if (activeGroupMode === 'closing') {
+                    // Phase 1: "NI" fades in after convergence (closingPhase > 0.6)
+                    var niFadeTarget = (closingPhase > 0.6) ? 1.0 : 0.0;
+                    niOpacity += (niFadeTarget - niOpacity) * 0.06;
+
+                    // Project disc center (shell 0) to screen coordinates
+                    // Update world matrix to include latest position changes this frame
+                    shellMeshes[0].updateWorldMatrix(true, false);
+                    niProjection.setFromMatrixPosition(shellMeshes[0].matrixWorld);
+                    var discWorldZ = niProjection.z; // save before projection
+                    var discWorldScale = shellMeshes[0].scale.x * (autoRotateGroup.scale.x || 1);
+                    niProjection.project(camera);
+                    var discScreenX = (niProjection.x * 0.5 + 0.5) * window.innerWidth;
+                    var discScreenY = (-niProjection.y * 0.5 + 0.5) * window.innerHeight;
+
+                    // Compute disc apparent size for proportional NI sizing and offset
+                    var camDist = Math.max(0.1, camera.position.z - discWorldZ);
+                    var discScreenRadius = (discWorldScale / (2 * camDist * Math.tan(Math.PI * camera.fov / 360))) * window.innerHeight * 0.5;
+
+                    // NI font size = disc diameter so letter height matches "O" (the disc)
+                    var discDiameter = discScreenRadius * 2;
+                    var niFontSize = discDiameter * 0.82; // cap-height ≈ 0.72× font-size, so 0.82 makes cap ≈ disc diameter
+
+                    // Letter gap: consistent spacing between O-N and N-I
+                    var letterGap = discDiameter * 0.08;
+
+                    // NI left edge starts far right, slides to just past disc right edge
+                    var discRightEdge = discScreenX + discScreenRadius;
+                    var niFinalX = discRightEdge + letterGap;
+                    var niStartX = discRightEdge + discDiameter * 1.2;
+                    var niLeftX = niStartX + (niFinalX - niStartX) * niSlidePhase;
+
+                    niOverlay.style.left = niLeftX + 'px';
+                    niOverlay.style.top = discScreenY + 'px';
+                    niOverlay.style.fontSize = niFontSize + 'px';
+                    niOverlay.style.letterSpacing = letterGap + 'px';
+                    niOverlay.style.opacity = niOpacity;
+                } else {
+                    niOpacity += (0 - niOpacity) * 0.12;
+                    niOverlay.style.opacity = niOpacity;
+                }
+
+                // Camera: pull back when a layer is pulled out, L8 extra dramatic
+                var l8CameraZoom = 0;
+                var isGWActive = activeLayerIndex >= 0 && activeLayers[activeLayerIndex] && activeLayers[activeLayerIndex].zone === 'gateway';
+                if (isGWActive) {
+                    l8CameraZoom = 1.0; // pull back farther to show the drama
+                }
+                var pullOutCamOffset = (activeLayerIndex >= 0) ? ((isGWActive ? 2.5 : 1.5) * Math.min(1, Math.max(0, (rawMorph - 0.15) / 0.35))) : 0;
+                var targetCamY = 0.3 + mp * 0.5;
+                var targetCamZ = 7 + mp * 1 + l8CameraZoom + pullOutCamOffset;
+                camera.position.y += (targetCamY - camera.position.y) * 0.03;
+                camera.position.z += (targetCamZ - camera.position.z) * 0.03;
+
+                // Apply closing shrink to NI overlay (scale block is above, before NI projection)
+                var shrinkValNI = closingShrink.value;
+                var closingShrinkScaleNI = 1 - shrinkValNI * 0.6;
+                if (niOpacity > 0.01 && shrinkValNI > 0.01) {
+                    niOverlay.style.transform = 'translate(0, -50%) scale(' + closingShrinkScaleNI + ')';
+                    niOverlay.style.transformOrigin = 'left center';
+                } else if (niOpacity > 0.01) {
+                    niOverlay.style.transform = 'translate(0, -50%)';
+                    niOverlay.style.transformOrigin = 'left center';
+                }
+
+                // Gateway light — extra flamboyant when L8 is active
+                var gwLightBase = 0.8;
+                var gwLightPulse = Math.sin(t*3.0)*0.4;
+                var gwActive = activeLayerIndex >= 0 && activeLayers[activeLayerIndex] && activeLayers[activeLayerIndex].zone === 'gateway';
+                if (gwActive) {
+                    gwLightBase = 3.5;
+                    gwLightPulse = Math.sin(t*6.0)*1.2 + Math.sin(t*9.5)*0.5; // fast double-pulse
+                }
+                gatewayLight.intensity += ((gwLightBase + gwLightPulse) - gatewayLight.intensity) * (gwActive ? 0.12 : 0.05);
+
+                // Dust drift
+                dustCloud.rotation.y = t*0.02;
+                dustCloud.rotation.x = Math.sin(t*0.1)*0.05;
+
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        // (2D fallback canvas removed — framework is now scroll-driven 3D only)
+
+        // =============================================
+        // BRAND.JSON LOADER
+        // =============================================
+        fetch('https://raw.githubusercontent.com/qinnovates/mindloft/main/neurosecurity/legacy-core/resources/brand/brand.json')
+            .then(function(r) { return r.json(); })
+            .catch(function() { return null; })
+            .then(function(data) {
+                if (!data || !data.oni) return;
+                // Update page title meta if needed
+                var desc = document.querySelector('meta[name="description"]');
+                if (desc && data.oni.description) {
+                    desc.content = data.oni.description;
+                }
+            });
+
+    })();
+    </script>
+</body>
+</html>
