@@ -1,3 +1,9 @@
+<div align="center">
+
+![divider](https://raw.githubusercontent.com/qinnovates/qinnovate/main/docs/images/divider-qinnovate.svg)
+
+</div>
+
 # Qinnovate
 
 **Open Standards for Brain-Computer Interface Security**
@@ -7,6 +13,12 @@
 Qinnovate is a vendor-neutral standards body developing open frameworks, governance standards, and research for securing brain-computer interfaces.
 
 ---
+
+<div align="center">
+
+![divider](https://raw.githubusercontent.com/qinnovates/qinnovate/main/docs/images/divider-qinnovate.svg)
+
+</div>
 
 ## 🏛️ What is Qinnovate?
 
